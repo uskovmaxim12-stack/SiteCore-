@@ -1102,5 +1102,30 @@
     <div class="particles" id="particles"></div>
 
     <script src="app.js"></script>
+    <link rel="stylesheet" href="mobile.css">
+<button class="mobile-menu-toggle" id="mobile-menu-toggle">
+    <i class="fas fa-bars"></i>
+</button>
+
+<script>
+    // Мобильное меню
+    document.getElementById('mobile-menu-toggle')?.addEventListener('click', function() {
+        document.querySelector('.nav-menu')?.classList.toggle('active');
+    });
+
+    // Закрытие меню при клике вне его
+    document.addEventListener('click', function(e) {
+        const menu = document.querySelector('.nav-menu');
+        const toggle = document.getElementById('mobile-menu-toggle');
+        if (menu?.classList.contains('active') && 
+            !menu.contains(e.target) && 
+            !toggle?.contains(e.target)) {
+            menu.classList.remove('active');
+        }
+    });
+
+    // Обработка касаний для мобильных
+    document.addEventListener('touchstart', function() {}, {passive: true});
+</script>
 </body>
 </html>
