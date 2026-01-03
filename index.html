@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiteCore | Платформа для разработки сайтов</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>SiteCore | Платформа для создания сайтов</title>
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #8b5cf6;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #1f2937;
-            --dark-light: #374151;
-            --gray: #6b7280;
-            --gray-light: #e5e7eb;
-            --gray-lighter: #f9fafb;
-            --white: #ffffff;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 50px -12px rgba(0, 0, 0, 0.25);
-            --radius: 12px;
-            --radius-lg: 24px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --primary-light: #8a9ef5;
+            --secondary: #764ba2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1f2937;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --gray-lighter: #f9fafb;
+            --white: #ffffff;
+            --radius: 16px;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
@@ -46,270 +41,110 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 480px;
+            position: relative;
         }
 
-        /* Главный экран */
-        .welcome-screen {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg);
-            padding: 60px;
-            box-shadow: var(--shadow-lg);
+        .logo-section {
             text-align: center;
-            animation: fadeIn 0.6s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin-bottom: 40px;
+            animation: fadeInDown 0.6s ease;
         }
 
         .logo {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: white;
-        }
-
-        .logo-text h1 {
-            font-size: 48px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 4px;
-        }
-
-        .logo-text p {
-            font-size: 18px;
-            color: var(--gray);
-            font-weight: 500;
-        }
-
-        .year-badge {
-            display: inline-block;
-            background: var(--gray-lighter);
-            color: var(--gray);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .welcome-content {
-            max-width: 600px;
-            margin: 40px auto;
-        }
-
-        .welcome-content h2 {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 20px;
-            line-height: 1.3;
-        }
-
-        .welcome-content p {
-            font-size: 18px;
-            color: var(--gray);
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-
-        /* Кнопки действий */
-        .actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .action-card {
+            width: 48px;
+            height: 48px;
             background: var(--white);
-            border-radius: var(--radius);
-            padding: 40px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 2px solid transparent;
-            cursor: pointer;
-        }
-
-        .action-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .action-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 20px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 30px;
-            font-size: 32px;
-            color: white;
-        }
-
-        .action-card h3 {
             font-size: 24px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: bold;
+            box-shadow: var(--shadow);
         }
 
-        .action-card p {
-            font-size: 16px;
-            color: var(--gray);
-            margin-bottom: 25px;
+        .logo-text {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            font-weight: 400;
+            max-width: 320px;
+            margin: 0 auto;
             line-height: 1.5;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 32px;
+        .year {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
+            color: var(--gray);
             cursor: pointer;
             transition: var(--transition);
-            border: none;
-            text-decoration: none;
-            min-width: 200px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-secondary {
+        .auth-tab.active {
             background: var(--white);
-            color: var(--dark);
-            border: 2px solid var(--gray-light);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            background: var(--gray-lighter);
-        }
-
-        /* Формы авторизации */
-        .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+        .form-container {
             display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease;
         }
 
-        .auth-overlay.active {
-            display: flex;
-        }
-
-        .auth-modal {
-            background: white;
-            border-radius: var(--radius-lg);
-            width: 90%;
-            max-width: 500px;
-            padding: 50px;
-            position: relative;
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--gray);
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .close-btn:hover {
-            background: var(--gray-lighter);
-            color: var(--dark);
-        }
-
-        .auth-modal h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .auth-modal p {
-            font-size: 16px;
-            color: var(--gray);
-            text-align: center;
-            margin-bottom: 40px;
+        .form-container.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
         }
 
         .form-group {
             margin-bottom: 24px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             font-size: 14px;
             font-weight: 600;
@@ -317,27 +152,35 @@
             margin-bottom: 8px;
         }
 
-        .form-control {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            font-size: 16px;
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .password-input {
+        .input-group {
             position: relative;
         }
 
-        .toggle-password {
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-toggle {
             position: absolute;
             right: 16px;
             top: 50%;
@@ -346,631 +189,617 @@
             border: none;
             color: var(--gray);
             cursor: pointer;
+            padding: 4px;
         }
 
         .error-message {
-            background: #fee;
             color: var(--danger);
-            padding: 12px;
-            border-radius: var(--radius);
             font-size: 14px;
-            margin-bottom: 20px;
+            margin-top: 8px;
             display: none;
         }
 
         .error-message.show {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: shake 0.5s ease;
         }
 
-        .form-actions {
-            margin-top: 40px;
-        }
-
-        .btn-block {
+        .btn {
             width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        /* Адаптивность */
-        @media (max-width: 1024px) {
-            .actions-grid {
-                grid-template-columns: 1fr;
-                max-width: 500px;
-                margin: 40px auto 0;
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+            margin-top: 16px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--gray-lighter);
+        }
+
+        .executor-login {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 2px solid var(--gray-light);
+        }
+
+        .executor-login h3 {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .executor-select {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .executor-option {
+            padding: 20px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .executor-option:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .executor-option.selected {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .executor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 12px;
+        }
+
+        .executor-name {
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .executor-role {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .executor-password {
+            margin-bottom: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--dark);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: none;
+            align-items: center;
+            gap: 12px;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            display: flex;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        @media (max-width: 768px) {
-            .welcome-screen {
-                padding: 40px 20px;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-            
-            .logo {
-                flex-direction: column;
-                text-align: center;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            
-            .logo-text h1 {
-                font-size: 36px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
-            
-            .welcome-content h2 {
-                font-size: 28px;
+            to {
+                opacity: 1;
             }
-            
-            .auth-modal {
-                padding: 40px 20px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
         @media (max-width: 480px) {
-            .action-card {
+            .auth-card {
                 padding: 30px 20px;
             }
             
-            .action-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
+            .logo-text {
+                font-size: 36px;
             }
             
-            .btn {
-                min-width: 150px;
-                padding: 14px 20px;
+            .executor-select {
+                grid-template-columns: 1fr;
             }
-        }
-
-        /* Прогресс бар */
-        .progress-bar {
-            height: 4px;
-            background: var(--gray-light);
-            border-radius: 2px;
-            margin: 30px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            width: 0%;
-            transition: width 1s ease;
+            
+            .container {
+                padding: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="welcome-screen">
+        <div class="logo-section">
             <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-code-branch"></i>
-                </div>
-                <div class="logo-text">
-                    <h1>SiteCore</h1>
-                    <p>Платформа для разработки сайтов</p>
-                    <div class="year-badge">2026</div>
-                </div>
+                <div class="logo-icon">SC</div>
+                <div class="logo-text">SiteCore</div>
             </div>
-
-            <div class="welcome-content">
-                <h2>Создаём современные сайты<br>для вашего бизнеса</h2>
-                <p>SiteCore — это профессиональная платформа для заказа и управления разработкой сайтов. Просто создайте заказ, опишите свои пожелания, и наши разработчики реализуют ваш проект.</p>
-                
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
-                </div>
-            </div>
-
-            <div class="actions-grid">
-                <div class="action-card" id="client-action">
-                    <div class="action-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h3>Для клиентов</h3>
-                    <p>Создавайте заказы на разработку сайтов, отслеживайте прогресс и общайтесь с разработчиками</p>
-                    <button class="btn btn-primary" id="client-register-btn">
-                        <i class="fas fa-user-plus"></i> Зарегистрироваться
-                    </button>
-                </div>
-
-                <div class="action-card" id="executor-action">
-                    <div class="action-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Для разработчиков</h3>
-                    <p>Присоединяйтесь к команде разработчиков, берите заказы в работу и создавайте качественные сайты</p>
-                    <button class="btn btn-secondary" id="executor-login-btn">
-                        <i class="fas fa-sign-in-alt"></i> Войти в панель
-                    </button>
-                </div>
-            </div>
+            <p class="tagline">Создаём сайты, которые работают на ваш бизнес</p>
+            <div class="year">2026</div>
         </div>
-    </div>
 
-    <!-- Модальное окно регистрации клиента -->
-    <div class="auth-overlay" id="client-register-overlay">
-        <div class="auth-modal">
-            <button class="close-btn" id="close-client-register">&times;</button>
-            <h2>Регистрация клиента</h2>
-            <p>Создайте аккаунт для заказа сайтов</p>
-            
-            <div class="error-message" id="client-register-error"></div>
-            
-            <form id="client-register-form">
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="client-login">Вход</button>
+                <button class="auth-tab" data-tab="client-register">Регистрация</button>
+            </div>
+
+            <!-- Вход для клиентов -->
+            <div id="client-login" class="form-container active">
                 <div class="form-group">
-                    <label for="client-name">Ваше полное имя *</label>
-                    <input type="text" id="client-name" class="form-control" placeholder="Иван Иванов" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="client-email">Email *</label>
-                    <input type="email" id="client-email" class="form-control" placeholder="example@mail.ru" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="client-phone">Телефон *</label>
-                    <input type="tel" id="client-phone" class="form-control" placeholder="+7 (999) 123-45-67" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="client-telegram">Telegram username *</label>
+                    <label class="form-label" for="login-email">Email</label>
                     <div class="input-group">
-                        <input type="text" id="client-telegram" class="form-control" placeholder="@username" required>
-                        <small>Начинается с @</small>
+                        <div class="input-icon">@</div>
+                        <input type="email" id="login-email" class="form-input" placeholder="example@mail.com" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="client-password">Пароль *</label>
-                    <div class="password-input">
-                        <input type="password" id="client-password" class="form-control" placeholder="Не менее 6 символов" required minlength="6">
-                        <button type="button" class="toggle-password" data-target="client-password">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <label class="form-label" for="login-password">Пароль</label>
+                    <div class="input-group">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" id="login-password" class="form-input" placeholder="Ваш пароль" required>
+                        <button type="button" class="password-toggle" data-target="login-password">👁️</button>
                     </div>
                 </div>
-                
+
+                <div class="error-message" id="login-error"></div>
+
+                <button class="btn btn-primary" id="client-login-btn">
+                    <span>Войти как клиент</span>
+                </button>
+            </div>
+
+            <!-- Регистрация клиентов -->
+            <div id="client-register" class="form-container">
                 <div class="form-group">
-                    <label for="client-password-confirm">Подтвердите пароль *</label>
-                    <div class="password-input">
-                        <input type="password" id="client-password-confirm" class="form-control" placeholder="Повторите пароль" required>
-                        <button type="button" class="toggle-password" data-target="client-password-confirm">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                    <label class="form-label" for="register-name">Ваше имя</label>
+                    <div class="input-group">
+                        <div class="input-icon">👤</div>
+                        <input type="text" id="register-name" class="form-input" placeholder="Иван Иванов" required>
                     </div>
                 </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-user-plus"></i> Создать аккаунт
-                    </button>
+
+                <div class="form-group">
+                    <label class="form-label" for="register-email">Email</label>
+                    <div class="input-group">
+                        <div class="input-icon">@</div>
+                        <input type="email" id="register-email" class="form-input" placeholder="example@mail.com" required>
+                    </div>
                 </div>
-            </form>
+
+                <div class="form-group">
+                    <label class="form-label" for="register-phone">Телефон</label>
+                    <div class="input-group">
+                        <div class="input-icon">📱</div>
+                        <input type="tel" id="register-phone" class="form-input" placeholder="+7 (999) 123-45-67" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="register-telegram">Telegram</label>
+                    <div class="input-group">
+                        <div class="input-icon">✈️</div>
+                        <input type="text" id="register-telegram" class="form-input" placeholder="@username" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="register-password">Пароль</label>
+                    <div class="input-group">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" id="register-password" class="form-input" placeholder="Минимум 6 символов" required minlength="6">
+                        <button type="button" class="password-toggle" data-target="register-password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="register-password-confirm">Подтвердите пароль</label>
+                    <div class="input-group">
+                        <div class="input-icon">🔒</div>
+                        <input type="password" id="register-password-confirm" class="form-input" placeholder="Повторите пароль" required>
+                        <button type="button" class="password-toggle" data-target="register-password-confirm">👁️</button>
+                    </div>
+                </div>
+
+                <div class="error-message" id="register-error"></div>
+
+                <button class="btn btn-primary" id="client-register-btn">
+                    <span>Создать аккаунт</span>
+                </button>
+            </div>
+
+            <!-- Вход для разработчиков -->
+            <div class="executor-login">
+                <h3>Вход для разработчиков</h3>
+                
+                <div class="executor-select">
+                    <div class="executor-option" data-executor="alexander">
+                        <div class="executor-avatar">А</div>
+                        <div class="executor-name">Александр</div>
+                        <div class="executor-role">Ведущий разработчик</div>
+                    </div>
+                    <div class="executor-option" data-executor="maxim">
+                        <div class="executor-avatar">М</div>
+                        <div class="executor-name">Максим</div>
+                        <div class="executor-role">Frontend специалист</div>
+                    </div>
+                </div>
+
+                <div class="form-group executor-password">
+                    <label class="form-label" for="executor-password">Пароль</label>
+                    <div class="input-group">
+                        <div class="input-icon">🔑</div>
+                        <input type="password" id="executor-password" class="form-input" placeholder="Введите пароль" required>
+                        <button type="button" class="password-toggle" data-target="executor-password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="error-message" id="executor-error"></div>
+
+                <button class="btn btn-secondary" id="executor-login-btn">
+                    <span>Войти как разработчик</span>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Модальное окно входа разработчика -->
-    <div class="auth-overlay" id="executor-login-overlay">
-        <div class="auth-modal">
-            <button class="close-btn" id="close-executor-login">&times;</button>
-            <h2>Вход для разработчиков</h2>
-            <p>Введите пароль для доступа к панели</p>
-            
-            <div class="error-message" id="executor-login-error"></div>
-            
-            <form id="executor-login-form">
-                <div class="form-group">
-                    <label>Выберите разработчика</label>
-                    <div class="executor-selector">
-                        <div class="executor-option selected" data-id="1" data-name="Александр">
-                            <div class="executor-avatar">А</div>
-                            <div class="executor-info">
-                                <span class="executor-name">Александр</span>
-                                <span class="executor-role">Старший разработчик</span>
-                            </div>
-                        </div>
-                        <div class="executor-option" data-id="2" data-name="Максим">
-                            <div class="executor-avatar">М</div>
-                            <div class="executor-info">
-                                <span class="executor-name">Максим</span>
-                                <span class="executor-role">Frontend специалист</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="executor-password">Пароль *</label>
-                    <div class="password-input">
-                        <input type="password" id="executor-password" class="form-control" placeholder="Введите пароль" required>
-                        <button type="button" class="toggle-password" data-target="executor-password">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-sign-in-alt"></i> Войти в панель
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <div class="notification" id="notification"></div>
 
     <script>
-        // Инициализация системы
-        class SiteCoreSystem {
-            constructor() {
-                this.initializeData();
-                this.setupEventListeners();
-                this.animateProgressBar();
+        // Инициализация данных
+        function initializeData() {
+            if (!localStorage.getItem('sitecore_clients')) {
+                localStorage.setItem('sitecore_clients', JSON.stringify([]));
             }
             
-            // Инициализация данных
-            initializeData() {
-                if (!localStorage.getItem('sitecore_system')) {
-                    // Инициализируем систему с начальными данными
-                    const initialData = {
-                        version: '1.0',
-                        initialized: true,
-                        lastOrderId: 0,
-                        clients: [],
-                        orders: [],
-                        messages: {},
-                        // Два разработчика с паролями
-                        executors: [
-                            {
-                                id: 1,
-                                name: "Александр",
-                                password: "789653", // Пароль Александра
-                                role: "executor",
-                                position: "Старший разработчик",
-                                avatar: "А",
-                                status: "online",
-                                completedProjects: 0,
-                                activeProjects: 0,
-                                rating: 0
-                            },
-                            {
-                                id: 2,
-                                name: "Максим",
-                                password: "140612", // Пароль Максима
-                                role: "executor",
-                                position: "Frontend специалист",
-                                avatar: "М",
-                                status: "online",
-                                completedProjects: 0,
-                                activeProjects: 0,
-                                rating: 0
-                            }
-                        ]
-                    };
-                    
-                    localStorage.setItem('sitecore_system', JSON.stringify(initialData));
-                    console.log('Система инициализирована с начальными данными');
-                }
+            if (!localStorage.getItem('sitecore_orders')) {
+                localStorage.setItem('sitecore_orders', JSON.stringify([]));
             }
             
-            // Получение данных системы
-            getSystemData() {
-                const data = localStorage.getItem('sitecore_system');
-                return data ? JSON.parse(data) : null;
-            }
-            
-            // Сохранение данных системы
-            saveSystemData(data) {
-                localStorage.setItem('sitecore_system', JSON.stringify(data));
-            }
-            
-            // Регистрация клиента
-            registerClient(clientData) {
-                const system = this.getSystemData();
-                
-                // Проверка уникальности email
-                const emailExists = system.clients.some(client => client.email === clientData.email);
-                if (emailExists) {
-                    return { success: false, message: "Email уже зарегистрирован" };
-                }
-                
-                // Проверка пароля
-                if (clientData.password !== clientData.passwordConfirm) {
-                    return { success: false, message: "Пароли не совпадают" };
-                }
-                
-                if (clientData.password.length < 6) {
-                    return { success: false, message: "Пароль должен содержать не менее 6 символов" };
-                }
-                
-                // Проверка Telegram
-                if (!clientData.telegram.startsWith('@')) {
-                    return { success: false, message: "Telegram username должен начинаться с @" };
-                }
-                
-                // Создание клиента
-                const newClient = {
-                    id: Date.now(),
-                    ...clientData,
-                    role: "client",
-                    avatar: clientData.name.charAt(0).toUpperCase(),
-                    registrationDate: new Date().toISOString().split('T')[0],
-                    status: "active"
-                };
-                
-                // Удаляем подтверждение пароля из объекта
-                delete newClient.passwordConfirm;
-                
-                system.clients.push(newClient);
-                this.saveSystemData(system);
-                
-                return { success: true, client: newClient };
-            }
-            
-            // Авторизация разработчика
-            authenticateExecutor(executorId, password) {
-                const system = this.getSystemData();
-                const executor = system.executors.find(e => e.id === executorId);
-                
-                if (!executor) {
-                    return { success: false, message: "Разработчик не найден" };
-                }
-                
-                if (executor.password !== password) {
-                    return { success: false, message: "Неверный пароль" };
-                }
-                
-                // Создаем сессию без пароля
-                const { password: _, ...executorSession } = executor;
-                return { success: true, executor: executorSession };
-            }
-            
-            // Проверка email
-            validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
-            
-            // Проверка телефона
-            validatePhone(phone) {
-                const re = /^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
-                return re.test(phone);
+            if (!localStorage.getItem('sitecore_messages')) {
+                localStorage.setItem('sitecore_messages', JSON.stringify({}));
             }
         }
-        
-        // Инициализация приложения
-        document.addEventListener('DOMContentLoaded', function() {
-            const system = new SiteCoreSystem();
+
+        // Исполнители
+        const EXECUTORS = {
+            alexander: { name: "Александр", password: "789653", avatar: "А", role: "Frontend специалист" },
+            maxim: { name: "Максим", password: "140612", avatar: "М", role: "Ведущий разработчик" }
+        };
+
+        // Состояние
+        let selectedExecutor = null;
+
+        // Инициализация
+        initializeData();
+
+        // Переключение табов
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.dataset.tab;
+                
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+                
+                clearErrors();
+            });
+        });
+
+        // Выбор разработчика
+        document.querySelectorAll('.executor-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.executor-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedExecutor = this.dataset.executor;
+                document.getElementById('executor-password').focus();
+            });
+        });
+
+        // Переключение видимости пароля
+        document.querySelectorAll('.password-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.textContent = '👁️‍🗨️';
+                } else {
+                    input.type = 'password';
+                    this.textContent = '👁️';
+                }
+            });
+        });
+
+        // Очистка ошибок
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
             
-            // Анимация прогресс-бара
-            function animateProgressBar() {
-                const progressFill = document.getElementById('progress-fill');
-                let width = 0;
-                const interval = setInterval(() => {
-                    if (width >= 100) {
-                        clearInterval(interval);
-                    } else {
-                        width += 10;
-                        progressFill.style.width = width + '%';
-                    }
-                }, 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Регистрация клиента
+        document.getElementById('client-register-btn').addEventListener('click', function() {
+            clearErrors();
+            
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const telegram = document.getElementById('register-telegram').value.trim();
+            const password = document.getElementById('register-password').value;
+            const passwordConfirm = document.getElementById('register-password-confirm').value;
+            
+            const errorEl = document.getElementById('register-error');
+            
+            // Валидация
+            if (!name || !email || !phone || !telegram || !password || !passwordConfirm) {
+                errorEl.textContent = 'Заполните все поля';
+                errorEl.classList.add('show');
+                return;
             }
             
-            animateProgressBar();
+            if (password !== passwordConfirm) {
+                errorEl.textContent = 'Пароли не совпадают';
+                errorEl.classList.add('show');
+                return;
+            }
             
-            // Показать окно регистрации клиента
-            document.getElementById('client-register-btn').addEventListener('click', function() {
-                document.getElementById('client-register-overlay').classList.add('active');
+            if (password.length < 6) {
+                errorEl.textContent = 'Пароль должен быть не менее 6 символов';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            if (!telegram.startsWith('@')) {
+                errorEl.textContent = 'Telegram должен начинаться с @';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            // Проверка существующего email
+            const clients = JSON.parse(localStorage.getItem('sitecore_clients') || '[]');
+            const emailExists = clients.some(client => client.email === email);
+            
+            if (emailExists) {
+                errorEl.textContent = 'Email уже зарегистрирован';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            // Создание клиента
+            const newClient = {
+                id: Date.now(),
+                name,
+                email,
+                phone,
+                telegram,
+                password,
+                avatar: name.charAt(0).toUpperCase(),
+                registrationDate: new Date().toISOString(),
+                status: 'active'
+            };
+            
+            clients.push(newClient);
+            localStorage.setItem('sitecore_clients', JSON.stringify(clients));
+            
+            // Автоматический вход
+            const userForSession = { ...newClient };
+            delete userForSession.password;
+            localStorage.setItem('currentUser', JSON.stringify(userForSession));
+            
+            showNotification('Аккаунт успешно создан!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'client.html';
+            }, 1000);
+        });
+
+        // Вход клиента
+        document.getElementById('client-login-btn').addEventListener('click', function() {
+            clearErrors();
+            
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            const errorEl = document.getElementById('login-error');
+            
+            if (!email || !password) {
+                errorEl.textContent = 'Заполните все поля';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            const clients = JSON.parse(localStorage.getItem('sitecore_clients') || '[]');
+            const client = clients.find(c => c.email === email && c.password === password);
+            
+            if (!client) {
+                errorEl.textContent = 'Неверный email или пароль';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            const userForSession = { ...client };
+            delete userForSession.password;
+            localStorage.setItem('currentUser', JSON.stringify(userForSession));
+            
+            showNotification('Вход выполнен!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'client.html';
+            }, 800);
+        });
+
+        // Вход разработчика
+        document.getElementById('executor-login-btn').addEventListener('click', function() {
+            clearErrors();
+            
+            const password = document.getElementById('executor-password').value;
+            const errorEl = document.getElementById('executor-error');
+            
+            if (!selectedExecutor) {
+                errorEl.textContent = 'Выберите разработчика';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            if (!password) {
+                errorEl.textContent = 'Введите пароль';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            const executor = EXECUTORS[selectedExecutor];
+            
+            if (password !== executor.password) {
+                errorEl.textContent = 'Неверный пароль';
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            const userForSession = {
+                id: selectedExecutor,
+                name: executor.name,
+                avatar: executor.avatar,
+                role: executor.role,
+                type: 'executor'
+            };
+            
+            localStorage.setItem('currentUser', JSON.stringify(userForSession));
+            
+            showNotification(`Вход выполнен как ${executor.name}`, 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'executor.html';
+            }, 800);
+        });
+
+        // Enter для отправки форм
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const activeForm = document.querySelector('.form-container.active');
+                if (activeForm.id === 'client-login') {
+                    document.getElementById('client-login-btn').click();
+                } else if (activeForm.id === 'client-register') {
+                    document.getElementById('client-register-btn').click();
+                }
+            }
+        });
+
+        // Фокус на первом поле при смене таба
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                setTimeout(() => {
+                    const activeForm = document.querySelector('.form-container.active');
+                    const firstInput = activeForm.querySelector('input');
+                    if (firstInput) firstInput.focus();
+                }, 100);
             });
-            
-            // Показать окно входа разработчика
-            document.getElementById('executor-login-btn').addEventListener('click', function() {
-                document.getElementById('executor-login-overlay').classList.add('active');
-            });
-            
-            // Закрыть окно регистрации клиента
-            document.getElementById('close-client-register').addEventListener('click', function() {
-                document.getElementById('client-register-overlay').classList.remove('active');
-            });
-            
-            // Закрыть окно входа разработчика
-            document.getElementById('close-executor-login').addEventListener('click', function() {
-                document.getElementById('executor-login-overlay').classList.remove('active');
-            });
-            
-            // Закрытие по клику на overlay
-            document.querySelectorAll('.auth-overlay').forEach(overlay => {
-                overlay.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        this.classList.remove('active');
-                    }
-                });
-            });
-            
-            // Переключение видимости пароля
-            document.querySelectorAll('.toggle-password').forEach(button => {
-                button.addEventListener('click', function() {
-                    const targetId = this.getAttribute('data-target');
-                    const input = document.getElementById(targetId);
-                    const icon = this.querySelector('i');
-                    
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        icon.className = 'fas fa-eye-slash';
-                    } else {
-                        input.type = 'password';
-                        icon.className = 'fas fa-eye';
-                    }
-                });
-            });
-            
-            // Выбор разработчика
-            let selectedExecutorId = 1;
-            document.querySelectorAll('.executor-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.executor-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    selectedExecutorId = parseInt(this.getAttribute('data-id'));
-                    
-                    // Обновляем placeholder с именем разработчика
-                    const executorName = this.getAttribute('data-name');
-                    document.getElementById('executor-password').placeholder = 
-                        `Пароль для ${executorName}`;
-                });
-            });
-            
-            // Форма регистрации клиента
-            document.getElementById('client-register-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const errorEl = document.getElementById('client-register-error');
-                errorEl.classList.remove('show');
-                
-                const clientData = {
-                    name: document.getElementById('client-name').value.trim(),
-                    email: document.getElementById('client-email').value.trim(),
-                    phone: document.getElementById('client-phone').value.trim(),
-                    telegram: document.getElementById('client-telegram').value.trim(),
-                    password: document.getElementById('client-password').value,
-                    passwordConfirm: document.getElementById('client-password-confirm').value
-                };
-                
-                // Валидация
-                if (!system.validateEmail(clientData.email)) {
-                    errorEl.textContent = "Введите корректный email";
-                    errorEl.classList.add('show');
-                    return;
-                }
-                
-                if (!system.validatePhone(clientData.phone)) {
-                    errorEl.textContent = "Введите корректный номер телефона";
-                    errorEl.classList.add('show');
-                    return;
-                }
-                
-                const result = system.registerClient(clientData);
-                
-                if (result.success) {
-                    // Сохраняем сессию клиента
-                    localStorage.setItem('currentClient', JSON.stringify(result.client));
-                    
-                    // Показываем успешное сообщение
-                    errorEl.style.background = '#d1fae5';
-                    errorEl.style.color = '#065f46';
-                    errorEl.textContent = "Аккаунт успешно создан! Перенаправляем...";
-                    errorEl.classList.add('show');
-                    
-                    // Перенаправляем на панель клиента через 2 секунды
-                    setTimeout(() => {
-                        window.location.href = 'client.html';
-                    }, 2000);
-                } else {
-                    errorEl.textContent = result.message;
-                    errorEl.classList.add('show');
-                }
-            });
-            
-            // Форма входа разработчика
-            document.getElementById('executor-login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const errorEl = document.getElementById('executor-login-error');
-                errorEl.classList.remove('show');
-                
-                const password = document.getElementById('executor-password').value;
-                
-                const result = system.authenticateExecutor(selectedExecutorId, password);
-                
-                if (result.success) {
-                    // Сохраняем сессию разработчика
-                    localStorage.setItem('currentExecutor', JSON.stringify(result.executor));
-                    
-                    // Показываем успешное сообщение
-                    errorEl.style.background = '#d1fae5';
-                    errorEl.style.color = '#065f46';
-                    errorEl.textContent = "Вход успешен! Перенаправляем...";
-                    errorEl.classList.add('show');
-                    
-                    // Перенаправляем на панель разработчика через 2 секунды
-                    setTimeout(() => {
-                        window.location.href = 'executor.html';
-                    }, 2000);
-                } else {
-                    errorEl.textContent = result.message;
-                    errorEl.classList.add('show');
-                }
-            });
-            
-            // Стили для выбора разработчика
-            const style = document.createElement('style');
-            style.textContent = `
-                .executor-selector {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 12px;
-                    margin-bottom: 20px;
-                }
-                
-                .executor-option {
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                    padding: 16px;
-                    border: 2px solid var(--gray-light);
-                    border-radius: var(--radius);
-                    cursor: pointer;
-                    transition: var(--transition);
-                    background: white;
-                }
-                
-                .executor-option:hover {
-                    border-color: var(--primary);
-                    background: var(--gray-lighter);
-                }
-                
-                .executor-option.selected {
-                    border-color: var(--primary);
-                    background: rgba(99, 102, 241, 0.05);
-                }
-                
-                .executor-avatar {
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 12px;
-                    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    font-size: 20px;
-                    font-weight: 700;
-                    flex-shrink: 0;
-                }
-                
-                .executor-info {
-                    display: flex;
-                    flex-direction: column;
-                }
-                
-                .executor-name {
-                    font-weight: 600;
-                    color: var(--dark);
-                    font-size: 16px;
-                }
-                
-                .executor-role {
-                    font-size: 14px;
-                    color: var(--gray);
-                }
-                
-                .input-group small {
-                    display: block;
-                    margin-top: 4px;
-                    font-size: 12px;
-                    color: var(--gray);
-                }
-            `;
-            document.head.appendChild(style);
         });
     </script>
 </body>
