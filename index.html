@@ -2,13 +2,14 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>SiteCore | Вход</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -26,91 +27,139 @@
             --gray-lighter: #f9fafb;
             --white: #ffffff;
             --radius: 20px;
-            --shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            --radius-sm: 12px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
             width: 100%;
             max-width: 1200px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1fr;
+            gap: 0;
             background: var(--white);
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             min-height: 600px;
         }
 
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+            }
+        }
+
         .welcome-section {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
             color: white;
-            padding: 60px;
+            padding: 40px 32px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            order: 2;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-section {
+                order: 1;
+                padding: 60px;
+            }
         }
 
         .welcome-section h1 {
-            font-size: 42px;
+            font-size: 32px;
             font-weight: 900;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-section h1 {
+                font-size: 42px;
+            }
         }
 
         .welcome-section p {
-            font-size: 18px;
-            opacity: 0.9;
+            font-size: 16px;
+            opacity: 0.95;
             line-height: 1.6;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-section p {
+                font-size: 18px;
+            }
         }
 
         .features {
             list-style: none;
-            margin-top: 40px;
+            margin-top: 32px;
         }
 
         .features li {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
             margin-bottom: 20px;
-            font-size: 16px;
+            font-size: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .features li {
+                font-size: 16px;
+            }
         }
 
         .features i {
-            font-size: 24px;
-            opacity: 0.8;
+            font-size: 22px;
+            opacity: 0.9;
+            min-width: 24px;
         }
 
         .login-section {
-            padding: 60px;
+            padding: 40px 32px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            order: 1;
+        }
+
+        @media (min-width: 768px) {
+            .login-section {
+                order: 2;
+                padding: 60px;
+            }
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 14px;
+            margin-bottom: 32px;
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 12px;
             display: flex;
@@ -119,25 +168,40 @@
             color: white;
             font-weight: bold;
             font-size: 20px;
+            flex-shrink: 0;
         }
 
         .logo-text {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 900;
             background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (min-width: 768px) {
+            .logo-text {
+                font-size: 32px;
+            }
         }
 
         .login-section h2 {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--dark);
-            margin-bottom: 30px;
+            margin-bottom: 28px;
+            letter-spacing: -0.3px;
+        }
+
+        @media (min-width: 768px) {
+            .login-section h2 {
+                font-size: 28px;
+            }
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
@@ -145,40 +209,55 @@
             font-size: 14px;
             font-weight: 600;
             color: var(--dark);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 16px 20px;
+            padding: 18px 20px;
             border: 2px solid var(--gray-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             font-size: 16px;
             transition: var(--transition);
             background: var(--white);
+            appearance: none;
+            -webkit-appearance: none;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .form-group input {
+            font-size: 17px; /* Увеличиваем для лучшей читаемости на мобильных */
         }
 
         .btn {
             width: 100%;
             padding: 18px;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
         }
 
         .btn-primary {
@@ -188,15 +267,16 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.35);
         }
 
         .divider {
             display: flex;
             align-items: center;
-            margin: 30px 0;
+            margin: 28px 0;
             color: var(--gray);
             font-size: 14px;
+            width: 100%;
         }
 
         .divider::before,
@@ -209,80 +289,121 @@
 
         .divider span {
             padding: 0 20px;
+            white-space: nowrap;
         }
 
         .role-selector {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 480px) {
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
         }
 
         .role-option {
-            padding: 20px;
+            padding: 24px 20px;
             border: 2px solid var(--gray-light);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .role-option:active {
+            transform: scale(0.98);
         }
 
         .role-option:hover {
             border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.03);
         }
 
         .role-option.selected {
             border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
+            background: rgba(102, 126, 234, 0.08);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
         }
 
         .role-option i {
             font-size: 32px;
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: block;
         }
 
         .role-option span {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .role-option p {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.4;
         }
 
         .register-link {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 32px;
             color: var(--gray);
+            font-size: 15px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
         }
 
         .register-link a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+            transition: var(--transition);
+            padding: 4px 8px;
+            border-radius: 6px;
         }
 
         .register-link a:hover {
             text-decoration: underline;
+            background: rgba(102, 126, 234, 0.08);
         }
 
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
+            left: 20px;
             background: var(--dark);
             color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+            padding: 18px 24px;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
             display: none;
             align-items: center;
-            gap: 12px;
-            z-index: 1000;
+            gap: 14px;
+            z-index: 9999;
             max-width: 400px;
+            margin: 0 auto;
+            word-break: break-word;
+        }
+
+        @media (min-width: 640px) {
+            .notification {
+                left: auto;
+                right: 20px;
+                margin: 0;
+            }
         }
 
         .notification.show {
             display: flex;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .notification.error {
@@ -293,60 +414,173 @@
             background: var(--success);
         }
 
+        .notification.warning {
+            background: var(--warning);
+        }
+
         @keyframes slideIn {
             from {
-                transform: translateX(100%);
+                transform: translateY(-20px);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateY(0);
                 opacity: 1;
             }
         }
 
-        @media (max-width: 900px) {
-            .container {
-                grid-template-columns: 1fr;
-                max-width: 500px;
+        /* Улучшения для мобильных устройств */
+        @media (max-width: 767px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+                min-height: 100vh;
             }
-            
+
+            .container {
+                min-height: auto;
+                border-radius: 16px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+
             .welcome-section {
-                display: none;
+                padding: 32px 24px;
+                order: 2;
+                border-radius: 0 0 16px 16px;
+            }
+
+            .login-section {
+                padding: 32px 24px;
+                order: 1;
+            }
+
+            .logo {
+                margin-bottom: 28px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .logo-text {
+                font-size: 28px;
+            }
+
+            .login-section h2 {
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            .btn {
+                padding: 20px; /* Больше для мобильных */
+                font-size: 18px;
+            }
+
+            .form-group input,
+            .form-group select {
+                padding: 20px 16px;
+                font-size: 18px; /* Увеличиваем для мобильных */
+            }
+
+            .features li {
+                font-size: 15px;
+                margin-bottom: 18px;
             }
         }
 
-        @media (max-width: 480px) {
+        /* Для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .container {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .welcome-section,
             .login-section {
-                padding: 30px;
+                padding: 24px 20px;
             }
-            
+
             .logo {
-                margin-bottom: 30px;
+                gap: 12px;
+                margin-bottom: 24px;
             }
-            
-            .role-selector {
-                grid-template-columns: 1fr;
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 26px;
+            }
+
+            .role-option {
+                padding: 20px 16px;
             }
         }
+
+        /* Предотвращение зума при фокусе на iOS */
+        @media (max-width: 767px) {
+            input,
+            select,
+            textarea {
+                font-size: 16px !important; /* Предотвращает зум на iOS */
+            }
+        }
+
+        /* Улучшения для планшетов */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .container {
+                max-width: 90%;
+                margin: 20px auto;
+            }
+
+            .welcome-section,
+            .login-section {
+                padding: 40px;
+            }
+        }
+
+        /* Улучшение доступности для клавиатуры */
+        .btn:focus-visible,
+        .role-option:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Анимация загрузки */
+        .loading {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .btn.loading .loading {
+            display: inline-block;
+        }
+
+        .btn.loading span {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔧</text></svg>">
 </head>
 <body>
     <div class="container">
-        <!-- Приветственная секция -->
-        <div class="welcome-section">
-            <h1>SiteCore</h1>
-            <p>Профессиональная платформа для разработки сайтов. Создавайте статические и динамические сайты с полной прозрачностью.</p>
-            
-            <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Прозрачное ценообразование</li>
-                <li><i class="fas fa-check-circle"></i> Прямое общение с разработчиками</li>
-                <li><i class="fas fa-check-circle"></i> Отслеживание статуса в реальном времени</li>
-                <li><i class="fas fa-check-circle"></i> Безопасные платежи</li>
-                <li><i class="fas fa-check-circle"></i> Поддержка 24/7</li>
-            </ul>
-        </div>
-
         <!-- Форма входа -->
         <div class="login-section">
             <div class="logo">
@@ -357,29 +591,32 @@
             <h2>Вход в систему</h2>
             
             <div class="role-selector">
-                <div class="role-option selected" data-role="executor">
+                <div class="role-option selected" data-role="executor" tabindex="0" role="button">
                     <i class="fas fa-code"></i>
                     <span>Разработчик</span>
+                    <p>Панель для исполнителей</p>
                 </div>
-                <div class="role-option" data-role="client">
+                <div class="role-option" data-role="client" tabindex="0" role="button">
                     <i class="fas fa-user"></i>
                     <span>Клиент</span>
+                    <p>Панель для заказчиков</p>
                 </div>
             </div>
 
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username">Email</label>
-                    <input type="text" id="username" required placeholder="Введите ваш email">
+                    <input type="email" id="username" required placeholder="Ваш email" autocomplete="email">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Пароль</label>
-                    <input type="password" id="password" required placeholder="Введите ваш пароль">
+                    <input type="password" id="password" required placeholder="Ваш пароль" autocomplete="current-password">
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Войти
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    <div class="loading"></div>
+                    <span><i class="fas fa-sign-in-alt"></i> Войти</span>
                 </button>
             </form>
 
@@ -387,13 +624,27 @@
                 <span>или</span>
             </div>
 
-            <button class="btn" style="background: var(--gray-lighter); color: var(--dark);" onclick="showRegister()">
+            <button class="btn" id="registerBtn" style="background: var(--gray-lighter); color: var(--dark);">
                 <i class="fas fa-user-plus"></i> Зарегистрироваться
             </button>
 
             <div class="register-link">
-                У вас нет аккаунта? <a href="#" onclick="showRegister()">Зарегистрируйтесь</a>
+                Нет аккаунта? <a href="#" id="registerLink">Зарегистрируйтесь</a>
             </div>
+        </div>
+
+        <!-- Приветственная секция -->
+        <div class="welcome-section">
+            <h1>SiteCore</h1>
+            <p>Профессиональная платформа для разработки сайтов. Создавайте статические и динамические сайты с полной прозрачностью процессов.</p>
+            
+            <ul class="features">
+                <li><i class="fas fa-shield-alt"></i> Безопасность и конфиденциальность</li>
+                <li><i class="fas fa-comments"></i> Прямое общение с разработчиками</li>
+                <li><i class="fas fa-chart-line"></i> Отслеживание статуса в реальном времени</li>
+                <li><i class="fas fa-credit-card"></i> Прозрачная система оплаты</li>
+                <li><i class="fas fa-headset"></i> Поддержка 24/7</li>
+            </ul>
         </div>
     </div>
 
@@ -402,53 +653,54 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Регистрация</h3>
-                <button class="modal-close" onclick="hideRegister()">&times;</button>
+                <button class="modal-close" id="closeRegister">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="registerForm">
                     <div class="form-group">
                         <label>Вы регистрируетесь как</label>
                         <div class="role-selector" style="grid-template-columns: 1fr;">
-                            <div class="role-option selected" data-role="client">
+                            <div class="role-option selected" data-role="client" tabindex="0" role="button">
                                 <i class="fas fa-user"></i>
                                 <span>Клиент</span>
-                                <p style="font-size: 14px; color: var(--gray); margin-top: 5px;">Хотите заказать сайт</p>
+                                <p>Хотите заказать разработку сайта</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="reg-name">ФИО *</label>
-                        <input type="text" id="reg-name" required>
+                        <input type="text" id="reg-name" required autocomplete="name">
                     </div>
 
                     <div class="form-group">
                         <label for="reg-email">Email *</label>
-                        <input type="email" id="reg-email" required>
+                        <input type="email" id="reg-email" required autocomplete="email">
                     </div>
 
                     <div class="form-group">
                         <label for="reg-phone">Телефон *</label>
-                        <input type="tel" id="reg-phone" required placeholder="+7 (999) 999-99-99">
+                        <input type="tel" id="reg-phone" required placeholder="+7 (999) 999-99-99" autocomplete="tel">
                     </div>
 
                     <div class="form-group">
-                        <label for="reg-telegram">Telegram username</label>
+                        <label for="reg-telegram">Telegram username (опционально)</label>
                         <input type="text" id="reg-telegram" placeholder="@username">
                     </div>
 
                     <div class="form-group">
                         <label for="reg-password">Пароль *</label>
-                        <input type="password" id="reg-password" required minlength="6">
+                        <input type="password" id="reg-password" required minlength="6" autocomplete="new-password">
                     </div>
 
                     <div class="form-group">
                         <label for="reg-password2">Повторите пароль *</label>
-                        <input type="password" id="reg-password2" required>
+                        <input type="password" id="reg-password2" required autocomplete="new-password">
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-user-plus"></i> Зарегистрироваться
+                    <button type="submit" class="btn btn-primary" id="submitRegister">
+                        <div class="loading"></div>
+                        <span><i class="fas fa-user-plus"></i> Зарегистрироваться</span>
                     </button>
                 </form>
             </div>
@@ -459,23 +711,36 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Предустановленные исполнители
+        // Исполнители (данные не отображаются пользователю)
         const EXECUTORS = [
-            { id: 'executor-1', username: 'alexander@sitecore.ru', password: '789653', name: 'Александр Иванов', role: 'executor' },
-            { id: 'executor-2', username: 'maxim@sitecore.ru', password: '140612', name: 'Максим Петров', role: 'executor' }
+            { 
+                id: 'executor-1', 
+                username: 'alexander@sitecore.ru', 
+                password: '789653', 
+                name: 'Александр Иванов', 
+                role: 'executor',
+                avatar: 'А'
+            },
+            { 
+                id: 'executor-2', 
+                username: 'maxim@sitecore.ru', 
+                password: '140612', 
+                name: 'Максим Петров', 
+                role: 'executor',
+                avatar: 'М'
+            }
         ];
 
         // Инициализация данных
         function initData() {
-            // Проверяем и создаем исполнителей, если их нет
             const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
             const executorsExist = users.some(u => u.role === 'executor');
             
             if (!executorsExist) {
-                localStorage.setItem('sitecore_users', JSON.stringify([...users, ...EXECUTORS]));
+                const allUsers = [...users, ...EXECUTORS];
+                localStorage.setItem('sitecore_users', JSON.stringify(allUsers));
             }
 
-            // Проверяем и создаем базу данных
             if (!localStorage.getItem('sitecore_orders')) {
                 localStorage.setItem('sitecore_orders', JSON.stringify([]));
             }
@@ -484,7 +749,6 @@
                 localStorage.setItem('sitecore_messages', JSON.stringify({}));
             }
 
-            // Инициализируем синхронизацию
             loadSyncData();
         }
 
@@ -514,15 +778,17 @@
                     }
                 }
             } catch (e) {
-                console.log('Ошибка синхронизации:', e);
+                console.error('Ошибка синхронизации:', e);
             }
         }
 
-        // Слияние массивов с уникальными элементами
+        // Слияние массивов
         function mergeArrays(arr1, arr2, key) {
             const map = new Map();
             [...arr1, ...arr2].forEach(item => {
-                map.set(item[key], item);
+                if (item[key]) {
+                    map.set(item[key], item);
+                }
             });
             return Array.from(map.values());
         }
@@ -539,66 +805,95 @@
             localStorage.setItem('sitecore_sync', JSON.stringify(data));
         }
 
+        // DOM элементы
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const registerLink = document.getElementById('registerLink');
+        const roleOptions = document.querySelectorAll('.role-option');
+        const notification = document.getElementById('notification');
+
         // Выбор роли
-        document.querySelectorAll('.role-option').forEach(option => {
+        roleOptions.forEach(option => {
             option.addEventListener('click', function() {
-                if (this.dataset.role === 'executor') {
-                    document.querySelectorAll('.role-option').forEach(o => o.classList.remove('selected'));
+                roleOptions.forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                this.focus();
+            });
+
+            option.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    roleOptions.forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
-                    
-                    // Для исполнителей показываем предустановленные данные
-                    const executors = JSON.parse(localStorage.getItem('sitecore_users') || '[]')
-                        .filter(u => u.role === 'executor');
-                    
-                    if (executors.length > 0) {
-                        const hints = executors.map(e => `${e.username} / ${e.password}`).join('<br>');
-                        showNotification(`Исполнители:<br>${hints}`, 'info', 8000);
-                    }
                 }
             });
         });
 
-        // Форма входа
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // Вход в систему
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
-            const role = document.querySelector('.role-option.selected').dataset.role;
+            const selectedRole = document.querySelector('.role-option.selected').dataset.role;
+            
+            // Валидация
+            if (!username || !password) {
+                showNotification('Заполните все поля', 'error');
+                return;
+            }
+
+            // Показываем индикатор загрузки
+            loginBtn.classList.add('loading');
+            
+            // Имитация задержки сети
+            await new Promise(resolve => setTimeout(resolve, 800));
             
             const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
             const user = users.find(u => 
-                u.username === username && u.password === password && u.role === role
+                u.username === username && u.password === password && u.role === selectedRole
             );
 
             if (user) {
-                // Сохраняем текущего пользователя
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                // Синхронизируем данные
                 syncData();
                 
-                // Перенаправляем
-                if (role === 'executor') {
-                    window.location.href = 'executor.html';
-                } else {
-                    window.location.href = 'client.html';
-                }
+                showNotification('Вход выполнен успешно!', 'success');
+                
+                // Задержка перед редиректом
+                setTimeout(() => {
+                    if (selectedRole === 'executor') {
+                        window.location.href = 'executor.html';
+                    } else {
+                        window.location.href = 'client.html';
+                    }
+                }, 1000);
             } else {
-                showNotification('Неверные учетные данные', 'error');
+                loginBtn.classList.remove('loading');
+                showNotification('Неверные учетные данные. Проверьте email, пароль и выбранную роль', 'error');
             }
         });
 
-        // Форма регистрации
+        // Показать форму регистрации
         function showRegister() {
             document.getElementById('registerModal').style.display = 'flex';
+            document.getElementById('reg-name').focus();
         }
 
         function hideRegister() {
             document.getElementById('registerModal').style.display = 'none';
+            document.getElementById('registerForm').reset();
         }
 
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        registerBtn.addEventListener('click', showRegister);
+        registerLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRegister();
+        });
+
+        // Форма регистрации
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const name = document.getElementById('reg-name').value.trim();
@@ -608,59 +903,101 @@
             const password = document.getElementById('reg-password').value;
             const password2 = document.getElementById('reg-password2').value;
             
+            // Валидация
+            if (!name || !email || !phone || !password || !password2) {
+                showNotification('Заполните все обязательные поля', 'error');
+                return;
+            }
+            
             if (password !== password2) {
                 showNotification('Пароли не совпадают', 'error');
                 return;
             }
             
+            if (password.length < 6) {
+                showNotification('Пароль должен содержать минимум 6 символов', 'error');
+                return;
+            }
+            
+            // Простая валидация email
+            if (!email.includes('@') || !email.includes('.')) {
+                showNotification('Введите корректный email', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitRegister');
+            submitBtn.classList.add('loading');
+            
+            // Имитация задержки сети
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
             const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
             
-            // Проверяем, существует ли пользователь
             if (users.some(u => u.username === email)) {
+                submitBtn.classList.remove('loading');
                 showNotification('Пользователь с таким email уже существует', 'error');
                 return;
             }
             
             // Создаем нового клиента
             const newUser = {
-                id: 'client-' + Date.now(),
+                id: 'client-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
                 username: email,
                 password: password,
                 name: name,
                 phone: phone,
                 telegram: telegram || '',
                 role: 'client',
+                avatar: name.charAt(0).toUpperCase(),
                 createdAt: new Date().toISOString()
             };
             
             users.push(newUser);
             localStorage.setItem('sitecore_users', JSON.stringify(users));
             
-            // Синхронизируем
             syncData();
             
+            submitBtn.classList.remove('loading');
             showNotification('Регистрация успешна! Теперь вы можете войти.', 'success');
+            
+            // Автоматически заполняем форму входа
+            document.getElementById('username').value = email;
+            document.getElementById('password').value = password;
+            document.querySelector('.role-option[data-role="client"]').click();
+            
             hideRegister();
-            document.getElementById('registerForm').reset();
+        });
+
+        // Закрытие модального окна
+        document.getElementById('closeRegister').addEventListener('click', hideRegister);
+
+        // Закрытие по клику вне окна
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideRegister();
+            }
         });
 
         // Уведомления
         function showNotification(message, type = 'info', duration = 4000) {
-            const notification = document.getElementById('notification');
-            notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+            const icon = type === 'error' ? 'exclamation-triangle' : 
+                        type === 'success' ? 'check-circle' : 
+                        'info-circle';
+            
+            notification.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
             notification.className = `notification ${type} show`;
             
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, duration);
+            // Автоматическое скрытие
+            if (duration > 0) {
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, duration);
+            }
         }
 
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', initData);
-
         // Стили для модального окна
-        const style = document.createElement('style');
-        style.textContent = `
+        const modalStyle = document.createElement('style');
+        modalStyle.textContent = `
             .modal {
                 display: none;
                 position: fixed;
@@ -668,9 +1005,9 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(4px);
-                z-index: 1000;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(6px);
+                z-index: 10000;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
@@ -681,21 +1018,26 @@
                 border-radius: var(--radius);
                 width: 100%;
                 max-width: 500px;
-                max-height: 90vh;
+                max-height: 85vh;
                 overflow-y: auto;
-                box-shadow: var(--shadow);
+                box-shadow: var(--shadow-lg);
+                animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
             
             .modal-header {
-                padding: 30px 40px 20px;
+                padding: 28px 32px 20px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 border-bottom: 1px solid var(--gray-light);
+                position: sticky;
+                top: 0;
+                background: var(--white);
+                z-index: 1;
             }
             
             .modal-header h3 {
-                font-size: 24px;
+                font-size: 22px;
                 font-weight: 700;
                 color: var(--dark);
             }
@@ -714,18 +1056,95 @@
                 justify-content: center;
                 border-radius: 50%;
                 transition: var(--transition);
+                flex-shrink: 0;
             }
             
-            .modal-close:hover {
-                background: var(--gray-light);
+            .modal-close:hover,
+            .modal-close:focus {
+                background: var(--gray-lighter);
                 color: var(--dark);
+                outline: none;
             }
             
             .modal-body {
-                padding: 40px;
+                padding: 32px;
+            }
+            
+            @keyframes modalFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px) scale(0.95);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+            
+            @media (max-width: 767px) {
+                .modal {
+                    padding: 16px;
+                }
+                
+                .modal-content {
+                    max-height: 90vh;
+                    border-radius: 16px;
+                }
+                
+                .modal-header {
+                    padding: 24px 24px 16px;
+                }
+                
+                .modal-body {
+                    padding: 24px;
+                }
+                
+                .modal-header h3 {
+                    font-size: 20px;
+                }
+            }
+            
+            @media (max-width: 360px) {
+                .modal-body {
+                    padding: 20px;
+                }
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(modalStyle);
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            initData();
+            
+            // Фокус на поле ввода
+            setTimeout(() => {
+                document.getElementById('username').focus();
+            }, 300);
+            
+            // Сохранение состояния при перезагрузке
+            const savedRole = localStorage.getItem('lastSelectedRole');
+            if (savedRole) {
+                const roleOption = document.querySelector(`.role-option[data-role="${savedRole}"]`);
+                if (roleOption) {
+                    roleOptions.forEach(o => o.classList.remove('selected'));
+                    roleOption.classList.add('selected');
+                }
+            }
+            
+            // Сохраняем выбор роли
+            roleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    localStorage.setItem('lastSelectedRole', this.dataset.role);
+                });
+            });
+        });
+
+        // Обработка клавиатуры
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                hideRegister();
+            }
+        });
     </script>
 </body>
 </html>
