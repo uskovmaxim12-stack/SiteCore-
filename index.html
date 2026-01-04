@@ -2,1149 +2,228 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>SiteCore | Вход</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --primary-light: #8a9ef5;
-            --secondary: #764ba2;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --dark: #1f2937;
-            --gray: #6b7280;
-            --gray-light: #e5e7eb;
-            --gray-lighter: #f9fafb;
-            --white: #ffffff;
-            --radius: 20px;
-            --radius-sm: 12px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0;
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            min-height: 600px;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                grid-template-columns: 1fr 1fr;
-                gap: 0;
-            }
-        }
-
-        .welcome-section {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            color: white;
-            padding: 40px 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            order: 2;
-        }
-
-        @media (min-width: 768px) {
-            .welcome-section {
-                order: 1;
-                padding: 60px;
-            }
-        }
-
-        .welcome-section h1 {
-            font-size: 32px;
-            font-weight: 900;
-            margin-bottom: 16px;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
-        }
-
-        @media (min-width: 768px) {
-            .welcome-section h1 {
-                font-size: 42px;
-            }
-        }
-
-        .welcome-section p {
-            font-size: 16px;
-            opacity: 0.95;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        @media (min-width: 768px) {
-            .welcome-section p {
-                font-size: 18px;
-            }
-        }
-
-        .features {
-            list-style: none;
-            margin-top: 32px;
-        }
-
-        .features li {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-
-        @media (min-width: 768px) {
-            .features li {
-                font-size: 16px;
-            }
-        }
-
-        .features i {
-            font-size: 22px;
-            opacity: 0.9;
-            min-width: 24px;
-        }
-
-        .login-section {
-            padding: 40px 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            order: 1;
-        }
-
-        @media (min-width: 768px) {
-            .login-section {
-                order: 2;
-                padding: 60px;
-            }
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 32px;
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-
-        .logo-text {
-            font-size: 30px;
-            font-weight: 900;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        @media (min-width: 768px) {
-            .logo-text {
-                font-size: 32px;
-            }
-        }
-
-        .login-section h2 {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--dark);
-            margin-bottom: 28px;
-            letter-spacing: -0.3px;
-        }
-
-        @media (min-width: 768px) {
-            .login-section h2 {
-                font-size: 28px;
-            }
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 18px 20px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius-sm);
-            font-size: 16px;
-            transition: var(--transition);
-            background: var(--white);
-            appearance: none;
-            -webkit-appearance: none;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
-        }
-
-        .form-group input {
-            font-size: 17px; /* Увеличиваем для лучшей читаемости на мобильных */
-        }
-
-        .btn {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:active {
-            transform: translateY(1px);
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.35);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 28px 0;
-            color: var(--gray);
-            font-size: 14px;
-            width: 100%;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--gray-light);
-        }
-
-        .divider span {
-            padding: 0 20px;
-            white-space: nowrap;
-        }
-
-        .role-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        @media (max-width: 480px) {
-            .role-selector {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .role-option {
-            padding: 24px 20px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius-sm);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .role-option:active {
-            transform: scale(0.98);
-        }
-
-        .role-option:hover {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.03);
-        }
-
-        .role-option.selected {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.08);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
-        }
-
-        .role-option i {
-            font-size: 32px;
-            color: var(--primary);
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .role-option span {
-            font-weight: 700;
-            font-size: 16px;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .role-option p {
-            font-size: 13px;
-            color: var(--gray);
-            line-height: 1.4;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 32px;
-            color: var(--gray);
-            font-size: 15px;
-            padding-top: 20px;
-            border-top: 1px solid var(--gray-light);
-        }
-
-        .register-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-            background: rgba(102, 126, 234, 0.08);
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            left: 20px;
-            background: var(--dark);
-            color: white;
-            padding: 18px 24px;
-            border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-lg);
-            display: none;
-            align-items: center;
-            gap: 14px;
-            z-index: 9999;
-            max-width: 400px;
-            margin: 0 auto;
-            word-break: break-word;
-        }
-
-        @media (min-width: 640px) {
-            .notification {
-                left: auto;
-                right: 20px;
-                margin: 0;
-            }
-        }
-
-        .notification.show {
-            display: flex;
-            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .notification.error {
-            background: var(--danger);
-        }
-
-        .notification.success {
-            background: var(--success);
-        }
-
-        .notification.warning {
-            background: var(--warning);
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Улучшения для мобильных устройств */
-        @media (max-width: 767px) {
-            body {
-                padding: 12px;
-                align-items: flex-start;
-                min-height: 100vh;
-            }
-
-            .container {
-                min-height: auto;
-                border-radius: 16px;
-                margin-top: 20px;
-                margin-bottom: 20px;
-            }
-
-            .welcome-section {
-                padding: 32px 24px;
-                order: 2;
-                border-radius: 0 0 16px 16px;
-            }
-
-            .login-section {
-                padding: 32px 24px;
-                order: 1;
-            }
-
-            .logo {
-                margin-bottom: 28px;
-            }
-
-            .logo-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 18px;
-            }
-
-            .logo-text {
-                font-size: 28px;
-            }
-
-            .login-section h2 {
-                font-size: 24px;
-                margin-bottom: 24px;
-            }
-
-            .btn {
-                padding: 20px; /* Больше для мобильных */
-                font-size: 18px;
-            }
-
-            .form-group input,
-            .form-group select {
-                padding: 20px 16px;
-                font-size: 18px; /* Увеличиваем для мобильных */
-            }
-
-            .features li {
-                font-size: 15px;
-                margin-bottom: 18px;
-            }
-        }
-
-        /* Для очень маленьких экранов */
-        @media (max-width: 360px) {
-            .container {
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-
-            .welcome-section,
-            .login-section {
-                padding: 24px 20px;
-            }
-
-            .logo {
-                gap: 12px;
-                margin-bottom: 24px;
-            }
-
-            .logo-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .logo-text {
-                font-size: 26px;
-            }
-
-            .role-option {
-                padding: 20px 16px;
-            }
-        }
-
-        /* Предотвращение зума при фокусе на iOS */
-        @media (max-width: 767px) {
-            input,
-            select,
-            textarea {
-                font-size: 16px !important; /* Предотвращает зум на iOS */
-            }
-        }
-
-        /* Улучшения для планшетов */
-        @media (min-width: 768px) and (max-width: 1024px) {
-            .container {
-                max-width: 90%;
-                margin: 20px auto;
-            }
-
-            .welcome-section,
-            .login-section {
-                padding: 40px;
-            }
-        }
-
-        /* Улучшение доступности для клавиатуры */
-        .btn:focus-visible,
-        .role-option:focus-visible,
-        input:focus-visible,
-        select:focus-visible {
-            outline: 3px solid var(--primary);
-            outline-offset: 2px;
-        }
-
-        /* Анимация загрузки */
-        .loading {
-            display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        .btn.loading .loading {
-            display: inline-block;
-        }
-
-        .btn.loading span {
-            display: none;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteCore | Вход в систему</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔧</text></svg>">
 </head>
-<body>
-    <div class="container">
-        <!-- Форма входа -->
-        <div class="login-section">
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-header">
             <div class="logo">
-                <div class="logo-icon">SC</div>
-                <div class="logo-text">SiteCore</div>
+                <i class="fas fa-code"></i>
+                <h1>SiteCore</h1>
             </div>
+            <p class="tagline">Профессиональная платформа для разработки сайтов</p>
+        </div>
 
-            <h2>Вход в систему</h2>
-            
-            <div class="role-selector">
-                <div class="role-option selected" data-role="executor" tabindex="0" role="button">
-                    <i class="fas fa-code"></i>
-                    <span>Разработчик</span>
-                    <p>Панель для исполнителей</p>
-                </div>
-                <div class="role-option" data-role="client" tabindex="0" role="button">
-                    <i class="fas fa-user"></i>
-                    <span>Клиент</span>
-                    <p>Панель для заказчиков</p>
-                </div>
-            </div>
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Вход</button>
+            <button class="auth-tab" data-tab="register">Регистрация клиента</button>
+            <button class="auth-tab" data-tab="executor-login">Вход для разработчиков</button>
+        </div>
 
+        <!-- Форма входа -->
+        <div class="auth-form active" id="login-form">
+            <h2>Вход для клиентов</h2>
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="username">Email</label>
-                    <input type="email" id="username" required placeholder="Ваш email" autocomplete="email">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
                 </div>
-
                 <div class="form-group">
-                    <label for="password">Пароль</label>
-                    <input type="password" id="password" required placeholder="Ваш пароль" autocomplete="current-password">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
                 </div>
-
-                <button type="submit" class="btn btn-primary" id="loginBtn">
-                    <div class="loading"></div>
-                    <span><i class="fas fa-sign-in-alt"></i> Войти</span>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Войти
                 </button>
             </form>
-
-            <div class="divider">
-                <span>или</span>
-            </div>
-
-            <button class="btn" id="registerBtn" style="background: var(--gray-lighter); color: var(--dark);">
-                <i class="fas fa-user-plus"></i> Зарегистрироваться
-            </button>
-
-            <div class="register-link">
-                Нет аккаунта? <a href="#" id="registerLink">Зарегистрируйтесь</a>
-            </div>
         </div>
 
-        <!-- Приветственная секция -->
-        <div class="welcome-section">
-            <h1>SiteCore</h1>
-            <p>Профессиональная платформа для разработки сайтов. Создавайте статические и динамические сайты с полной прозрачностью процессов.</p>
-            
-            <ul class="features">
-                <li><i class="fas fa-shield-alt"></i> Безопасность и конфиденциальность</li>
-                <li><i class="fas fa-comments"></i> Прямое общение с разработчиками</li>
-                <li><i class="fas fa-chart-line"></i> Отслеживание статуса в реальном времени</li>
-                <li><i class="fas fa-credit-card"></i> Прозрачная система оплаты</li>
-                <li><i class="fas fa-headset"></i> Поддержка 24/7</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Форма регистрации -->
-    <div class="modal" id="registerModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Регистрация</h3>
-                <button class="modal-close" id="closeRegister">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="registerForm">
+        <!-- Форма регистрации -->
+        <div class="auth-form" id="register-form">
+            <h2>Регистрация клиента</h2>
+            <form id="registerForm">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Вы регистрируетесь как</label>
-                        <div class="role-selector" style="grid-template-columns: 1fr;">
-                            <div class="role-option selected" data-role="client" tabindex="0" role="button">
-                                <i class="fas fa-user"></i>
-                                <span>Клиент</span>
-                                <p>Хотите заказать разработку сайта</p>
-                            </div>
-                        </div>
+                        <label for="reg-name">Имя и фамилия *</label>
+                        <input type="text" id="reg-name" required>
                     </div>
-
-                    <div class="form-group">
-                        <label for="reg-name">ФИО *</label>
-                        <input type="text" id="reg-name" required autocomplete="name">
-                    </div>
-
                     <div class="form-group">
                         <label for="reg-email">Email *</label>
-                        <input type="email" id="reg-email" required autocomplete="email">
+                        <input type="email" id="reg-email" required>
                     </div>
-
+                </div>
+                
+                <div class="form-row">
                     <div class="form-group">
                         <label for="reg-phone">Телефон *</label>
-                        <input type="tel" id="reg-phone" required placeholder="+7 (999) 999-99-99" autocomplete="tel">
+                        <input type="tel" id="reg-phone" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="reg-telegram">Telegram username (опционально)</label>
+                        <label for="reg-telegram">Telegram username</label>
                         <input type="text" id="reg-telegram" placeholder="@username">
                     </div>
+                </div>
 
+                <div class="form-row">
                     <div class="form-group">
                         <label for="reg-password">Пароль *</label>
-                        <input type="password" id="reg-password" required minlength="6" autocomplete="new-password">
+                        <input type="password" id="reg-password" required minlength="6">
                     </div>
-
                     <div class="form-group">
-                        <label for="reg-password2">Повторите пароль *</label>
-                        <input type="password" id="reg-password2" required autocomplete="new-password">
+                        <label for="reg-password-confirm">Подтверждение пароля *</label>
+                        <input type="password" id="reg-password-confirm" required>
                     </div>
+                </div>
 
-                    <button type="submit" class="btn btn-primary" id="submitRegister">
-                        <div class="loading"></div>
-                        <span><i class="fas fa-user-plus"></i> Зарегистрироваться</span>
-                    </button>
-                </form>
-            </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-user-plus"></i> Зарегистрироваться
+                </button>
+            </form>
+        </div>
+
+        <!-- Вход для разработчиков -->
+        <div class="auth-form" id="executor-login-form">
+            <h2>Вход для разработчиков SiteCore</h2>
+            <form id="executorLoginForm">
+                <div class="form-group">
+                    <label for="executor-name">Имя пользователя</label>
+                    <input type="text" id="executor-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="executor-password">Пароль</label>
+                    <input type="password" id="executor-password" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-code"></i> Войти в панель разработчика
+                </button>
+            </form>
+        </div>
+
+        <div class="auth-footer">
+            <p>© 2024 SiteCore. Все права защищены.</p>
+            <p class="hint">Для тестирования системы используйте:<br>
+                <strong>Клиент:</strong> test@example.com / password123<br>
+                <strong>Разработчик:</strong> Александр / 789653 или Максим / 140612
+            </p>
         </div>
     </div>
 
-    <!-- Уведомление -->
     <div class="notification" id="notification"></div>
 
+    <script src="auth.js"></script>
     <script>
-        // Исполнители (данные не отображаются пользователю)
-        const EXECUTORS = [
-            { 
-                id: 'executor-1', 
-                username: 'alexander@sitecore.ru', 
-                password: '789653', 
-                name: 'Александр Иванов', 
-                role: 'executor',
-                avatar: 'А'
-            },
-            { 
-                id: 'executor-2', 
-                username: 'maxim@sitecore.ru', 
-                password: '140612', 
-                name: 'Максим Петров', 
-                role: 'executor',
-                avatar: 'М'
-            }
-        ];
-
-        // Инициализация данных
-        function initData() {
-            const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-            const executorsExist = users.some(u => u.role === 'executor');
-            
-            if (!executorsExist) {
-                const allUsers = [...users, ...EXECUTORS];
-                localStorage.setItem('sitecore_users', JSON.stringify(allUsers));
-            }
-
-            if (!localStorage.getItem('sitecore_orders')) {
-                localStorage.setItem('sitecore_orders', JSON.stringify([]));
-            }
-
-            if (!localStorage.getItem('sitecore_messages')) {
-                localStorage.setItem('sitecore_messages', JSON.stringify({}));
-            }
-
-            loadSyncData();
-        }
-
-        // Загрузка синхронизированных данных
-        function loadSyncData() {
-            try {
-                const syncData = localStorage.getItem('sitecore_sync');
-                if (syncData) {
-                    const data = JSON.parse(syncData);
-                    
-                    if (data.orders) {
-                        const localOrders = JSON.parse(localStorage.getItem('sitecore_orders') || '[]');
-                        const mergedOrders = mergeArrays(localOrders, data.orders, 'id');
-                        localStorage.setItem('sitecore_orders', JSON.stringify(mergedOrders));
-                    }
-
-                    if (data.users) {
-                        const localUsers = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                        const mergedUsers = mergeArrays(localUsers, data.users, 'id');
-                        localStorage.setItem('sitecore_users', JSON.stringify(mergedUsers));
-                    }
-
-                    if (data.messages) {
-                        const localMessages = JSON.parse(localStorage.getItem('sitecore_messages') || '{}');
-                        const mergedMessages = { ...localMessages, ...data.messages };
-                        localStorage.setItem('sitecore_messages', JSON.stringify(mergedMessages));
-                    }
-                }
-            } catch (e) {
-                console.error('Ошибка синхронизации:', e);
-            }
-        }
-
-        // Слияние массивов
-        function mergeArrays(arr1, arr2, key) {
-            const map = new Map();
-            [...arr1, ...arr2].forEach(item => {
-                if (item[key]) {
-                    map.set(item[key], item);
-                }
-            });
-            return Array.from(map.values());
-        }
-
-        // Синхронизация данных
-        function syncData() {
-            const data = {
-                orders: JSON.parse(localStorage.getItem('sitecore_orders') || '[]'),
-                users: JSON.parse(localStorage.getItem('sitecore_users') || '[]'),
-                messages: JSON.parse(localStorage.getItem('sitecore_messages') || '{}'),
-                timestamp: new Date().toISOString()
-            };
-            
-            localStorage.setItem('sitecore_sync', JSON.stringify(data));
-        }
-
-        // DOM элементы
-        const loginForm = document.getElementById('loginForm');
-        const loginBtn = document.getElementById('loginBtn');
-        const registerBtn = document.getElementById('registerBtn');
-        const registerLink = document.getElementById('registerLink');
-        const roleOptions = document.querySelectorAll('.role-option');
-        const notification = document.getElementById('notification');
-
-        // Выбор роли
-        roleOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                roleOptions.forEach(o => o.classList.remove('selected'));
-                this.classList.add('selected');
-                this.focus();
-            });
-
-            option.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    roleOptions.forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                }
+        // Переключение между формами
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Обновляем активную вкладку
+                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Показываем соответствующую форму
+                document.querySelectorAll('.auth-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                
+                const tabId = this.dataset.tab;
+                document.getElementById(`${tabId}-form`).classList.add('active');
             });
         });
 
-        // Вход в систему
-        loginForm.addEventListener('submit', async function(e) {
+        // Обработка входа клиента
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const selectedRole = document.querySelector('.role-option.selected').dataset.role;
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
             
-            // Валидация
-            if (!username || !password) {
-                showNotification('Заполните все поля', 'error');
-                return;
-            }
-
-            // Показываем индикатор загрузки
-            loginBtn.classList.add('loading');
+            const success = auth.login(email, password, 'client');
             
-            // Имитация задержки сети
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-            const user = users.find(u => 
-                u.username === username && u.password === password && u.role === selectedRole
-            );
-
-            if (user) {
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                syncData();
-                
+            if (success) {
                 showNotification('Вход выполнен успешно!', 'success');
-                
-                // Задержка перед редиректом
                 setTimeout(() => {
-                    if (selectedRole === 'executor') {
-                        window.location.href = 'executor.html';
-                    } else {
-                        window.location.href = 'client.html';
-                    }
+                    window.location.href = 'client.html';
                 }, 1000);
             } else {
-                loginBtn.classList.remove('loading');
-                showNotification('Неверные учетные данные. Проверьте email, пароль и выбранную роль', 'error');
+                showNotification('Неверный email или пароль', 'error');
             }
         });
 
-        // Показать форму регистрации
-        function showRegister() {
-            document.getElementById('registerModal').style.display = 'flex';
-            document.getElementById('reg-name').focus();
-        }
-
-        function hideRegister() {
-            document.getElementById('registerModal').style.display = 'none';
-            document.getElementById('registerForm').reset();
-        }
-
-        registerBtn.addEventListener('click', showRegister);
-        registerLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            showRegister();
-        });
-
-        // Форма регистрации
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        // Обработка регистрации клиента
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('reg-name').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const phone = document.getElementById('reg-phone').value.trim();
-            const telegram = document.getElementById('reg-telegram').value.trim();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const telegram = document.getElementById('reg-telegram').value;
             const password = document.getElementById('reg-password').value;
-            const password2 = document.getElementById('reg-password2').value;
+            const confirmPassword = document.getElementById('reg-password-confirm').value;
             
-            // Валидация
-            if (!name || !email || !phone || !password || !password2) {
-                showNotification('Заполните все обязательные поля', 'error');
-                return;
-            }
-            
-            if (password !== password2) {
+            if (password !== confirmPassword) {
                 showNotification('Пароли не совпадают', 'error');
                 return;
             }
             
             if (password.length < 6) {
-                showNotification('Пароль должен содержать минимум 6 символов', 'error');
+                showNotification('Пароль должен быть не менее 6 символов', 'error');
                 return;
             }
             
-            // Простая валидация email
-            if (!email.includes('@') || !email.includes('.')) {
-                showNotification('Введите корректный email', 'error');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitRegister');
-            submitBtn.classList.add('loading');
-            
-            // Имитация задержки сети
-            await new Promise(resolve => setTimeout(resolve, 800));
-            
-            const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-            
-            if (users.some(u => u.username === email)) {
-                submitBtn.classList.remove('loading');
-                showNotification('Пользователь с таким email уже существует', 'error');
-                return;
-            }
-            
-            // Создаем нового клиента
-            const newUser = {
-                id: 'client-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-                username: email,
-                password: password,
-                name: name,
-                phone: phone,
-                telegram: telegram || '',
-                role: 'client',
-                avatar: name.charAt(0).toUpperCase(),
-                createdAt: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('sitecore_users', JSON.stringify(users));
-            
-            syncData();
-            
-            submitBtn.classList.remove('loading');
-            showNotification('Регистрация успешна! Теперь вы можете войти.', 'success');
-            
-            // Автоматически заполняем форму входа
-            document.getElementById('username').value = email;
-            document.getElementById('password').value = password;
-            document.querySelector('.role-option[data-role="client"]').click();
-            
-            hideRegister();
-        });
-
-        // Закрытие модального окна
-        document.getElementById('closeRegister').addEventListener('click', hideRegister);
-
-        // Закрытие по клику вне окна
-        document.getElementById('registerModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideRegister();
-            }
-        });
-
-        // Уведомления
-        function showNotification(message, type = 'info', duration = 4000) {
-            const icon = type === 'error' ? 'exclamation-triangle' : 
-                        type === 'success' ? 'check-circle' : 
-                        'info-circle';
-            
-            notification.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
-            notification.className = `notification ${type} show`;
-            
-            // Автоматическое скрытие
-            if (duration > 0) {
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, duration);
-            }
-        }
-
-        // Стили для модального окна
-        const modalStyle = document.createElement('style');
-        modalStyle.textContent = `
-            .modal {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(6px);
-                z-index: 10000;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-            }
-            
-            .modal-content {
-                background: var(--white);
-                border-radius: var(--radius);
-                width: 100%;
-                max-width: 500px;
-                max-height: 85vh;
-                overflow-y: auto;
-                box-shadow: var(--shadow-lg);
-                animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            
-            .modal-header {
-                padding: 28px 32px 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid var(--gray-light);
-                position: sticky;
-                top: 0;
-                background: var(--white);
-                z-index: 1;
-            }
-            
-            .modal-header h3 {
-                font-size: 22px;
-                font-weight: 700;
-                color: var(--dark);
-            }
-            
-            .modal-close {
-                background: none;
-                border: none;
-                font-size: 28px;
-                color: var(--gray);
-                cursor: pointer;
-                padding: 0;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                transition: var(--transition);
-                flex-shrink: 0;
-            }
-            
-            .modal-close:hover,
-            .modal-close:focus {
-                background: var(--gray-lighter);
-                color: var(--dark);
-                outline: none;
-            }
-            
-            .modal-body {
-                padding: 32px;
-            }
-            
-            @keyframes modalFadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-20px) scale(0.95);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-            }
-            
-            @media (max-width: 767px) {
-                .modal {
-                    padding: 16px;
-                }
-                
-                .modal-content {
-                    max-height: 90vh;
-                    border-radius: 16px;
-                }
-                
-                .modal-header {
-                    padding: 24px 24px 16px;
-                }
-                
-                .modal-body {
-                    padding: 24px;
-                }
-                
-                .modal-header h3 {
-                    font-size: 20px;
-                }
-            }
-            
-            @media (max-width: 360px) {
-                .modal-body {
-                    padding: 20px;
-                }
-            }
-        `;
-        document.head.appendChild(modalStyle);
-
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', function() {
-            initData();
-            
-            // Фокус на поле ввода
-            setTimeout(() => {
-                document.getElementById('username').focus();
-            }, 300);
-            
-            // Сохранение состояния при перезагрузке
-            const savedRole = localStorage.getItem('lastSelectedRole');
-            if (savedRole) {
-                const roleOption = document.querySelector(`.role-option[data-role="${savedRole}"]`);
-                if (roleOption) {
-                    roleOptions.forEach(o => o.classList.remove('selected'));
-                    roleOption.classList.add('selected');
-                }
-            }
-            
-            // Сохраняем выбор роли
-            roleOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    localStorage.setItem('lastSelectedRole', this.dataset.role);
-                });
+            const success = auth.registerClient({
+                name,
+                email,
+                phone,
+                telegram,
+                password
             });
-        });
-
-        // Обработка клавиатуры
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                hideRegister();
+            
+            if (success) {
+                showNotification('Регистрация успешна! Теперь войдите в систему.', 'success');
+                // Переключаем на вкладку входа
+                document.querySelector('.auth-tab[data-tab="login"]').click();
+                document.getElementById('login-email').value = email;
+                document.getElementById('login-password').value = password;
+            } else {
+                showNotification('Пользователь с таким email уже существует', 'error');
             }
         });
+
+        // Обработка входа разработчика
+        document.getElementById('executorLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('executor-name').value;
+            const password = document.getElementById('executor-password').value;
+            
+            const success = auth.login(username, password, 'executor');
+            
+            if (success) {
+                showNotification('Вход выполнен успешно!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'executor.html';
+                }, 1000);
+            } else {
+                showNotification('Неверное имя пользователя или пароль', 'error');
+            }
+        });
+
+        // Показать уведомление
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            setTimeout(() => {
+                notification.classList.remove('active');
+            }, 3000);
+            
+            setTimeout(() => {
+                notification.classList.add('active');
+            }, 10);
+        }
     </script>
 </body>
 </html>
