@@ -4,226 +4,506 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiteCore | Вход в систему</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --primary-light: #8a9ef5;
+            --secondary: #764ba2;
+            --dark: #1f2937;
+            --dark-light: #374151;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --gray-lighter: #f9fafb;
+            --white: #ffffff;
+            --radius: 20px;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-text {
+            margin-bottom: 40px;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .welcome-text p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .role-selector {
+            display: flex;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 30px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .role-tab.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--gray-lighter);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+        }
+
+        .links {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .link {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .link:hover {
+            color: var(--primary);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Синхронизация */
+        .sync-section {
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .sync-section h3 {
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .sync-section p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+            
+            .logo-text {
+                font-size: 28px;
+            }
+            
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+            
+            .role-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
-<body class="auth-page">
-    <div class="auth-container">
-        <div class="auth-header">
+<body>
+    <div class="container">
+        <div class="login-card">
             <div class="logo">
-                <i class="fas fa-code"></i>
-                <h1>SiteCore</h1>
+                <div class="logo-icon">SC</div>
+                <div class="logo-text">SiteCore</div>
             </div>
-            <p class="tagline">Профессиональная платформа для разработки сайтов</p>
-        </div>
-
-        <div class="auth-tabs">
-            <button class="auth-tab active" data-tab="login">Вход</button>
-            <button class="auth-tab" data-tab="register">Регистрация клиента</button>
-            <button class="auth-tab" data-tab="executor-login">Вход для разработчиков</button>
-        </div>
-
-        <!-- Форма входа -->
-        <div class="auth-form active" id="login-form">
-            <h2>Вход для клиентов</h2>
-            <form id="loginForm">
+            
+            <div class="welcome-text">
+                <h1>Добро пожаловать!</h1>
+                <p>Платформа для заказа сайтов с полной прозрачностью и удобным общением</p>
+            </div>
+            
+            <div class="role-selector">
+                <button class="role-tab active" data-role="client">Клиент</button>
+                <button class="role-tab" data-role="executor">Разработчик</button>
+            </div>
+            
+            <!-- Форма клиента -->
+            <form id="client-form" class="login-form">
                 <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Пароль</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Войти
-                </button>
-            </form>
-        </div>
-
-        <!-- Форма регистрации -->
-        <div class="auth-form" id="register-form">
-            <h2>Регистрация клиента</h2>
-            <form id="registerForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reg-name">Имя и фамилия *</label>
-                        <input type="text" id="reg-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-email">Email *</label>
-                        <input type="email" id="reg-email" required>
-                    </div>
+                    <label for="client-email">Email</label>
+                    <input type="email" id="client-email" placeholder="your@email.com" required>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reg-phone">Телефон *</label>
-                        <input type="tel" id="reg-phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-telegram">Telegram username</label>
-                        <input type="text" id="reg-telegram" placeholder="@username">
-                    </div>
+                <div class="form-group">
+                    <label for="client-password">Пароль</label>
+                    <input type="password" id="client-password" placeholder="••••••••" required>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="reg-password">Пароль *</label>
-                        <input type="password" id="reg-password" required minlength="6">
-                    </div>
-                    <div class="form-group">
-                        <label for="reg-password-confirm">Подтверждение пароля *</label>
-                        <input type="password" id="reg-password-confirm" required>
-                    </div>
+                
+                <div class="links">
+                    <a href="#" class="link" id="show-register">Создать аккаунт</a>
                 </div>
-
-                <button type="submit" class="btn-primary">
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Войти как клиент
+                </button>
+            </form>
+            
+            <!-- Форма регистрации -->
+            <form id="register-form" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label for="register-name">Имя</label>
+                    <input type="text" id="register-name" placeholder="Иван Иванов" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="your@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-phone">Телефон</label>
+                    <input type="tel" id="register-phone" placeholder="+7 (999) 123-45-67" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-telegram">Telegram</label>
+                    <input type="text" id="register-telegram" placeholder="@username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" placeholder="••••••••" required minlength="6">
+                </div>
+                
+                <div class="links">
+                    <a href="#" class="link" id="show-login">Уже есть аккаунт?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-user-plus"></i> Зарегистрироваться
                 </button>
             </form>
-        </div>
-
-        <!-- Вход для разработчиков -->
-        <div class="auth-form" id="executor-login-form">
-            <h2>Вход для разработчиков SiteCore</h2>
-            <form id="executorLoginForm">
+            
+            <!-- Форма разработчика -->
+            <form id="executor-form" class="login-form" style="display: none;">
                 <div class="form-group">
-                    <label for="executor-name">Имя пользователя</label>
-                    <input type="text" id="executor-name" required>
+                    <label for="executor-password">Пароль разработчика</label>
+                    <input type="password" id="executor-password" placeholder="Введите пароль" required>
+                    <small style="color: var(--gray); margin-top: 5px; display: block;">
+                        Используйте пароль, выданный администратором
+                    </small>
                 </div>
-                <div class="form-group">
-                    <label for="executor-password">Пароль</label>
-                    <input type="password" id="executor-password" required>
-                </div>
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-code"></i> Войти в панель разработчика
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-code"></i> Войти как разработчик
                 </button>
             </form>
-        </div>
-
-        <div class="auth-footer">
-            <p>© 2024 SiteCore. Все права защищены.</p>
-            <p class="hint">Для тестирования системы используйте:<br>
-                <strong>Клиент:</strong> test@example.com / password123<br>
-                <strong>Разработчик:</strong> Александр / 789653 или Максим / 140612
-            </p>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <div class="sync-section">
+                <h3>Синхронизация данных</h3>
+                <p>Для синхронизации между устройствами укажите GitHub токен (опционально)</p>
+                <input type="text" id="github-token" placeholder="ghp_..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--gray-light); border-radius: 8px;">
+                <button onclick="saveToken()" class="btn-secondary" style="width: 100%; padding: 12px;">Сохранить токен</button>
+            </div>
         </div>
     </div>
 
-    <div class="notification" id="notification"></div>
-
-    <script src="auth.js"></script>
+    <script src="database.js"></script>
     <script>
         // Переключение между формами
-        document.querySelectorAll('.auth-tab').forEach(tab => {
+        document.querySelectorAll('.role-tab').forEach(tab => {
             tab.addEventListener('click', function() {
-                // Обновляем активную вкладку
-                document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Показываем соответствующую форму
-                document.querySelectorAll('.auth-form').forEach(form => {
-                    form.classList.remove('active');
-                });
+                const role = this.dataset.role;
+                document.getElementById('client-form').style.display = 'none';
+                document.getElementById('register-form').style.display = 'none';
+                document.getElementById('executor-form').style.display = 'none';
                 
-                const tabId = this.dataset.tab;
-                document.getElementById(`${tabId}-form`).classList.add('active');
+                if (role === 'client') {
+                    document.getElementById('client-form').style.display = 'flex';
+                } else if (role === 'executor') {
+                    document.getElementById('executor-form').style.display = 'flex';
+                }
             });
         });
 
-        // Обработка входа клиента
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // Переключение между логином и регистрацией
+        document.getElementById('show-register').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('client-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'flex';
+        });
+
+        document.getElementById('show-login').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('client-form').style.display = 'flex';
+        });
+
+        // Сохранение токена
+        function saveToken() {
+            const token = document.getElementById('github-token').value.trim();
+            if (token) {
+                localStorage.setItem('github_token', token);
+                alert('Токен сохранен!');
+                SiteCoreDB.syncToGist();
+            }
+        }
+
+        // Вход клиента
+        document.getElementById('client-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const email = document.getElementById('client-email').value;
+            const password = document.getElementById('client-password').value;
             
-            const success = auth.login(email, password, 'client');
-            
-            if (success) {
-                showNotification('Вход выполнен успешно!', 'success');
-                setTimeout(() => {
+            try {
+                const client = await SiteCoreDB.authClient(email, password);
+                if (client) {
+                    localStorage.setItem('current_user', JSON.stringify({
+                        ...client,
+                        type: 'client'
+                    }));
                     window.location.href = 'client.html';
-                }, 1000);
-            } else {
-                showNotification('Неверный email или пароль', 'error');
+                } else {
+                    showError('Неверный email или пароль');
+                }
+            } catch (error) {
+                showError(error.message);
             }
         });
 
-        // Обработка регистрации клиента
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // Регистрация клиента
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
-            const phone = document.getElementById('reg-phone').value;
-            const telegram = document.getElementById('reg-telegram').value;
-            const password = document.getElementById('reg-password').value;
-            const confirmPassword = document.getElementById('reg-password-confirm').value;
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const phone = document.getElementById('register-phone').value;
+            const telegram = document.getElementById('register-telegram').value;
+            const password = document.getElementById('register-password').value;
             
-            if (password !== confirmPassword) {
-                showNotification('Пароли не совпадают', 'error');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showNotification('Пароль должен быть не менее 6 символов', 'error');
-                return;
-            }
-            
-            const success = auth.registerClient({
-                name,
-                email,
-                phone,
-                telegram,
-                password
-            });
-            
-            if (success) {
-                showNotification('Регистрация успешна! Теперь войдите в систему.', 'success');
-                // Переключаем на вкладку входа
-                document.querySelector('.auth-tab[data-tab="login"]').click();
-                document.getElementById('login-email').value = email;
-                document.getElementById('login-password').value = password;
-            } else {
-                showNotification('Пользователь с таким email уже существует', 'error');
+            try {
+                const client = await SiteCoreDB.registerClient(email, password, name, phone, telegram);
+                localStorage.setItem('current_user', JSON.stringify({
+                    ...client,
+                    type: 'client'
+                }));
+                window.location.href = 'client.html';
+            } catch (error) {
+                showError(error.message);
             }
         });
 
-        // Обработка входа разработчика
-        document.getElementById('executorLoginForm').addEventListener('submit', function(e) {
+        // Вход разработчика
+        document.getElementById('executor-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const username = document.getElementById('executor-name').value;
             const password = document.getElementById('executor-password').value;
             
-            const success = auth.login(username, password, 'executor');
-            
-            if (success) {
-                showNotification('Вход выполнен успешно!', 'success');
-                setTimeout(() => {
+            try {
+                const executor = await SiteCoreDB.authExecutor(password);
+                if (executor) {
+                    localStorage.setItem('current_user', JSON.stringify({
+                        ...executor,
+                        type: 'executor'
+                    }));
                     window.location.href = 'executor.html';
-                }, 1000);
-            } else {
-                showNotification('Неверное имя пользователя или пароль', 'error');
+                } else {
+                    showError('Неверный пароль');
+                }
+            } catch (error) {
+                showError(error.message);
             }
         });
 
-        // Показать уведомление
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = `notification ${type}`;
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
             
             setTimeout(() => {
-                notification.classList.remove('active');
-            }, 3000);
-            
-            setTimeout(() => {
-                notification.classList.add('active');
-            }, 10);
+                errorDiv.classList.remove('show');
+            }, 5000);
         }
+
+        // Загружаем токен при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('github_token');
+            if (token) {
+                document.getElementById('github-token').value = token;
+            }
+        });
     </script>
 </body>
 </html>
