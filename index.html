@@ -10,20 +10,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         :root {
             --primary: #667eea;
             --primary-dark: #5a67d8;
-            --primary-light: #8a9ef5;
             --secondary: #764ba2;
             --success: #10b981;
-            --warning: #f59e0b;
             --danger: #ef4444;
-            --info: #3b82f6;
+            --warning: #f59e0b;
             --dark: #1f2937;
-            --dark-light: #374151;
             --gray: #6b7280;
             --gray-light: #e5e7eb;
             --gray-lighter: #f9fafb;
@@ -46,7 +43,7 @@
 
         .login-container {
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
         }
 
         .login-card {
@@ -208,7 +205,6 @@
             display: block;
         }
 
-        /* Раздел разработчиков */
         .developer-login {
             display: none;
         }
@@ -240,7 +236,6 @@
             cursor: pointer;
         }
 
-        /* Уведомление */
         .notification {
             position: fixed;
             bottom: 30px;
@@ -281,29 +276,13 @@
             }
         }
 
-        /* Адаптивность */
         @media (max-width: 480px) {
             .login-card {
                 padding: 30px 20px;
             }
             
-            .logo {
-                flex-direction: column;
-                gap: 8px;
-            }
-            
             .logo-text {
                 font-size: 24px;
-            }
-        }
-
-        @media (max-height: 700px) {
-            body {
-                padding: 10px;
-            }
-            
-            .login-card {
-                padding: 30px 20px;
             }
         }
     </style>
@@ -316,7 +295,7 @@
                 <div class="logo-text">SiteCore</div>
             </div>
             
-            <p style="color: var(--gray); margin-bottom: 30px;">Платформа для заказа сайтов и управления проектами</p>
+            <p style="color: var(--gray); margin-bottom: 30px;">Платформа для заказа и разработки сайтов</p>
             
             <div class="login-tabs">
                 <button class="login-tab active" onclick="showLoginTab('client')">
@@ -357,26 +336,16 @@
                 </button>
             </form>
             
-            <!-- Форма регистрации -->
+            <!-- Форма регистрации клиента -->
             <form class="client-login" id="client-register-form" onsubmit="return registerClient(event)" style="display: none;">
                 <div class="form-group">
-                    <label for="register-name">Имя и фамилия</label>
+                    <label for="register-name">Имя</label>
                     <input type="text" class="form-control" id="register-name" placeholder="Иван Иванов" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="register-email">Email</label>
                     <input type="email" class="form-control" id="register-email" placeholder="your@email.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-phone">Телефон</label>
-                    <input type="tel" class="form-control" id="register-phone" placeholder="+7 (999) 999-99-99" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-telegram">Telegram</label>
-                    <input type="text" class="form-control" id="register-telegram" placeholder="@username" required>
                 </div>
                 
                 <div class="form-group">
@@ -390,7 +359,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="register-password-confirm">Подтверждение пароля</label>
+                    <label for="register-password-confirm">Подтвердите пароль</label>
                     <div class="password-container">
                         <input type="password" class="form-control" id="register-password-confirm" placeholder="Повторите пароль" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('register-password-confirm')">
@@ -416,22 +385,16 @@
             <!-- Форма входа для разработчиков -->
             <form class="developer-login" id="developer-login-form" onsubmit="return loginDeveloper(event)">
                 <div class="form-group">
-                    <label for="developer-name">Выберите разработчика</label>
-                    <select class="form-control" id="developer-name" required>
-                        <option value="">-- Выберите --</option>
-                        <option value="Александр">Александр</option>
-                        <option value="Максим">Максим</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="developer-password">Пароль</label>
+                    <label for="developer-password">Пароль разработчика</label>
                     <div class="password-container">
                         <input type="password" class="form-control" id="developer-password" placeholder="Введите пароль" required>
                         <button type="button" class="toggle-password" onclick="togglePassword('developer-password')">
                             <i class="far fa-eye"></i>
                         </button>
                     </div>
+                    <small style="color: var(--gray); display: block; margin-top: 8px;">
+                        Для входа используйте пароль, выданный администратором
+                    </small>
                 </div>
                 
                 <div class="error-message" id="developer-error"></div>
@@ -451,114 +414,34 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Глобальные переменные для базы данных
-        const DB_CONFIG = {
-            API_URL: 'https://api.jsonbin.io/v3/b/66b3d9c5ad19ca34f8c48e0d',
-            API_KEY: '$2b$10$LQYjMwTj2wXGJfX8b7K6DeoEJpJX5qYQY9t8rFqGtHvK1lM3nP4oS',
-            MASTER_KEY: '$2b$10$LQYjMwTj2wXGJfX8b7K6DeoEJpJX5qYQY9t8rFqGtHvK1lM3nP4oS'
-        };
-
-        let database = {
-            users: { clients: [], developers: [] },
-            orders: [],
-            messages: []
-        };
-
-        // Загрузка базы данных
-        async function loadDatabase() {
-            try {
-                console.log('Загрузка базы данных...');
-                const response = await fetch(DB_CONFIG.API_URL + '/latest', {
-                    method: 'GET',
-                    headers: {
-                        'X-Master-Key': DB_CONFIG.MASTER_KEY,
-                        'X-Bin-Meta': 'false'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Ошибка загрузки базы данных');
-                }
-                
-                const data = await response.json();
-                console.log('База данных загружена:', data);
-                
-                if (data && data.users) {
-                    database = data;
-                    // Сохраняем локальную копию
-                    localStorage.setItem('sitecore_local_db', JSON.stringify(data));
-                    return true;
-                } else {
-                    // Если база пустая, создаем структуру
-                    database = {
-                        users: {
-                            clients: [],
-                            developers: [
-                                {
-                                    id: 'dev_1',
-                                    username: 'Александр',
-                                    password: '789653',
-                                    avatar: 'А',
-                                    email: 'alexander@sitecore.ru'
-                                },
-                                {
-                                    id: 'dev_2',
-                                    username: 'Максим',
-                                    password: '140612',
-                                    avatar: 'М',
-                                    email: 'maxim@sitecore.ru'
-                                }
-                            ]
-                        },
-                        orders: [],
-                        messages: []
-                    };
-                    await saveDatabase();
-                    return true;
-                }
-            } catch (error) {
-                console.error('Ошибка загрузки базы:', error);
-                
-                // Пробуем загрузить локальную копию
-                const localData = localStorage.getItem('sitecore_local_db');
-                if (localData) {
-                    database = JSON.parse(localData);
-                    console.log('Используем локальную копию базы данных');
-                    return true;
-                }
-                
-                showNotification('Ошибка загрузки данных. Проверьте интернет-соединение.', 'error');
-                return false;
+        // База данных разработчиков
+        const developers = [
+            {
+                id: "dev_1",
+                name: "Александр",
+                password: "789653",
+                avatar: "А"
+            },
+            {
+                id: "dev_2", 
+                name: "Максим",
+                password: "140612",
+                avatar: "М"
             }
-        }
+        ];
 
-        // Сохранение базы данных
-        async function saveDatabase() {
-            try {
-                console.log('Сохранение базы данных...');
-                const response = await fetch(DB_CONFIG.API_URL, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': DB_CONFIG.MASTER_KEY
-                    },
-                    body: JSON.stringify(database)
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Ошибка сохранения базы данных');
-                }
-                
-                // Сохраняем локальную копию
-                localStorage.setItem('sitecore_local_db', JSON.stringify(database));
-                console.log('База данных сохранена');
-                return true;
-            } catch (error) {
-                console.error('Ошибка сохранения базы:', error);
-                // Сохраняем локальную копию на всякий случай
-                localStorage.setItem('sitecore_local_db', JSON.stringify(database));
-                return false;
+        // Инициализация базы данных
+        function initDatabase() {
+            if (!localStorage.getItem('sitecore_users')) {
+                localStorage.setItem('sitecore_users', JSON.stringify([]));
             }
+            if (!localStorage.getItem('sitecore_orders')) {
+                localStorage.setItem('sitecore_orders', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('sitecore_messages')) {
+                localStorage.setItem('sitecore_messages', JSON.stringify([]));
+            }
+            console.log('База данных инициализирована');
         }
 
         // Показать уведомление
@@ -594,12 +477,15 @@
             document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
             
+            // Скрываем все формы
+            document.getElementById('client-login-form').classList.remove('active');
+            document.getElementById('client-register-form').style.display = 'none';
+            document.getElementById('developer-login-form').classList.remove('active');
+            
             // Показываем соответствующую форму
             if (tab === 'client') {
                 document.getElementById('client-login-form').classList.add('active');
-                document.getElementById('developer-login-form').classList.remove('active');
             } else {
-                document.getElementById('client-login-form').classList.remove('active');
                 document.getElementById('developer-login-form').classList.add('active');
             }
             
@@ -624,13 +510,11 @@
         }
 
         // Регистрация клиента
-        async function registerClient(event) {
+        function registerClient(event) {
             event.preventDefault();
             
             const name = document.getElementById('register-name').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const phone = document.getElementById('register-phone').value.trim();
-            const telegram = document.getElementById('register-telegram').value.trim();
+            const email = document.getElementById('register-email').value.trim().toLowerCase();
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('register-password-confirm').value;
             
@@ -651,14 +535,15 @@
             }
             
             // Проверка email
-            if (!email.includes('@')) {
+            if (!email.includes('@') || !email.includes('.')) {
                 errorEl.textContent = 'Введите корректный email';
                 errorEl.classList.add('show');
                 return;
             }
             
             // Проверка на существующего пользователя
-            const existingUser = database.users.clients.find(client => client.email === email);
+            const users = JSON.parse(localStorage.getItem('sitecore_users'));
+            const existingUser = users.find(user => user.email === email);
             if (existingUser) {
                 errorEl.textContent = 'Пользователь с таким email уже зарегистрирован';
                 errorEl.classList.add('show');
@@ -670,57 +555,49 @@
                 id: 'client_' + Date.now(),
                 name: name,
                 email: email,
-                phone: phone,
-                telegram: telegram,
-                password: password, // В реальном приложении нужно хэшировать пароль
+                password: password,
                 avatar: name.charAt(0).toUpperCase(),
-                createdAt: new Date().toISOString()
+                phone: '',
+                telegram: '',
+                createdAt: new Date().toISOString(),
+                type: 'client'
             };
             
             // Добавляем клиента в базу
-            database.users.clients.push(newClient);
+            users.push(newClient);
+            localStorage.setItem('sitecore_users', JSON.stringify(users));
             
-            // Сохраняем базу
-            const saved = await saveDatabase();
+            successEl.textContent = 'Регистрация успешна! Теперь войдите в систему.';
+            successEl.classList.add('show');
+            errorEl.classList.remove('show');
             
-            if (saved) {
-                successEl.textContent = 'Регистрация успешна! Теперь войдите в систему.';
-                successEl.classList.add('show');
-                errorEl.classList.remove('show');
-                
-                // Очищаем форму
-                document.getElementById('register-name').value = '';
-                document.getElementById('register-email').value = '';
-                document.getElementById('register-phone').value = '';
-                document.getElementById('register-telegram').value = '';
-                document.getElementById('register-password').value = '';
-                document.getElementById('register-password-confirm').value = '';
-                
-                // Через 2 секунды показываем форму входа
-                setTimeout(() => {
-                    showLoginForm();
-                    document.getElementById('client-email').value = email;
-                    document.getElementById('client-password').value = password;
-                }, 2000);
-            } else {
-                errorEl.textContent = 'Ошибка при сохранении данных. Попробуйте снова.';
-                errorEl.classList.add('show');
-            }
+            // Очищаем форму
+            document.getElementById('register-name').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-password-confirm').value = '';
+            
+            // Через 2 секунды показываем форму входа
+            setTimeout(() => {
+                showLoginForm();
+                document.getElementById('client-email').value = email;
+                document.getElementById('client-password').value = password;
+            }, 2000);
         }
 
         // Вход клиента
-        async function loginClient(event) {
+        function loginClient(event) {
             event.preventDefault();
             
-            const email = document.getElementById('client-email').value.trim();
+            const email = document.getElementById('client-email').value.trim().toLowerCase();
             const password = document.getElementById('client-password').value;
             const errorEl = document.getElementById('client-error');
             
-            // Загружаем свежие данные
-            await loadDatabase();
+            // Загружаем пользователей
+            const users = JSON.parse(localStorage.getItem('sitecore_users'));
             
             // Ищем клиента
-            const client = database.users.clients.find(c => c.email === email && c.password === password);
+            const client = users.find(u => u.email === email && u.password === password && u.type === 'client');
             
             if (client) {
                 // Сохраняем данные клиента в сессии
@@ -743,58 +620,45 @@
         }
 
         // Вход разработчика
-        async function loginDeveloper(event) {
+        function loginDeveloper(event) {
             event.preventDefault();
             
-            const username = document.getElementById('developer-name').value;
             const password = document.getElementById('developer-password').value;
             const errorEl = document.getElementById('developer-error');
             
-            // Загружаем свежие данные
-            await loadDatabase();
-            
-            // Ищем разработчика
-            const developer = database.users.developers.find(d => 
-                d.username === username && d.password === password
-            );
+            // Ищем разработчика по паролю
+            const developer = developers.find(d => d.password === password);
             
             if (developer) {
                 // Сохраняем данные разработчика в сессии
                 sessionStorage.setItem('currentUser', JSON.stringify({
                     type: 'developer',
                     id: developer.id,
-                    name: developer.username,
-                    email: developer.email,
+                    name: developer.name,
                     avatar: developer.avatar
                 }));
                 
                 // Редирект на страницу разработчика
                 window.location.href = 'developer.html';
             } else {
-                errorEl.textContent = 'Неверный логин или пароль';
+                errorEl.textContent = 'Неверный пароль разработчика';
                 errorEl.classList.add('show');
             }
         }
 
         // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', function() {
             console.log('Инициализация страницы входа...');
             
-            // Загружаем базу данных
-            const loaded = await loadDatabase();
+            // Инициализируем базу данных
+            initDatabase();
             
-            if (loaded) {
-                console.log('Система готова к работе');
-            } else {
-                showNotification('Работаем в офлайн-режиме. Некоторые функции могут быть ограничены.', 'warning');
-            }
+            console.log('Система готова к работе');
             
-            // Автозаполнение для тестирования
-            // Для удобства тестирования можно раскомментировать
+            // Автозаполнение для тестирования (можно раскомментировать)
             /*
             document.getElementById('client-email').value = 'test@example.com';
             document.getElementById('client-password').value = '123456';
-            document.getElementById('developer-name').value = 'Александр';
             document.getElementById('developer-password').value = '789653';
             */
         });
