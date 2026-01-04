@@ -16,8 +16,9 @@
             --primary-dark: #5a67d8;
             --primary-light: #8a9ef5;
             --secondary: #764ba2;
+            --success: #10b981;
+            --danger: #ef4444;
             --dark: #1f2937;
-            --dark-light: #374151;
             --gray: #6b7280;
             --gray-light: #e5e7eb;
             --gray-lighter: #f9fafb;
@@ -179,16 +180,6 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
-            background: var(--gray-lighter);
-            color: var(--dark);
-            border: 2px solid var(--gray-light);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-        }
-
         .links {
             margin-top: 30px;
             display: flex;
@@ -215,28 +206,11 @@
             font-size: 14px;
             display: none;
             margin-top: 20px;
-            text-align: left;
-            animation: slideDown 0.3s ease;
         }
 
         .error-message.show {
             display: block;
-        }
-
-        .sync-info {
-            background: var(--gray-lighter);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 30px;
-            font-size: 13px;
-            color: var(--gray);
-            text-align: left;
-        }
-
-        .sync-info h4 {
-            color: var(--dark);
-            margin-bottom: 8px;
-            font-size: 14px;
+            animation: slideDown 0.3s ease;
         }
 
         @keyframes slideDown {
@@ -250,6 +224,7 @@
             }
         }
 
+        /* Адаптивность */
         @media (max-width: 480px) {
             .login-card {
                 padding: 30px 20px;
@@ -278,8 +253,8 @@
             </div>
             
             <div class="welcome-text">
-                <h1>Добро пожаловать в SiteCore!</h1>
-                <p>Платформа для заказа сайтов с полной прозрачностью и удобным общением</p>
+                <h1>Добро пожаловать!</h1>
+                <p>Платформа для заказа и разработки сайтов</p>
             </div>
             
             <div class="role-selector">
@@ -296,7 +271,7 @@
                 
                 <div class="form-group">
                     <label for="client-password">Пароль</label>
-                    <input type="password" id="client-password" placeholder="Введите пароль" required>
+                    <input type="password" id="client-password" placeholder="••••••••" required>
                 </div>
                 
                 <div class="links">
@@ -332,7 +307,7 @@
                 
                 <div class="form-group">
                     <label for="register-password">Пароль</label>
-                    <input type="password" id="register-password" placeholder="Придумайте пароль" required minlength="6">
+                    <input type="password" id="register-password" placeholder="••••••••" required minlength="6">
                 </div>
                 
                 <div class="links">
@@ -350,7 +325,7 @@
                     <label for="executor-password">Пароль разработчика</label>
                     <input type="password" id="executor-password" placeholder="Введите пароль" required>
                     <small style="color: var(--gray); margin-top: 5px; display: block;">
-                        Используйте пароль, выданный администратором
+                        Введите пароль, выданный администратором
                     </small>
                 </div>
                 
@@ -360,63 +335,112 @@
             </form>
             
             <div id="error-message" class="error-message"></div>
-            
-            <div class="sync-info">
-                <h4>📡 Автоматическая синхронизация</h4>
-                <p>Ваши данные автоматически синхронизируются между устройствами. При первом входе создается уникальный ключ синхронизации.</p>
-            </div>
         </div>
     </div>
 
+    <script src="database.js"></script>
     <script>
-        // Переключение между формами
-        document.querySelectorAll('.role-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                const role = this.dataset.role;
-                document.getElementById('client-form').style.display = 'none';
-                document.getElementById('register-form').style.display = 'none';
-                document.getElementById('executor-form').style.display = 'none';
-                
-                if (role === 'client') {
-                    document.getElementById('client-form').style.display = 'flex';
-                } else if (role === 'executor') {
-                    document.getElementById('executor-form').style.display = 'flex';
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            // Проверяем, не авторизован ли пользователь
+            const currentUser = localStorage.getItem('current_user');
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                if (user.type === 'client') {
+                    window.location.href = 'client.html';
+                } else if (user.type === 'executor') {
+                    window.location.href = 'executor.html';
+                }
+            }
+
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Переключение между формами
+            document.querySelectorAll('.role-tab').forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const role = this.dataset.role;
+                    showForm(role);
+                });
+            });
+
+            // Переключение между логином и регистрацией
+            document.getElementById('show-register').addEventListener('click', function(e) {
+                e.preventDefault();
+                showForm('register');
+            });
+
+            document.getElementById('show-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                showForm('client');
+            });
+
+            // Вход клиента
+            document.getElementById('client-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                loginClient();
+            });
+
+            // Регистрация клиента
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                registerClient();
+            });
+
+            // Вход разработчика
+            document.getElementById('executor-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                loginExecutor();
+            });
+        }
+
+        function showForm(formType) {
+            document.getElementById('client-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('executor-form').style.display = 'none';
+            
+            // Обновляем активную вкладку
+            document.querySelectorAll('.role-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.role === (formType === 'register' ? 'client' : formType)) {
+                    tab.classList.add('active');
                 }
             });
-        });
 
-        // Переключение между логином и регистрацией
-        document.getElementById('show-register').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('client-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'flex';
-        });
+            switch(formType) {
+                case 'client':
+                    document.getElementById('client-form').style.display = 'flex';
+                    break;
+                case 'register':
+                    document.getElementById('register-form').style.display = 'flex';
+                    break;
+                case 'executor':
+                    document.getElementById('executor-form').style.display = 'flex';
+                    break;
+            }
+        }
 
-        document.getElementById('show-login').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('client-form').style.display = 'flex';
-        });
-
-        // Вход клиента
-        document.getElementById('client-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        function loginClient() {
             const email = document.getElementById('client-email').value.trim();
             const password = document.getElementById('client-password').value;
             
             if (!email || !password) {
-                showError('Пожалуйста, заполните все поля');
+                showError('Заполните все поля');
                 return;
             }
-            
+
             try {
-                const client = await window.SiteCoreDB.authUser(email, password);
+                const client = SiteCoreDB.authClient(email, password);
                 if (client) {
-                    localStorage.setItem('current_user', JSON.stringify(client));
+                    localStorage.setItem('current_user', JSON.stringify({
+                        ...client,
+                        type: 'client'
+                    }));
                     window.location.href = 'client.html';
                 } else {
                     showError('Неверный email или пароль');
@@ -424,54 +448,47 @@
             } catch (error) {
                 showError('Ошибка авторизации: ' + error.message);
             }
-        });
+        }
 
-        // Регистрация клиента
-        document.getElementById('register-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        function registerClient() {
             const name = document.getElementById('register-name').value.trim();
             const email = document.getElementById('register-email').value.trim();
             const phone = document.getElementById('register-phone').value.trim();
             const telegram = document.getElementById('register-telegram').value.trim();
             const password = document.getElementById('register-password').value;
             
-            // Простая валидация
             if (!name || !email || !phone || !telegram || !password) {
-                showError('Пожалуйста, заполните все поля');
+                showError('Заполните все поля');
                 return;
             }
-            
-            if (password.length < 6) {
-                showError('Пароль должен содержать минимум 6 символов');
-                return;
-            }
-            
+
             try {
-                const client = await window.SiteCoreDB.registerClient(email, password, name, phone, telegram);
-                localStorage.setItem('current_user', JSON.stringify(client));
+                const client = SiteCoreDB.registerClient(email, password, name, phone, telegram);
+                localStorage.setItem('current_user', JSON.stringify({
+                    ...client,
+                    type: 'client'
+                }));
                 window.location.href = 'client.html';
             } catch (error) {
                 showError(error.message);
             }
-        });
+        }
 
-        // Вход разработчика
-        document.getElementById('executor-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
+        function loginExecutor() {
             const password = document.getElementById('executor-password').value;
             
             if (!password) {
-                showError('Пожалуйста, введите пароль');
+                showError('Введите пароль');
                 return;
             }
-            
+
             try {
-                // Для разработчика identifier не нужен, только пароль
-                const executor = await window.SiteCoreDB.authUser(null, password);
+                const executor = SiteCoreDB.authExecutor(password);
                 if (executor) {
-                    localStorage.setItem('current_user', JSON.stringify(executor));
+                    localStorage.setItem('current_user', JSON.stringify({
+                        ...executor,
+                        type: 'executor'
+                    }));
                     window.location.href = 'executor.html';
                 } else {
                     showError('Неверный пароль разработчика');
@@ -479,7 +496,7 @@
             } catch (error) {
                 showError('Ошибка авторизации: ' + error.message);
             }
-        });
+        }
 
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
@@ -490,14 +507,7 @@
                 errorDiv.classList.remove('show');
             }, 5000);
         }
-
-        // Загружаем базу данных
-        document.addEventListener('DOMContentLoaded', () => {
-            // Убедимся, что база данных загружена
-            if (!window.SiteCoreDB) {
-                showError('Ошибка загрузки системы. Пожалуйста, обновите страницу.');
-            }
-        });
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </body>
 </html>
