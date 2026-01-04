@@ -26,25 +26,24 @@
             --gray-light: #e5e7eb;
             --gray-lighter: #f9fafb;
             --white: #ffffff;
-            --radius: 16px;
-            --radius-sm: 8px;
+            --radius: 20px;
+            --radius-sm: 12px;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--gray-lighter);
             color: var(--dark);
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
         /* Шапка */
         .header {
             background: var(--white);
-            padding: 15px 20px;
+            padding: 20px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -52,8 +51,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            flex-wrap: wrap;
-            gap: 15px;
         }
 
         .logo {
@@ -78,7 +75,7 @@
         }
 
         .logo-text {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 900;
             background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
@@ -88,14 +85,22 @@
         .user-menu {
             display: flex;
             align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
+            padding: 10px 20px;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .user-info:hover {
+            background: var(--gray-light);
         }
 
         .user-avatar {
@@ -111,17 +116,24 @@
             font-size: 18px;
         }
 
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
         .user-name {
             font-weight: 600;
             font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 150px;
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: var(--gray);
         }
 
         .logout-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: var(--gray-lighter);
             border: 2px solid var(--gray-light);
             border-radius: var(--radius-sm);
@@ -129,8 +141,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            font-size: 14px;
-            white-space: nowrap;
         }
 
         .logout-btn:hover {
@@ -140,110 +150,92 @@
 
         /* Основной контент */
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px;
         }
 
-        .welcome-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
             border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
         }
 
-        .welcome-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .welcome-header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            line-height: 1.3;
-        }
-
-        .stats-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: 600;
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-
-        .welcome-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-        }
-
-        .welcome-info h2 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .welcome-info p {
-            font-size: 16px;
-            opacity: 0.9;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .quick-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-        }
-
-        .quick-stat {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius);
-            padding: 15px;
-            text-align: center;
-        }
-
-        .quick-stat-value {
+            justify-content: center;
             font-size: 24px;
+        }
+
+        .stat-icon.orders {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-icon.spent {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .stat-icon.active {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 32px;
             font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .quick-stat-label {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        /* Кнопка создания заказа */
-        .create-order-section {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .create-order-section h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 15px;
             color: var(--dark);
         }
 
-        .create-order-section p {
-            color: var(--gray);
-            margin-bottom: 25px;
-            font-size: 15px;
+        /* Заказы */
+        .orders-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
         }
 
         .btn {
@@ -256,7 +248,7 @@
             transition: var(--transition);
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-primary {
@@ -269,115 +261,61 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-secondary {
-            background: var(--white);
-            color: var(--dark);
-            border: 2px solid var(--gray-light);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--primary);
-            background: var(--gray-lighter);
-        }
-
-        /* Мои заказы */
-        .orders-section {
-            margin-bottom: 30px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .section-header h2 {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-
         .orders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .orders-grid {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
         }
 
         .order-card {
-            background: var(--white);
+            background: var(--gray-lighter);
             border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
+            padding: 30px;
             border: 2px solid transparent;
-            display: flex;
-            flex-direction: column;
-            min-height: 280px;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
         .order-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
             border-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .order-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .order-card h3 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--dark);
-            margin-bottom: 6px;
-            line-height: 1.3;
-        }
-
-        .order-executor {
-            font-size: 13px;
-            color: var(--gray);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         .order-status {
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
-            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .status-new { background: #dbeafe; color: #1d4ed8; }
-        .status-in_progress { background: #fef3c7; color: #d97706; }
+        .status-progress { background: #fef3c7; color: #d97706; }
         .status-review { background: #fce7f3; color: #be185d; }
         .status-completed { background: #dcfce7; color: #16a34a; }
         .status-rejected { background: #fee2e2; color: #dc2626; }
 
-        .order-card-body {
-            flex: 1;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-
         .order-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .order-detail {
@@ -386,61 +324,129 @@
         }
 
         .order-detail-label {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--gray);
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
         .order-detail-value {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--dark);
-            word-break: break-word;
         }
 
-        .order-prompt-preview {
-            background: var(--gray-lighter);
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            color: var(--dark-light);
-            line-height: 1.5;
-            max-height: 80px;
-            overflow: hidden;
-            position: relative;
-            margin-top: 10px;
-        }
-
-        .order-prompt-preview::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: linear-gradient(to bottom, transparent, var(--gray-lighter));
-        }
-
-        .order-card-actions {
+        .order-actions {
             display: flex;
-            gap: 10px;
-            margin-top: auto;
-            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .btn-small {
-            padding: 8px 16px;
-            font-size: 13px;
-            min-width: 100px;
-            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
         }
 
-        .btn-success {
-            background: var(--success);
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gray-light);
+            color: var(--dark);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background: var(--gray-lighter);
+        }
+
+        /* Создание заказа */
+        .create-order-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: var(--radius);
+            padding: 40px;
             color: white;
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Модальное окно создания заказа */
+        .create-order-section h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .create-order-section p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .order-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .prompt-counter {
+            text-align: right;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .prompt-counter.invalid {
+            color: #ff6b6b;
+        }
+
+        /* Модальное окно чата */
         .modal {
             display: none;
             position: fixed;
@@ -453,8 +459,7 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 15px;
-            overflow-y: auto;
+            padding: 20px;
         }
 
         .modal.active {
@@ -468,12 +473,12 @@
             width: 100%;
             max-width: 800px;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow: hidden;
             box-shadow: var(--shadow-lg);
         }
 
         .modal-header {
-            padding: 20px 25px 15px;
+            padding: 30px 40px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -481,7 +486,7 @@
         }
 
         .modal-header h3 {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--dark);
         }
@@ -489,12 +494,12 @@
         .modal-close {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             color: var(--gray);
             cursor: pointer;
             padding: 0;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -508,295 +513,71 @@
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 40px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .char-counter {
-            font-size: 12px;
-            color: var(--gray);
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .char-counter.error {
-            color: var(--danger);
-        }
-
-        .type-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .type-selector {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .type-option {
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition;
-        }
-
-        .type-option:hover {
-            border-color: var(--primary);
-        }
-
-        .type-option.selected {
-            border-color: var(--primary);
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .type-option i {
-            font-size: 32px;
-            color: var(--primary);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .type-option span {
-            font-weight: 600;
-            font-size: 16px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .type-option p {
-            font-size: 13px;
-            color: var(--gray);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        /* Модальное окно заказа */
-        .order-management-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        @media (min-width: 992px) {
-            .order-management-grid {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-
-        .order-info-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .info-section {
-            background: var(--gray-lighter);
-            border-radius: var(--radius);
-            padding: 20px;
-        }
-
-        .info-section h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: var(--gray);
-            margin-bottom: 3px;
-        }
-
-        .info-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--dark);
-            word-break: break-word;
-        }
-
-        .prompt-content {
-            background: var(--white);
-            padding: 15px;
-            border-radius: var(--radius-sm);
-            max-height: 300px;
-            overflow-y: auto;
-            line-height: 1.6;
-            font-size: 14px;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        .control-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .executor-info-panel {
-            background: var(--gray-lighter);
-            border-radius: var(--radius);
-            padding: 20px;
-        }
-
-        .executor-info-panel h4 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .executor-contact-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .contact-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: var(--white);
-            border-radius: var(--radius-sm);
-            font-size: 14px;
-        }
-
-        .contact-info i {
-            width: 20px;
-            color: var(--gray);
-            flex-shrink: 0;
-        }
-
-        /* Чат */
         .chat-container {
-            border-top: 2px solid var(--gray-light);
-            padding-top: 25px;
-            margin-top: 25px;
-        }
-
-        .chat-header {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .chat-header h4 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--dark);
+            flex-direction: column;
+            height: 500px;
         }
 
         .chat-messages {
-            max-height: 300px;
+            flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 20px;
             background: var(--gray-lighter);
-            border-radius: var(--radius);
+            border-radius: 12px;
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
         .message {
-            margin-bottom: 12px;
-            max-width: 85%;
-        }
-
-        @media (max-width: 768px) {
-            .message {
-                max-width: 95%;
-            }
+            max-width: 80%;
+            animation: slideIn 0.3s ease;
         }
 
         .message.client {
-            margin-left: auto;
+            align-self: flex-end;
+        }
+
+        .message.executor {
+            align-self: flex-start;
+        }
+
+        .message-system {
+            align-self: center;
+            text-align: center;
+            max-width: 100%;
         }
 
         .message-content {
-            padding: 12px 16px;
+            padding: 16px;
             border-radius: 18px;
             background: var(--white);
             border: 1px solid var(--gray-light);
             position: relative;
-            word-break: break-word;
         }
 
         .message.client .message-content {
-            background: var(--primary);
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
         }
 
         .message-sender {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--gray);
-            margin-bottom: 3px;
+            margin-bottom: 4px;
             padding-left: 8px;
         }
 
         .message-time {
-            font-size: 10px;
+            font-size: 11px;
             text-align: right;
-            margin-top: 3px;
+            margin-top: 4px;
             color: var(--gray);
         }
 
@@ -806,20 +587,18 @@
 
         .chat-input-container {
             display: flex;
-            gap: 10px;
-            align-items: flex-end;
+            gap: 12px;
         }
 
         .chat-input-container textarea {
             flex: 1;
-            padding: 12px;
+            padding: 16px;
             border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             font-family: inherit;
-            font-size: 14px;
+            font-size: 15px;
             resize: none;
             min-height: 60px;
-            max-height: 120px;
         }
 
         .chat-input-container textarea:focus {
@@ -827,35 +606,26 @@
             border-color: var(--primary);
         }
 
-        .chat-input-container button {
-            height: 60px;
-            min-width: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
         /* Уведомления */
         .notification {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 30px;
+            right: 30px;
             background: var(--dark);
             color: white;
-            padding: 15px 20px;
+            padding: 20px 30px;
             border-radius: 12px;
             box-shadow: var(--shadow-lg);
             display: none;
             align-items: center;
-            gap: 10px;
-            max-width: 350px;
+            gap: 12px;
+            max-width: 400px;
             z-index: 1000;
-            font-size: 14px;
+            animation: slideInRight 0.3s ease;
         }
 
         .notification.show {
             display: flex;
-            animation: slideInRight 0.3s ease;
         }
 
         .notification.success {
@@ -871,85 +641,86 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         /* Адаптивность */
+        @media (max-width: 1200px) {
+            .orders-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .header {
-                padding: 12px 15px;
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
             }
             
             .container {
-                padding: 15px;
-            }
-            
-            .welcome-section {
                 padding: 20px;
             }
             
-            .welcome-header h1 {
-                font-size: 20px;
-            }
-            
-            .create-order-section {
-                padding: 20px;
-            }
-            
-            .modal-body {
-                padding: 20px;
-            }
-            
-            .info-grid {
+            .orders-grid {
                 grid-template-columns: 1fr;
             }
             
-            .order-card-actions {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .order-actions {
                 flex-direction: column;
             }
             
             .btn-small {
-                min-width: 100%;
-            }
-            
-            .form-actions {
-                flex-direction: column;
-            }
-            
-            .form-actions .btn {
                 width: 100%;
+                justify-content: center;
             }
         }
 
         @media (max-width: 480px) {
-            .user-name {
-                max-width: 100px;
+            .section-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
             }
             
-            .quick-stat-value {
-                font-size: 20px;
+            .create-order-section {
+                padding: 30px 20px;
             }
             
-            .order-details {
-                grid-template-columns: 1fr;
+            .create-order-section h2 {
+                font-size: 24px;
+            }
+            
+            .chat-input-container {
+                flex-direction: column;
             }
         }
     </style>
@@ -958,157 +729,100 @@
 <body>
     <!-- Шапка -->
     <div class="header">
-        <a href="#" class="logo" onclick="loadOrders()">
+        <a href="#" class="logo" onclick="window.location.reload()">
             <div class="logo-icon">SC</div>
             <div class="logo-text">SiteCore</div>
         </a>
         
         <div class="user-menu">
-            <div class="user-info" id="current-user-info">
+            <div class="user-info" id="user-info">
                 <!-- Заполняется JavaScript -->
             </div>
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Выйти
-            </button>
+            <button class="logout-btn" onclick="logout()">Выйти</button>
         </div>
     </div>
 
     <!-- Основной контент -->
     <div class="container">
-        <!-- Приветствие -->
-        <div class="welcome-section">
-            <div class="welcome-header">
-                <h1 id="welcome-title">Добро пожаловать!</h1>
-                <div class="stats-badge" id="stats-badge">
-                    <!-- Заполняется JavaScript -->
-                </div>
-            </div>
-            
-            <div class="welcome-grid">
-                <div class="welcome-info">
-                    <h2 id="client-name">Клиент</h2>
-                    <p>Создавайте заказы на разработку сайтов, отслеживайте статус и общайтесь с разработчиками.</p>
-                    <div class="quick-stats" id="quick-stats">
-                        <!-- Заполняется JavaScript -->
-                    </div>
-                </div>
-            </div>
+        <!-- Статистика -->
+        <div class="stats-grid" id="stats-grid">
+            <!-- Заполняется JavaScript -->
         </div>
-
-        <!-- Создание заказа -->
-        <div class="create-order-section">
-            <h2>Нужен сайт?</h2>
-            <p>Опишите вашу идею, и наши разработчики создадут для вас профессиональный сайт.</p>
-            <button class="btn btn-primary" onclick="showCreateOrderModal()">
-                <i class="fas fa-plus-circle"></i> Создать заказ
-            </button>
-        </div>
-
+        
         <!-- Мои заказы -->
         <div class="orders-section">
             <div class="section-header">
                 <h2>Мои заказы</h2>
+                <button class="btn btn-primary" onclick="toggleCreateForm()">
+                    <i class="fas fa-plus"></i> Создать заказ
+                </button>
             </div>
             
-            <div id="my-orders" class="orders-grid">
+            <div class="orders-grid" id="orders-grid">
                 <!-- Заполняется JavaScript -->
             </div>
         </div>
-    </div>
-
-    <!-- Модальное окно создания заказа -->
-    <div class="modal" id="create-order-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Создание нового заказа</h3>
-                <button class="modal-close" onclick="hideCreateOrderModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="create-order-form">
+        
+        <!-- Создание заказа -->
+        <div class="create-order-section" id="create-order-section" style="display: none;">
+            <h2>Создание нового заказа</h2>
+            <p>Опишите подробно ваш проект. Промт должен содержать от 300 до 2500 символов.</p>
+            
+            <form class="order-form" id="order-form">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>Тип сайта *</label>
-                        <div class="type-selector">
-                            <div class="type-option selected" data-type="static">
-                                <i class="fas fa-file-code"></i>
-                                <span>Статический сайт</span>
-                                <p>Landing page, сайт-визитка, промо-сайт</p>
-                            </div>
-                            <div class="type-option" data-type="dynamic">
-                                <i class="fas fa-cogs"></i>
-                                <span>Динамический сайт</span>
-                                <p>Корпоративный сайт, интернет-магазин, CRM</p>
-                            </div>
-                        </div>
-                        <input type="hidden" id="project-type" value="static" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="project-name">Название проекта *</label>
-                        <input type="text" id="project-name" required placeholder="Например: Сайт для кофейни 'Уютный уголок'">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="project-budget">Бюджет (руб.) *</label>
-                        <input type="number" id="project-budget" min="10000" step="1000" required placeholder="50000">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="project-deadline">Срок выполнения (дней) *</label>
-                        <input type="number" id="project-deadline" min="1" max="180" required placeholder="30">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="project-prompt">Описание проекта *</label>
-                        <textarea id="project-prompt" required placeholder="Опишите подробно, какой сайт вам нужен. Укажите особенности дизайна, функционал, примеры сайтов, которые вам нравятся, и другую важную информацию. Минимум 300 символов, максимум 2500."></textarea>
-                        <div class="char-counter" id="char-counter">0/2500 символов</div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="hideCreateOrderModal()">Отмена</button>
-                        <button type="submit" class="btn btn-primary">Создать заказ</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно просмотра заказа -->
-    <div class="modal" id="order-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modal-order-title">Просмотр заказа</h3>
-                <button class="modal-close" onclick="closeOrderModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="order-management-grid">
-                    <div class="order-info-panel">
-                        <div class="info-section">
-                            <h4>Информация о заказе</h4>
-                            <div class="info-grid" id="order-info-grid">
-                                <!-- Заполняется JavaScript -->
-                            </div>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h4>Описание проекта</h4>
-                            <div class="prompt-content" id="modal-prompt-content"></div>
-                        </div>
+                        <label for="project-name">Название проекта</label>
+                        <input type="text" id="project-name" placeholder="Например: Интернет-магазин одежды" required>
                     </div>
                     
-                    <div class="control-panel">
-                        <div class="executor-info-panel" id="executor-info-panel" style="display: none;">
-                            <h4>Исполнитель</h4>
-                            <div class="executor-contact-list" id="executor-contact-list">
-                                <!-- Заполняется JavaScript -->
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="project-type">Тип сайта</label>
+                        <select id="project-type" required>
+                            <option value="static">Статический сайт</option>
+                            <option value="dynamic">Динамический сайт</option>
+                        </select>
                     </div>
                 </div>
                 
-                <div class="chat-container" id="chat-container" style="display: none;">
-                    <div class="chat-header">
-                        <h4>Общение с разработчиком</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="project-budget">Бюджет (руб.)</label>
+                        <input type="number" id="project-budget" placeholder="50000" min="10000" step="1000" required>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="project-deadline">Срок выполнения (дней)</label>
+                        <input type="number" id="project-deadline" placeholder="30" min="1" max="180" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="project-prompt">Детальное описание проекта</label>
+                    <textarea id="project-prompt" placeholder="Опишите детали проекта: цели, функционал, дизайн, целевая аудитория и т.д. От 300 до 2500 символов." required></textarea>
+                    <div class="prompt-counter" id="prompt-counter">0/2500 символов</div>
+                </div>
+                
+                <div style="display: flex; gap: 16px;">
+                    <button type="button" class="btn btn-outline" onclick="toggleCreateForm()" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                        Отмена
+                    </button>
+                    <button type="submit" class="btn btn-primary" style="background: white; color: var(--primary);">
+                        <i class="fas fa-paper-plane"></i> Отправить заказ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно чата -->
+    <div class="modal" id="chat-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="chat-title">Общение по заказу</h3>
+                <button class="modal-close" onclick="closeChat()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container">
                     <div class="chat-messages" id="chat-messages">
                         <!-- Сообщения загружаются через JavaScript -->
                     </div>
@@ -1123,21 +837,17 @@
         </div>
     </div>
 
-    <!-- Уведомления -->
+    <!-- Уведомление -->
     <div class="notification" id="notification"></div>
 
+    <script src="database.js"></script>
     <script>
-        // Текущий пользователь и состояние
         let currentUser = null;
         let currentOrderId = null;
 
-        // Инициализация
-        function init() {
-            // Загружаем синхронизированные данные
-            loadSyncData();
-            
+        async function init() {
             // Проверка авторизации
-            const userData = localStorage.getItem('currentUser');
+            const userData = localStorage.getItem('current_user');
             if (!userData) {
                 window.location.href = 'index.html';
                 return;
@@ -1145,435 +855,243 @@
 
             currentUser = JSON.parse(userData);
             
-            // Если это исполнитель, редирект
-            if (currentUser.role !== 'client') {
-                window.location.href = 'executor.html';
+            // Если это не клиент, редирект
+            if (currentUser.type !== 'client') {
+                window.location.href = 'index.html';
                 return;
             }
 
             updateUserInfo();
-            loadDashboardData();
+            loadStats();
             loadOrders();
-            
-            // Синхронизация каждые 30 секунд
-            setInterval(syncData, 30000);
+            setupEventListeners();
         }
 
-        // Загрузка синхронизированных данных
-        function loadSyncData() {
-            try {
-                const syncData = localStorage.getItem('sitecore_sync');
-                if (syncData) {
-                    const data = JSON.parse(syncData);
-                    
-                    // Объединяем заказы
-                    if (data.orders) {
-                        const localOrders = JSON.parse(localStorage.getItem('sitecore_orders') || '[]');
-                        const mergedOrders = mergeArrays(localOrders, data.orders, 'id');
-                        localStorage.setItem('sitecore_orders', JSON.stringify(mergedOrders));
-                    }
-
-                    // Объединяем пользователей
-                    if (data.users) {
-                        const localUsers = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                        const mergedUsers = mergeArrays(localUsers, data.users, 'id');
-                        localStorage.setItem('sitecore_users', JSON.stringify(mergedUsers));
-                    }
-
-                    // Объединяем сообщения
-                    if (data.messages) {
-                        const localMessages = JSON.parse(localStorage.getItem('sitecore_messages') || '{}');
-                        const mergedMessages = { ...localMessages, ...data.messages };
-                        localStorage.setItem('sitecore_messages', JSON.stringify(mergedMessages));
-                    }
-                }
-            } catch (e) {
-                console.log('Ошибка синхронизации:', e);
-            }
-        }
-
-        // Слияние массивов с уникальными элементами
-        function mergeArrays(arr1, arr2, key) {
-            const map = new Map();
-            [...arr1, ...arr2].forEach(item => {
-                if (item[key]) {
-                    map.set(item[key], item);
-                }
-            });
-            return Array.from(map.values());
-        }
-
-        // Синхронизация данных
-        function syncData() {
-            const data = {
-                orders: JSON.parse(localStorage.getItem('sitecore_orders') || '[]'),
-                users: JSON.parse(localStorage.getItem('sitecore_users') || '[]'),
-                messages: JSON.parse(localStorage.getItem('sitecore_messages') || '{}'),
-                timestamp: new Date().toISOString()
-            };
-            
-            localStorage.setItem('sitecore_sync', JSON.stringify(data));
-            console.log('Данные синхронизированы:', new Date().toLocaleTimeString());
-        }
-
-        // Обновление информации пользователя
         function updateUserInfo() {
-            const avatarLetter = currentUser.name.charAt(0).toUpperCase();
-            
-            document.getElementById('current-user-info').innerHTML = `
-                <div class="user-avatar">${avatarLetter}</div>
-                <div class="user-name">${currentUser.name}</div>
-            `;
-
-            document.getElementById('client-name').textContent = currentUser.name;
-            
-            // Заголовок приветствия
-            const now = new Date();
-            const hours = now.getHours();
-            let greeting;
-            
-            if (hours < 12) greeting = 'Доброе утро';
-            else if (hours < 18) greeting = 'Добрый день';
-            else greeting = 'Добрый вечер';
-            
-            document.getElementById('welcome-title').textContent = `${greeting}, ${currentUser.name}!`;
-        }
-
-        // Загрузка дашборда
-        function loadDashboardData() {
-            const orders = getAllOrders();
-            const myOrders = orders.filter(order => order.clientId === currentUser.id);
-            const activeOrders = myOrders.filter(order => 
-                order.status === 'new' || order.status === 'in_progress' || order.status === 'review'
-            );
-            const completedOrders = myOrders.filter(order => order.status === 'completed');
-            
-            // Обновляем бейдж
-            document.getElementById('stats-badge').innerHTML = `
-                <i class="fas fa-tasks"></i>
-                <span>${myOrders.length} заказов</span>
-            `;
-            
-            // Обновляем быструю статистику
-            document.getElementById('quick-stats').innerHTML = `
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${myOrders.length}</div>
-                    <div class="quick-stat-label">Всего заказов</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${activeOrders.length}</div>
-                    <div class="quick-stat-label">Активные</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${completedOrders.length}</div>
-                    <div class="quick-stat-label">Завершено</div>
+            document.getElementById('user-info').innerHTML = `
+                <div class="user-avatar">${currentUser.avatar}</div>
+                <div class="user-details">
+                    <div class="user-name">${currentUser.name}</div>
+                    <div class="user-email">${currentUser.email}</div>
                 </div>
             `;
         }
 
-        // Загрузка заказов
+        function loadStats() {
+            const stats = currentUser.stats || {};
+            document.getElementById('stats-grid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-icon orders">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Всего заказов</h3>
+                        <div class="stat-value">${stats.ordersCount || 0}</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon spent">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Потрачено</h3>
+                        <div class="stat-value">${(stats.totalSpent || 0).toLocaleString()} ₽</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon active">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Активные заказы</h3>
+                        <div class="stat-value">${stats.activeOrders || 0}</div>
+                    </div>
+                </div>
+            `;
+        }
+
         function loadOrders() {
-            const orders = getAllOrders();
-            const myOrders = orders.filter(order => order.clientId === currentUser.id);
+            const orders = SiteCoreDB.getOrdersForClient(currentUser.id);
+            const container = document.getElementById('orders-grid');
             
-            const container = document.getElementById('my-orders');
-            
-            if (myOrders.length === 0) {
+            if (orders.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--gray); grid-column: 1/-1;">
-                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <h3 style="margin-bottom: 12px;">У вас пока нет заказов</h3>
-                        <p style="margin-bottom: 20px; max-width: 300px; margin: 0 auto;">Создайте свой первый заказ на разработку сайта!</p>
-                        <button class="btn btn-primary" onclick="showCreateOrderModal()">
-                            <i class="fas fa-plus-circle"></i> Создать заказ
+                    <div style="text-align: center; padding: 60px; color: var(--gray); grid-column: 1/-1;">
+                        <i class="fas fa-clipboard" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 16px;">У вас пока нет заказов</h3>
+                        <p style="margin-bottom: 30px;">Создайте свой первый заказ прямо сейчас!</p>
+                        <button class="btn btn-primary" onclick="toggleCreateForm()">
+                            <i class="fas fa-plus"></i> Создать первый заказ
                         </button>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = myOrders.map(order => {
-                const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                const executor = users.find(u => u.id === order.assignedTo);
-                const hasExecutor = !!executor;
-                const canChat = hasExecutor && order.status !== 'rejected';
-                
-                return `
-                <div class="order-card" onclick="openOrderModal('${order.id}')">
+            container.innerHTML = orders.map(order => `
+                <div class="order-card">
                     <div class="order-card-header">
                         <div>
                             <h3>${order.projectName}</h3>
-                            <div class="order-executor">${hasExecutor ? `Исполнитель: ${executor.name}` : 'Исполнитель не назначен'}</div>
+                            <div style="color: var(--gray); font-size: 14px;">
+                                ${new Date(order.createdDate).toLocaleDateString()}
+                            </div>
                         </div>
-                        <div class="order-status status-${order.status}">
+                        <div class="order-status status-${order.status.replace('_', '')}">
                             ${getStatusText(order.status)}
                         </div>
                     </div>
                     
-                    <div class="order-card-body">
-                        <div class="order-details">
-                            <div class="order-detail">
-                                <div class="order-detail-label">Тип</div>
-                                <div class="order-detail-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Бюджет</div>
-                                <div class="order-detail-value">${formatCurrency(order.budget)}</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Срок</div>
-                                <div class="order-detail-value">${order.deadline} дней</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Создан</div>
-                                <div class="order-detail-value">${new Date(order.createdDate).toLocaleDateString()}</div>
-                            </div>
+                    <div class="order-details">
+                        <div class="order-detail">
+                            <span class="order-detail-label">Тип</span>
+                            <span class="order-detail-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</span>
                         </div>
-                        
-                        <div class="order-prompt-preview" title="${order.prompt}">
-                            ${order.prompt.substring(0, 80)}${order.prompt.length > 80 ? '...' : ''}
+                        <div class="order-detail">
+                            <span class="order-detail-label">Бюджет</span>
+                            <span class="order-detail-value">${order.budget.toLocaleString()} ₽</span>
+                        </div>
+                        <div class="order-detail">
+                            <span class="order-detail-label">Срок</span>
+                            <span class="order-detail-value">${order.deadline} дней</span>
+                        </div>
+                        <div class="order-detail">
+                            <span class="order-detail-label">Исполнитель</span>
+                            <span class="order-detail-value">${order.assignedTo ? 'Назначен' : 'В поиске'}</span>
                         </div>
                     </div>
                     
-                    <div class="order-card-actions">
-                        <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); openOrderModal('${order.id}')">
-                            <i class="fas fa-eye"></i> Подробнее
+                    <div class="order-actions">
+                        ${order.messages && order.messages.length > 0 ? `
+                            <span style="font-size: 12px; color: var(--gray);">
+                                <i class="fas fa-comment"></i> ${order.messages.length} сообщений
+                            </span>
+                        ` : ''}
+                        
+                        <button class="btn-small btn-outline" onclick="openChat('${order.id}')">
+                            <i class="fas fa-comment"></i> Написать
                         </button>
                         
-                        ${canChat ? `
-                            <button class="btn btn-success btn-small" onclick="event.stopPropagation(); openOrderModal('${order.id}')">
-                                <i class="fas fa-comments"></i> Общение
+                        ${!order.assignedTo ? `
+                            <button class="btn-small btn-outline" onclick="cancelOrder('${order.id}')">
+                                <i class="fas fa-times"></i> Отменить
                             </button>
                         ` : ''}
                     </div>
                 </div>
-                `;
-            }).join('');
+            `).join('');
         }
 
-        // Показать модальное окно создания заказа
-        function showCreateOrderModal() {
-            document.getElementById('create-order-modal').classList.add('active');
+        function toggleCreateForm() {
+            const section = document.getElementById('create-order-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
             
-            // Обработчик выбора типа
-            document.querySelectorAll('.type-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                    document.getElementById('project-type').value = this.dataset.type;
-                });
-            });
-            
-            // Счетчик символов для промта
-            const promptTextarea = document.getElementById('project-prompt');
-            const charCounter = document.getElementById('char-counter');
-            
-            promptTextarea.addEventListener('input', function() {
-                const length = this.value.length;
-                charCounter.textContent = `${length}/2500 символов`;
-                
-                if (length < 300) {
-                    charCounter.classList.add('error');
-                } else {
-                    charCounter.classList.remove('error');
-                }
-            });
+            if (section.style.display === 'block') {
+                document.getElementById('order-form').reset();
+                updatePromptCounter();
+                window.scrollTo({ top: section.offsetTop - 20, behavior: 'smooth' });
+            }
         }
 
-        // Скрыть модальное окно создания заказа
-        function hideCreateOrderModal() {
-            document.getElementById('create-order-modal').classList.remove('active');
-            document.getElementById('create-order-form').reset();
-            document.getElementById('char-counter').textContent = '0/2500 символов';
-            document.getElementById('char-counter').classList.remove('error');
+        function setupEventListeners() {
+            // Счетчик символов в промте
+            document.getElementById('project-prompt').addEventListener('input', updatePromptCounter);
+            
+            // Создание заказа
+            document.getElementById('order-form').addEventListener('submit', createOrder);
         }
 
-        // Создание заказа
-        document.getElementById('create-order-form').addEventListener('submit', function(e) {
+        function updatePromptCounter() {
+            const textarea = document.getElementById('project-prompt');
+            const counter = document.getElementById('prompt-counter');
+            const length = textarea.value.length;
+            
+            counter.textContent = `${length}/2500 символов`;
+            counter.className = length < 300 || length > 2500 ? 'prompt-counter invalid' : 'prompt-counter';
+        }
+
+        async function createOrder(e) {
             e.preventDefault();
             
-            const projectName = document.getElementById('project-name').value.trim();
+            const projectName = document.getElementById('project-name').value;
             const projectType = document.getElementById('project-type').value;
-            const budget = parseInt(document.getElementById('project-budget').value);
-            const deadline = parseInt(document.getElementById('project-deadline').value);
-            const prompt = document.getElementById('project-prompt').value.trim();
+            const budget = document.getElementById('project-budget').value;
+            const deadline = document.getElementById('project-deadline').value;
+            const prompt = document.getElementById('project-prompt').value;
             
-            // Проверка длины промта
-            if (prompt.length < 300) {
-                showNotification('Описание проекта должно содержать минимум 300 символов', 'error');
-                return;
-            }
-            
-            if (prompt.length > 2500) {
-                showNotification('Описание проекта не должно превышать 2500 символов', 'error');
-                return;
-            }
-            
-            // Создаем заказ
-            const orders = getAllOrders();
-            const newOrder = {
-                id: 'order-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-                clientId: currentUser.id,
-                clientName: currentUser.name,
-                clientEmail: currentUser.username,
-                clientPhone: currentUser.phone || '',
-                clientTelegram: currentUser.telegram || '',
-                projectName: projectName,
-                projectType: projectType,
-                budget: budget,
-                deadline: deadline,
-                prompt: prompt,
-                status: 'new',
-                assignedTo: null,
-                createdDate: new Date().toISOString(),
-                updatedDate: new Date().toISOString(),
-                messages: []
-            };
-            
-            orders.push(newOrder);
-            localStorage.setItem('sitecore_orders', JSON.stringify(orders));
-            
-            // Синхронизируем
-            syncData();
-            
-            showNotification('Заказ успешно создан!', 'success');
-            hideCreateOrderModal();
-            
-            // Перезагружаем данные
-            setTimeout(() => {
-                loadDashboardData();
+            try {
+                const order = await SiteCoreDB.createOrder(
+                    currentUser.id,
+                    projectName,
+                    projectType,
+                    budget,
+                    deadline,
+                    prompt
+                );
+                
+                showNotification('Заказ успешно создан!', 'success');
+                toggleCreateForm();
+                loadStats();
                 loadOrders();
-            }, 500);
-        });
+                
+            } catch (error) {
+                showNotification(error.message, 'error');
+            }
+        }
 
-        // Открыть модальное окно заказа
-        function openOrderModal(orderId) {
+        function openChat(orderId) {
             currentOrderId = orderId;
-            const orders = getAllOrders();
-            const order = orders.find(o => o.id === orderId);
+            const order = SiteCoreDB.getOrderById(orderId);
             
             if (!order) {
                 showNotification('Заказ не найден', 'error');
                 return;
             }
             
-            // Заполняем информацию о заказе
-            document.getElementById('modal-order-title').textContent = order.projectName;
-            
-            document.getElementById('order-info-grid').innerHTML = `
-                <div class="info-item">
-                    <span class="info-label">Тип сайта:</span>
-                    <span class="info-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Бюджет:</span>
-                    <span class="info-value">${formatCurrency(order.budget)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Срок:</span>
-                    <span class="info-value">${order.deadline} дней</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Статус:</span>
-                    <span class="info-value">${getStatusText(order.status)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Создан:</span>
-                    <span class="info-value">${new Date(order.createdDate).toLocaleDateString()}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Исполнитель:</span>
-                    <span class="info-value">${order.assignedTo ? 'Назначен' : 'Не назначен'}</span>
-                </div>
-            `;
-            
-            // Заполняем промт
-            document.getElementById('modal-prompt-content').textContent = order.prompt;
-            
-            // Заполняем информацию об исполнителе
-            const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-            const executor = users.find(u => u.id === order.assignedTo);
-            
-            if (executor) {
-                document.getElementById('executor-info-panel').style.display = 'block';
-                document.getElementById('executor-contact-list').innerHTML = `
-                    <div class="contact-info">
-                        <i class="fas fa-user"></i>
-                        <span>${executor.name}</span>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <span>${executor.username}</span>
-                    </div>
-                `;
-            } else {
-                document.getElementById('executor-info-panel').style.display = 'none';
-            }
-            
-            // Показываем/скрываем чат
-            const canChat = !!executor && order.status !== 'rejected';
-            
-            if (canChat) {
-                document.getElementById('chat-container').style.display = 'block';
-                loadMessages(orderId);
-            } else {
-                document.getElementById('chat-container').style.display = 'none';
-            }
-            
-            // Показываем модальное окно
-            document.getElementById('order-modal').classList.add('active');
+            document.getElementById('chat-title').textContent = `Общение по заказу: ${order.projectName}`;
+            loadChatMessages();
+            document.getElementById('chat-modal').classList.add('active');
         }
 
-        // Закрыть модальное окно заказа
-        function closeOrderModal() {
-            document.getElementById('order-modal').classList.remove('active');
+        function closeChat() {
+            document.getElementById('chat-modal').classList.remove('active');
             currentOrderId = null;
         }
 
-        // Загрузить сообщения
-        function loadMessages(orderId) {
-            const orders = getAllOrders();
-            const order = orders.find(o => o.id === orderId);
+        function loadChatMessages() {
+            if (!currentOrderId) return;
             
-            if (!order || !order.messages) {
-                document.getElementById('chat-messages').innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: var(--gray);">
-                        <p>Нет сообщений</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const messages = order.messages;
-            const chatMessages = document.getElementById('chat-messages');
+            const messages = SiteCoreDB.getMessages(currentOrderId);
+            const container = document.getElementById('chat-messages');
             
             if (messages.length === 0) {
-                chatMessages.innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: var(--gray);">
-                        <p>Нет сообщений</p>
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <p>Нет сообщений. Начните общение первым!</p>
                     </div>
                 `;
                 return;
             }
             
-            chatMessages.innerHTML = messages.map(msg => {
-                if (msg.sender === 'system') {
+            container.innerHTML = messages.map(msg => {
+                if (msg.senderType === 'system') {
                     return `
-                        <div style="text-align: center; margin: 8px 0;">
-                            <span style="background: var(--gray-light); color: var(--gray); padding: 4px 12px; border-radius: 12px; font-size: 11px;">
+                        <div class="message message-system">
+                            <div style="background: var(--gray-light); color: var(--gray); padding: 8px 16px; border-radius: 12px; font-size: 12px; display: inline-block;">
                                 ${msg.text}
-                            </span>
+                            </div>
+                            <div style="font-size: 11px; color: var(--gray); margin-top: 4px;">
+                                ${new Date(msg.timestamp).toLocaleString()}
+                            </div>
                         </div>
                     `;
                 } else {
-                    const isClient = msg.sender === currentUser.id;
-                    const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                    const sender = users.find(u => u.id === msg.sender);
-                    const senderName = isClient ? 'Вы' : (sender ? sender.name : 'Неизвестный');
-                    
+                    const isClient = msg.senderId === currentUser.id;
                     return `
-                        <div class="message ${isClient ? 'client' : ''}">
-                            <div class="message-sender">${senderName}</div>
+                        <div class="message ${isClient ? 'client' : 'executor'}">
+                            <div class="message-sender">${isClient ? 'Вы' : 'Исполнитель'}</div>
                             <div class="message-content">${msg.text}</div>
                             <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         </div>
@@ -1582,49 +1100,30 @@
             }).join('');
             
             // Прокрутка вниз
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            container.scrollTop = container.scrollHeight;
         }
 
-        // Отправить сообщение
         function sendMessage() {
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             
             if (!message || !currentOrderId) return;
             
-            // Сохраняем сообщение
-            const orders = getAllOrders();
-            const orderIndex = orders.findIndex(o => o.id === currentOrderId);
-            
-            if (orderIndex === -1) return;
-            
-            if (!orders[orderIndex].messages) {
-                orders[orderIndex].messages = [];
-            }
-            
-            orders[orderIndex].messages.push({
-                id: 'msg-' + Date.now(),
-                text: message,
-                sender: currentUser.id,
-                timestamp: new Date().toISOString(),
-                read: false
-            });
-            
-            localStorage.setItem('sitecore_orders', JSON.stringify(orders));
-            
-            // Синхронизируем
-            syncData();
-            
-            // Очищаем поле ввода
+            SiteCoreDB.addMessage(currentOrderId, currentUser.id, 'client', message);
             input.value = '';
-            
-            // Обновляем сообщения
-            loadMessages(currentOrderId);
+            loadChatMessages();
         }
 
-        // Вспомогательные функции
-        function getAllOrders() {
-            return JSON.parse(localStorage.getItem('sitecore_orders') || '[]');
+        function cancelOrder(orderId) {
+            if (confirm('Вы уверены, что хотите отменить заказ?')) {
+                const order = SiteCoreDB.getOrderById(orderId);
+                if (order && !order.assignedTo) {
+                    SiteCoreDB.updateOrderStatus(orderId, 'rejected');
+                    showNotification('Заказ отменен', 'warning');
+                    loadStats();
+                    loadOrders();
+                }
+            }
         }
 
         function getStatusText(status) {
@@ -1632,23 +1131,15 @@
                 'new': 'Новый',
                 'in_progress': 'В работе',
                 'review': 'На проверке',
-                'completed': 'Завершён',
-                'rejected': 'Отклонён'
+                'completed': 'Завершен',
+                'rejected': 'Отклонен'
             };
             return statuses[status] || status;
         }
 
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('ru-RU', {
-                style: 'currency',
-                currency: 'RUB',
-                minimumFractionDigits: 0
-            }).format(amount);
-        }
-
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
-            notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
+            notification.textContent = message;
             notification.className = `notification ${type} show`;
             
             setTimeout(() => {
@@ -1657,7 +1148,7 @@
         }
 
         function logout() {
-            localStorage.removeItem('currentUser');
+            localStorage.removeItem('current_user');
             window.location.href = 'index.html';
         }
 
