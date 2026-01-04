@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiteCore | Панель клиента</title>
+    <title>SiteCore | Личный кабинет клиента</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
         }
 
         :root {
@@ -26,15 +28,14 @@
             --gray-light: #e5e7eb;
             --gray-lighter: #f9fafb;
             --white: #ffffff;
-            --radius: 20px;
-            --radius-sm: 12px;
+            --radius: 16px;
+            --radius-sm: 8px;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--gray-lighter);
             color: var(--dark);
             min-height: 100vh;
@@ -92,15 +93,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 20px;
-            background: var(--gray-lighter);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .user-info:hover {
-            background: var(--gray-light);
         }
 
         .user-avatar {
@@ -116,20 +108,9 @@
             font-size: 18px;
         }
 
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
         .user-name {
             font-weight: 600;
             font-size: 16px;
-            margin-bottom: 2px;
-        }
-
-        .user-email {
-            font-size: 12px;
-            color: var(--gray);
         }
 
         .logout-btn {
@@ -150,96 +131,189 @@
 
         /* Основной контент */
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 40px;
         }
 
-        /* Статистика */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--white);
+        /* Приветствие */
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
             border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
+            padding: 40px;
+            margin-bottom: 40px;
             box-shadow: var(--shadow-lg);
         }
 
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .stat-icon.orders {
-            background: rgba(102, 126, 234, 0.1);
-            color: var(--primary);
-        }
-
-        .stat-icon.spent {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-        }
-
-        .stat-icon.active {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-        }
-
-        .stat-info h3 {
-            font-size: 14px;
-            color: var(--gray);
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--dark);
-        }
-
-        /* Заказы */
-        .orders-section {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 40px;
-            box-shadow: var(--shadow);
-            margin-bottom: 40px;
-        }
-
-        .section-header {
+        .welcome-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
 
-        .section-header h2 {
-            font-size: 28px;
+        .welcome-header h1 {
+            font-size: 32px;
             font-weight: 800;
+        }
+
+        .stats-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-info h2 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .welcome-info p {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .quick-stat {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .quick-stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Табы */
+        .tabs {
+            display: flex;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 8px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px 24px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Контент табов */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Форма создания заказа */
+        .create-order-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .create-order-section h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
             color: var(--dark);
         }
 
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .prompt-counter {
+            text-align: right;
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        .prompt-counter.error {
+            color: var(--danger);
+        }
+
         .btn {
-            padding: 14px 28px;
+            padding: 16px 32px;
             border: none;
             border-radius: var(--radius-sm);
             font-size: 16px;
@@ -261,6 +335,34 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--gray-lighter);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: flex-end;
+        }
+
+        /* Список заказов */
+        .orders-section {
+            margin-bottom: 40px;
+        }
+
+        .orders-section h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
         .orders-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -268,18 +370,19 @@
         }
 
         .order-card {
-            background: var(--gray-lighter);
+            background: var(--white);
             border-radius: var(--radius);
             padding: 30px;
-            border: 2px solid transparent;
+            box-shadow: var(--shadow);
             transition: var(--transition);
             cursor: pointer;
+            border: 2px solid transparent;
         }
 
         .order-card:hover {
-            border-color: var(--primary-light);
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .order-card-header {
@@ -296,20 +399,27 @@
             margin-bottom: 8px;
         }
 
+        .order-client {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
         .order-status {
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .status-new { background: #dbeafe; color: #1d4ed8; }
-        .status-progress { background: #fef3c7; color: #d97706; }
+        .status-in-progress { background: #fef3c7; color: #d97706; }
         .status-review { background: #fce7f3; color: #be185d; }
         .status-completed { background: #dcfce7; color: #16a34a; }
-        .status-rejected { background: #fee2e2; color: #dc2626; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+
+        .order-card-body {
+            margin-bottom: 24px;
+        }
 
         .order-details {
             display: grid;
@@ -335,115 +445,107 @@
             color: var(--dark);
         }
 
-        .order-actions {
+        .order-prompt-preview {
+            background: var(--gray-lighter);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--dark-light);
+            line-height: 1.5;
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .order-prompt-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, var(--gray-lighter));
+        }
+
+        .order-card-actions {
             display: flex;
             gap: 12px;
         }
 
         .btn-small {
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 8px 16px;
             font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: var(--transition);
+            border-radius: 6px;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--gray-light);
+        /* Профиль */
+        .profile-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .profile-info h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
             color: var(--dark);
         }
 
-        .btn-outline:hover {
-            border-color: var(--primary);
-            background: var(--gray-lighter);
-        }
-
-        /* Создание заказа */
-        .create-order-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: var(--radius);
-            padding: 40px;
-            color: white;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .create-order-section h2 {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .create-order-section p {
+        .profile-info p {
             font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 40px;
-            max-width: 600px;
+            color: var(--gray);
         }
 
-        .order-form {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .form-row {
+        .profile-details {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
+        .profile-section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark);
         }
 
-        .form-group label {
+        .detail-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .detail-label {
             font-size: 14px;
-            font-weight: 600;
+            color: var(--gray);
             margin-bottom: 8px;
-            opacity: 0.8;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: var(--transition);
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .form-group textarea {
-            min-height: 200px;
-            resize: vertical;
-            font-family: inherit;
-        }
-
-        .prompt-counter {
-            text-align: right;
-            font-size: 14px;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .prompt-counter.invalid {
-            color: #ff6b6b;
+        .detail-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
         }
 
         /* Модальное окно чата */
@@ -473,7 +575,7 @@
             width: 100%;
             max-width: 800px;
             max-height: 90vh;
-            overflow: hidden;
+            overflow-y: auto;
             box-shadow: var(--shadow-lg);
         }
 
@@ -527,7 +629,7 @@
             overflow-y: auto;
             padding: 20px;
             background: var(--gray-lighter);
-            border-radius: 12px;
+            border-radius: var(--radius);
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
@@ -535,54 +637,47 @@
         }
 
         .message {
-            max-width: 80%;
-            animation: slideIn 0.3s ease;
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
         }
 
         .message.client {
             align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
         }
 
-        .message.executor {
+        .message.developer {
             align-self: flex-start;
+            background: var(--white);
+            color: var(--dark);
+            border: 1px solid var(--gray-light);
+            border-bottom-left-radius: 4px;
         }
 
         .message-system {
             align-self: center;
-            text-align: center;
-            max-width: 100%;
-        }
-
-        .message-content {
-            padding: 16px;
-            border-radius: 18px;
-            background: var(--white);
-            border: 1px solid var(--gray-light);
-            position: relative;
-        }
-
-        .message.client .message-content {
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
+            background: var(--gray-light);
+            color: var(--gray);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
         }
 
         .message-sender {
             font-size: 12px;
-            color: var(--gray);
+            font-weight: 600;
             margin-bottom: 4px;
-            padding-left: 8px;
         }
 
         .message-time {
             font-size: 11px;
             text-align: right;
             margin-top: 4px;
-            color: var(--gray);
-        }
-
-        .message.client .message-time {
-            color: rgba(255, 255, 255, 0.7);
+            opacity: 0.7;
         }
 
         .chat-input-container {
@@ -594,7 +689,7 @@
             flex: 1;
             padding: 16px;
             border: 2px solid var(--gray-light);
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius);
             font-family: inherit;
             font-size: 15px;
             resize: none;
@@ -606,7 +701,7 @@
             border-color: var(--primary);
         }
 
-        /* Уведомления */
+        /* Уведомление */
         .notification {
             position: fixed;
             bottom: 30px;
@@ -621,11 +716,11 @@
             gap: 12px;
             max-width: 400px;
             z-index: 1000;
-            animation: slideInRight 0.3s ease;
         }
 
         .notification.show {
             display: flex;
+            animation: slideInRight 0.3s ease;
         }
 
         .notification.success {
@@ -636,36 +731,53 @@
             background: var(--danger);
         }
 
-        .notification.warning {
-            background: var(--warning);
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Пустые состояния */
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            margin-bottom: 30px;
+            max-width: 400px;
+            margin: 0 auto 30px;
         }
 
         /* Адаптивность */
-        @media (max-width: 1200px) {
-            .orders-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         @media (max-width: 768px) {
             .header {
                 padding: 15px 20px;
@@ -682,41 +794,66 @@
                 padding: 20px;
             }
             
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .welcome-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .create-order-section,
+            .profile-section {
+                padding: 30px 20px;
+            }
+            
             .orders-grid {
                 grid-template-columns: 1fr;
             }
             
-            .stats-grid {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
             
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .order-actions {
+            .profile-header {
                 flex-direction: column;
+                text-align: center;
             }
             
-            .btn-small {
-                width: 100%;
-                justify-content: center;
+            .modal-content {
+                margin: 0;
+                border-radius: 0;
+                max-height: 100vh;
+            }
+            
+            .modal-header,
+            .modal-body {
+                padding: 20px;
             }
         }
 
         @media (max-width: 480px) {
-            .section-header {
+            .tabs {
                 flex-direction: column;
-                gap: 20px;
-                text-align: center;
             }
             
-            .create-order-section {
-                padding: 30px 20px;
+            .tab {
+                width: 100%;
             }
             
-            .create-order-section h2 {
-                font-size: 24px;
+            .order-card-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
             }
             
             .chat-input-container {
@@ -724,18 +861,17 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Шапка -->
     <div class="header">
-        <a href="#" class="logo" onclick="window.location.reload()">
+        <a href="#" class="logo" onclick="showTab('orders')">
             <div class="logo-icon">SC</div>
             <div class="logo-text">SiteCore</div>
         </a>
         
         <div class="user-menu">
-            <div class="user-info" id="user-info">
+            <div class="user-info" id="current-user-info">
                 <!-- Заполняется JavaScript -->
             </div>
             <button class="logout-btn" onclick="logout()">Выйти</button>
@@ -744,73 +880,135 @@
 
     <!-- Основной контент -->
     <div class="container">
-        <!-- Статистика -->
-        <div class="stats-grid" id="stats-grid">
-            <!-- Заполняется JavaScript -->
+        <!-- Приветствие -->
+        <div class="welcome-section">
+            <div class="welcome-header">
+                <h1 id="welcome-title">Добро пожаловать!</h1>
+                <div class="stats-badge" id="stats-badge">
+                    <!-- Заполняется JavaScript -->
+                </div>
+            </div>
+            
+            <div class="welcome-info">
+                <h2 id="client-name">Клиент</h2>
+                <p>Создавайте заказы на разработку сайтов, отслеживайте статус и общайтесь с разработчиками.</p>
+                <div class="quick-stats" id="quick-stats">
+                    <!-- Заполняется JavaScript -->
+                </div>
+            </div>
         </div>
-        
+
+        <!-- Табы -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('orders')">Мои заказы</button>
+            <button class="tab" onclick="showTab('create')">Создать заказ</button>
+            <button class="tab" onclick="showTab('profile')">Профиль</button>
+        </div>
+
         <!-- Мои заказы -->
-        <div class="orders-section">
-            <div class="section-header">
+        <div id="orders-tab" class="tab-content active">
+            <div class="orders-section">
                 <h2>Мои заказы</h2>
-                <button class="btn btn-primary" onclick="toggleCreateForm()">
-                    <i class="fas fa-plus"></i> Создать заказ
-                </button>
-            </div>
-            
-            <div class="orders-grid" id="orders-grid">
-                <!-- Заполняется JavaScript -->
+                <div class="orders-grid" id="orders-grid">
+                    <!-- Заполняется JavaScript -->
+                </div>
             </div>
         </div>
-        
+
         <!-- Создание заказа -->
-        <div class="create-order-section" id="create-order-section" style="display: none;">
-            <h2>Создание нового заказа</h2>
-            <p>Опишите подробно ваш проект. Промт должен содержать от 300 до 2500 символов.</p>
-            
-            <form class="order-form" id="order-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="project-name">Название проекта</label>
-                        <input type="text" id="project-name" placeholder="Например: Интернет-магазин одежды" required>
+        <div id="create-tab" class="tab-content">
+            <div class="create-order-section">
+                <h2>Создание нового заказа</h2>
+                <form id="create-order-form" onsubmit="return createOrder(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="project-name">Название проекта *</label>
+                            <input type="text" id="project-name" placeholder="Например: Интернет-магазин одежды" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-type">Тип сайта *</label>
+                            <select id="project-type" required>
+                                <option value="">Выберите тип</option>
+                                <option value="static">Статический сайт</option>
+                                <option value="dynamic">Динамический сайт</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-budget">Бюджет (₽) *</label>
+                            <input type="number" id="project-budget" placeholder="Например: 50000" min="10000" step="1000" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-deadline">Срок (дней) *</label>
+                            <input type="number" id="project-deadline" placeholder="Например: 30" min="7" max="365" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="project-prompt">Техническое задание (промт) *</label>
+                            <textarea id="project-prompt" rows="8" placeholder="Опишите подробно, какой сайт вам нужен. Укажите цели, предпочтения по дизайну, функционал и т.д." required></textarea>
+                            <div class="prompt-counter" id="prompt-counter">Минимум 300 символов, максимум 2500</div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="project-type">Тип сайта</label>
-                        <select id="project-type" required>
-                            <option value="static">Статический сайт</option>
-                            <option value="dynamic">Динамический сайт</option>
-                        </select>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                            <i class="fas fa-times"></i> Очистить
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="create-order-btn">
+                            <i class="fas fa-plus-circle"></i> Создать заказ
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Профиль -->
+        <div id="profile-tab" class="tab-content">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar">К</div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">Иван Иванов</h2>
+                        <p id="profile-email">ivan@example.com</p>
                     </div>
                 </div>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="project-budget">Бюджет (руб.)</label>
-                        <input type="number" id="project-budget" placeholder="50000" min="10000" step="1000" required>
+                <div class="profile-details">
+                    <div>
+                        <h3 class="profile-section-title">Контактная информация</h3>
+                        <div class="detail-item">
+                            <div class="detail-label">Email</div>
+                            <div class="detail-value" id="detail-email"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Телефон</div>
+                            <div class="detail-value" id="detail-phone"></div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Telegram</div>
+                            <div class="detail-value" id="detail-telegram"></div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="project-deadline">Срок выполнения (дней)</label>
-                        <input type="number" id="project-deadline" placeholder="30" min="1" max="180" required>
+                    <div>
+                        <h3 class="profile-section-title">Статистика</h3>
+                        <div class="detail-item">
+                            <div class="detail-label">Всего заказов</div>
+                            <div class="detail-value" id="detail-total-orders">0</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">В работе</div>
+                            <div class="detail-value" id="detail-active-orders">0</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Завершено</div>
+                            <div class="detail-value" id="detail-completed-orders">0</div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="project-prompt">Детальное описание проекта</label>
-                    <textarea id="project-prompt" placeholder="Опишите детали проекта: цели, функционал, дизайн, целевая аудитория и т.д. От 300 до 2500 символов." required></textarea>
-                    <div class="prompt-counter" id="prompt-counter">0/2500 символов</div>
-                </div>
-                
-                <div style="display: flex; gap: 16px;">
-                    <button type="button" class="btn btn-outline" onclick="toggleCreateForm()" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
-                        Отмена
-                    </button>
-                    <button type="submit" class="btn btn-primary" style="background: white; color: var(--primary);">
-                        <i class="fas fa-paper-plane"></i> Отправить заказ
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -818,8 +1016,8 @@
     <div class="modal" id="chat-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="chat-title">Общение по заказу</h3>
-                <button class="modal-close" onclick="closeChat()">&times;</button>
+                <h3 id="chat-modal-title">Общение по заказу</h3>
+                <button class="modal-close" onclick="closeChatModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="chat-container">
@@ -840,14 +1038,22 @@
     <!-- Уведомление -->
     <div class="notification" id="notification"></div>
 
-    <script src="database.js"></script>
     <script>
-        let currentUser = null;
-        let currentOrderId = null;
+        // Глобальные переменные
+        const DB_CONFIG = {
+            API_URL: 'https://api.jsonbin.io/v3/b/66b3d9c5ad19ca34f8c48e0d',
+            API_KEY: '$2b$10$LQYjMwTj2wXGJfX8b7K6DeoEJpJX5qYQY9t8rFqGtHvK1lM3nP4oS',
+            MASTER_KEY: '$2b$10$LQYjMwTj2wXGJfX8b7K6DeoEJpJX5qYQY9t8rFqGtHvK1lM3nP4oS'
+        };
 
+        let currentUser = null;
+        let database = null;
+        let currentChatOrderId = null;
+
+        // Инициализация
         async function init() {
             // Проверка авторизации
-            const userData = localStorage.getItem('current_user');
+            const userData = sessionStorage.getItem('currentUser');
             if (!userData) {
                 window.location.href = 'index.html';
                 return;
@@ -855,244 +1061,439 @@
 
             currentUser = JSON.parse(userData);
             
-            // Если это не клиент, редирект
+            // Если это разработчик, редирект
             if (currentUser.type !== 'client') {
-                window.location.href = 'index.html';
+                window.location.href = 'developer.html';
                 return;
             }
 
+            await loadDatabase();
             updateUserInfo();
-            loadStats();
-            loadOrders();
+            loadClientOrders();
+            updateProfile();
             setupEventListeners();
         }
 
+        // Загрузка базы данных
+        async function loadDatabase() {
+            try {
+                const response = await fetch(DB_CONFIG.API_URL + '/latest', {
+                    method: 'GET',
+                    headers: {
+                        'X-Master-Key': DB_CONFIG.MASTER_KEY,
+                        'X-Bin-Meta': 'false'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки базы данных');
+                }
+                
+                database = await response.json();
+                
+                // Сохраняем локальную копию
+                localStorage.setItem('sitecore_local_db', JSON.stringify(database));
+            } catch (error) {
+                console.error('Ошибка загрузки:', error);
+                
+                // Пробуем загрузить локальную копию
+                const localData = localStorage.getItem('sitecore_local_db');
+                if (localData) {
+                    database = JSON.parse(localData);
+                    showNotification('Работаем в офлайн-режиме', 'warning');
+                } else {
+                    showNotification('Ошибка загрузки данных', 'error');
+                    database = {
+                        users: { clients: [], developers: [] },
+                        orders: [],
+                        messages: []
+                    };
+                }
+            }
+        }
+
+        // Сохранение базы данных
+        async function saveDatabase() {
+            try {
+                const response = await fetch(DB_CONFIG.API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': DB_CONFIG.MASTER_KEY
+                    },
+                    body: JSON.stringify(database)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Ошибка сохранения базы данных');
+                }
+                
+                // Сохраняем локальную копию
+                localStorage.setItem('sitecore_local_db', JSON.stringify(database));
+                return true;
+            } catch (error) {
+                console.error('Ошибка сохранения:', error);
+                // Сохраняем локальную копию на всякий случай
+                localStorage.setItem('sitecore_local_db', JSON.stringify(database));
+                return false;
+            }
+        }
+
+        // Обновление информации пользователя
         function updateUserInfo() {
-            document.getElementById('user-info').innerHTML = `
+            document.getElementById('current-user-info').innerHTML = `
                 <div class="user-avatar">${currentUser.avatar}</div>
-                <div class="user-details">
-                    <div class="user-name">${currentUser.name}</div>
-                    <div class="user-email">${currentUser.email}</div>
-                </div>
+                <div class="user-name">${currentUser.name}</div>
             `;
+
+            document.getElementById('client-name').textContent = currentUser.name;
+            
+            // Заголовок приветствия
+            const now = new Date();
+            const hours = now.getHours();
+            let greeting;
+            
+            if (hours < 12) greeting = 'Доброе утро';
+            else if (hours < 18) greeting = 'Добрый день';
+            else greeting = 'Добрый вечер';
+            
+            document.getElementById('welcome-title').textContent = `${greeting}, ${currentUser.name}!`;
         }
 
-        function loadStats() {
-            const stats = currentUser.stats || {};
-            document.getElementById('stats-grid').innerHTML = `
-                <div class="stat-card">
-                    <div class="stat-icon orders">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Всего заказов</h3>
-                        <div class="stat-value">${stats.ordersCount || 0}</div>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon spent">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Потрачено</h3>
-                        <div class="stat-value">${(stats.totalSpent || 0).toLocaleString()} ₽</div>
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon active">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>Активные заказы</h3>
-                        <div class="stat-value">${stats.activeOrders || 0}</div>
-                    </div>
-                </div>
-            `;
+        // Показать таб
+        function showTab(tabName) {
+            // Обновляем активные табы
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Показываем выбранный таб
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            if (tabName === 'orders') {
+                loadClientOrders();
+            } else if (tabName === 'profile') {
+                updateProfile();
+            }
         }
 
-        function loadOrders() {
-            const orders = SiteCoreDB.getOrdersForClient(currentUser.id);
+        // Загрузка заказов клиента
+        function loadClientOrders() {
+            const clientOrders = database.orders.filter(order => order.clientId === currentUser.id);
+            
+            // Обновляем статистику
+            const totalOrders = clientOrders.length;
+            const activeOrders = clientOrders.filter(o => o.status !== 'completed' && o.status !== 'cancelled').length;
+            const completedOrders = clientOrders.filter(o => o.status === 'completed').length;
+            
+            document.getElementById('stats-badge').innerHTML = `
+                <i class="fas fa-tasks"></i>
+                <span>${activeOrders} активных заказов</span>
+            `;
+            
+            document.getElementById('quick-stats').innerHTML = `
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${totalOrders}</div>
+                    <div class="quick-stat-label">Всего заказов</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${activeOrders}</div>
+                    <div class="quick-stat-label">В работе</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${completedOrders}</div>
+                    <div class="quick-stat-label">Завершено</div>
+                </div>
+            `;
+            
+            // Отображаем заказы
             const container = document.getElementById('orders-grid');
             
-            if (orders.length === 0) {
+            if (clientOrders.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 60px; color: var(--gray); grid-column: 1/-1;">
-                        <i class="fas fa-clipboard" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;"></i>
-                        <h3 style="margin-bottom: 16px;">У вас пока нет заказов</h3>
-                        <p style="margin-bottom: 30px;">Создайте свой первый заказ прямо сейчас!</p>
-                        <button class="btn btn-primary" onclick="toggleCreateForm()">
-                            <i class="fas fa-plus"></i> Создать первый заказ
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>У вас пока нет заказов</h3>
+                        <p>Создайте свой первый заказ на разработку сайта</p>
+                        <button class="btn btn-primary" onclick="showTab('create')">
+                            <i class="fas fa-plus-circle"></i> Создать заказ
                         </button>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = orders.map(order => `
-                <div class="order-card">
-                    <div class="order-card-header">
-                        <div>
-                            <h3>${order.projectName}</h3>
-                            <div style="color: var(--gray); font-size: 14px;">
-                                ${new Date(order.createdDate).toLocaleDateString()}
+            // Сортируем по дате создания (новые сначала)
+            clientOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            container.innerHTML = clientOrders.map(order => {
+                const statusTexts = {
+                    'new': 'Новый',
+                    'in-progress': 'В работе',
+                    'review': 'На проверке',
+                    'completed': 'Завершен',
+                    'cancelled': 'Отменен'
+                };
+                
+                const statusColors = {
+                    'new': 'status-new',
+                    'in-progress': 'status-in-progress',
+                    'review': 'status-review',
+                    'completed': 'status-completed',
+                    'cancelled': 'status-cancelled'
+                };
+                
+                // Получаем последнее сообщение
+                const orderMessages = database.messages.filter(m => m.orderId === order.id);
+                const lastMessage = orderMessages[orderMessages.length - 1];
+                let lastMessageText = 'Нет сообщений';
+                
+                if (lastMessage) {
+                    const time = new Date(lastMessage.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    lastMessageText = `${lastMessage.sender === currentUser.id ? 'Вы' : 'Разработчик'}: ${lastMessage.text.substring(0, 50)}... (${time})`;
+                }
+                
+                return `
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <div>
+                                <h3>${order.projectName}</h3>
+                                <div class="order-client">Создан: ${new Date(order.createdAt).toLocaleDateString()}</div>
+                            </div>
+                            <div class="order-status ${statusColors[order.status]}">
+                                ${statusTexts[order.status]}
                             </div>
                         </div>
-                        <div class="order-status status-${order.status.replace('_', '')}">
-                            ${getStatusText(order.status)}
-                        </div>
-                    </div>
-                    
-                    <div class="order-details">
-                        <div class="order-detail">
-                            <span class="order-detail-label">Тип</span>
-                            <span class="order-detail-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</span>
-                        </div>
-                        <div class="order-detail">
-                            <span class="order-detail-label">Бюджет</span>
-                            <span class="order-detail-value">${order.budget.toLocaleString()} ₽</span>
-                        </div>
-                        <div class="order-detail">
-                            <span class="order-detail-label">Срок</span>
-                            <span class="order-detail-value">${order.deadline} дней</span>
-                        </div>
-                        <div class="order-detail">
-                            <span class="order-detail-label">Исполнитель</span>
-                            <span class="order-detail-value">${order.assignedTo ? 'Назначен' : 'В поиске'}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="order-actions">
-                        ${order.messages && order.messages.length > 0 ? `
-                            <span style="font-size: 12px; color: var(--gray);">
-                                <i class="fas fa-comment"></i> ${order.messages.length} сообщений
-                            </span>
-                        ` : ''}
                         
-                        <button class="btn-small btn-outline" onclick="openChat('${order.id}')">
-                            <i class="fas fa-comment"></i> Написать
-                        </button>
+                        <div class="order-card-body">
+                            <div class="order-details">
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Тип</div>
+                                    <div class="order-detail-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Бюджет</div>
+                                    <div class="order-detail-value">${formatCurrency(order.budget)}</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Срок</div>
+                                    <div class="order-detail-value">${order.deadline} дней</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Разработчик</div>
+                                    <div class="order-detail-value">${order.assignedTo ? 'Назначен' : 'В поиске'}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="order-prompt-preview">
+                                ${order.prompt.substring(0, 100)}...
+                            </div>
+                            
+                            <div style="font-size: 12px; color: var(--gray); margin-top: 10px;">
+                                <i class="far fa-comment"></i> ${lastMessageText}
+                            </div>
+                        </div>
                         
-                        ${!order.assignedTo ? `
-                            <button class="btn-small btn-outline" onclick="cancelOrder('${order.id}')">
-                                <i class="fas fa-times"></i> Отменить
+                        <div class="order-card-actions">
+                            <button class="btn btn-secondary btn-small" onclick="openChat('${order.id}')">
+                                <i class="fas fa-comment"></i> Чат
                             </button>
-                        ` : ''}
+                            ${order.status === 'new' ? `
+                                <button class="btn btn-secondary btn-small" onclick="cancelOrder('${order.id}')">
+                                    <i class="fas fa-times"></i> Отменить
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function toggleCreateForm() {
-            const section = document.getElementById('create-order-section');
-            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        // Обновление профиля
+        function updateProfile() {
+            const clientOrders = database.orders.filter(order => order.clientId === currentUser.id);
             
-            if (section.style.display === 'block') {
-                document.getElementById('order-form').reset();
-                updatePromptCounter();
-                window.scrollTo({ top: section.offsetTop - 20, behavior: 'smooth' });
-            }
+            document.getElementById('profile-avatar').textContent = currentUser.avatar;
+            document.getElementById('profile-name').textContent = currentUser.name;
+            document.getElementById('profile-email').textContent = currentUser.email;
+            
+            document.getElementById('detail-email').textContent = currentUser.email;
+            document.getElementById('detail-phone').textContent = currentUser.phone;
+            document.getElementById('detail-telegram').textContent = currentUser.telegram;
+            
+            document.getElementById('detail-total-orders').textContent = clientOrders.length;
+            document.getElementById('detail-active-orders').textContent = clientOrders.filter(o => o.status !== 'completed' && o.status !== 'cancelled').length;
+            document.getElementById('detail-completed-orders').textContent = clientOrders.filter(o => o.status === 'completed').length;
         }
 
-        function setupEventListeners() {
-            // Счетчик символов в промте
-            document.getElementById('project-prompt').addEventListener('input', updatePromptCounter);
+        // Создание заказа
+        async function createOrder(event) {
+            event.preventDefault();
             
-            // Создание заказа
-            document.getElementById('order-form').addEventListener('submit', createOrder);
-        }
-
-        function updatePromptCounter() {
-            const textarea = document.getElementById('project-prompt');
-            const counter = document.getElementById('prompt-counter');
-            const length = textarea.value.length;
-            
-            counter.textContent = `${length}/2500 символов`;
-            counter.className = length < 300 || length > 2500 ? 'prompt-counter invalid' : 'prompt-counter';
-        }
-
-        async function createOrder(e) {
-            e.preventDefault();
-            
-            const projectName = document.getElementById('project-name').value;
+            const projectName = document.getElementById('project-name').value.trim();
             const projectType = document.getElementById('project-type').value;
-            const budget = document.getElementById('project-budget').value;
-            const deadline = document.getElementById('project-deadline').value;
-            const prompt = document.getElementById('project-prompt').value;
+            const budget = parseInt(document.getElementById('project-budget').value);
+            const deadline = parseInt(document.getElementById('project-deadline').value);
+            const prompt = document.getElementById('project-prompt').value.trim();
             
-            try {
-                const order = await SiteCoreDB.createOrder(
-                    currentUser.id,
-                    projectName,
-                    projectType,
-                    budget,
-                    deadline,
-                    prompt
-                );
-                
-                showNotification('Заказ успешно создан!', 'success');
-                toggleCreateForm();
-                loadStats();
-                loadOrders();
-                
-            } catch (error) {
-                showNotification(error.message, 'error');
-            }
-        }
-
-        function openChat(orderId) {
-            currentOrderId = orderId;
-            const order = SiteCoreDB.getOrderById(orderId);
-            
-            if (!order) {
-                showNotification('Заказ не найден', 'error');
+            // Проверка промта
+            if (prompt.length < 300) {
+                showNotification('Техническое задание должно содержать минимум 300 символов', 'error');
                 return;
             }
             
-            document.getElementById('chat-title').textContent = `Общение по заказу: ${order.projectName}`;
-            loadChatMessages();
+            if (prompt.length > 2500) {
+                showNotification('Техническое задание должно содержать максимум 2500 символов', 'error');
+                return;
+            }
+            
+            // Создаем новый заказ
+            const newOrder = {
+                id: 'order_' + Date.now(),
+                clientId: currentUser.id,
+                clientName: currentUser.name,
+                clientEmail: currentUser.email,
+                clientPhone: currentUser.phone,
+                clientTelegram: currentUser.telegram,
+                projectName: projectName,
+                projectType: projectType,
+                budget: budget,
+                deadline: deadline,
+                prompt: prompt,
+                status: 'new',
+                assignedTo: null,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            
+            // Добавляем заказ в базу
+            database.orders.push(newOrder);
+            
+            // Добавляем системное сообщение
+            const systemMessage = {
+                id: 'msg_' + Date.now(),
+                orderId: newOrder.id,
+                text: `Заказ "${projectName}" создан. Ожидайте, пока разработчик возьмет его в работу.`,
+                sender: 'system',
+                timestamp: new Date().toISOString()
+            };
+            
+            database.messages.push(systemMessage);
+            
+            // Сохраняем базу
+            const saved = await saveDatabase();
+            
+            if (saved) {
+                showNotification('Заказ успешно создан!', 'success');
+                
+                // Очищаем форму
+                clearForm();
+                
+                // Переключаемся на вкладку заказов
+                showTab('orders');
+                
+                // Перезагружаем заказы
+                loadClientOrders();
+            } else {
+                showNotification('Ошибка при создании заказа', 'error');
+            }
+        }
+
+        // Очистка формы
+        function clearForm() {
+            document.getElementById('project-name').value = '';
+            document.getElementById('project-type').value = '';
+            document.getElementById('project-budget').value = '';
+            document.getElementById('project-deadline').value = '';
+            document.getElementById('project-prompt').value = '';
+            updatePromptCounter();
+        }
+
+        // Отмена заказа
+        async function cancelOrder(orderId) {
+            if (!confirm('Вы уверены, что хотите отменить этот заказ?')) {
+                return;
+            }
+            
+            const orderIndex = database.orders.findIndex(o => o.id === orderId);
+            
+            if (orderIndex !== -1) {
+                database.orders[orderIndex].status = 'cancelled';
+                database.orders[orderIndex].updatedAt = new Date().toISOString();
+                
+                // Добавляем системное сообщение
+                const systemMessage = {
+                    id: 'msg_' + Date.now(),
+                    orderId: orderId,
+                    text: 'Заказ отменен клиентом.',
+                    sender: 'system',
+                    timestamp: new Date().toISOString()
+                };
+                
+                database.messages.push(systemMessage);
+                
+                // Сохраняем базу
+                const saved = await saveDatabase();
+                
+                if (saved) {
+                    showNotification('Заказ отменен', 'success');
+                    loadClientOrders();
+                } else {
+                    showNotification('Ошибка при отмене заказа', 'error');
+                }
+            }
+        }
+
+        // Открыть чат
+        function openChat(orderId) {
+            currentChatOrderId = orderId;
+            const order = database.orders.find(o => o.id === orderId);
+            
+            if (!order) return;
+            
+            document.getElementById('chat-modal-title').textContent = `Общение по заказу: ${order.projectName}`;
+            loadChatMessages(orderId);
             document.getElementById('chat-modal').classList.add('active');
         }
 
-        function closeChat() {
+        // Закрыть чат
+        function closeChatModal() {
             document.getElementById('chat-modal').classList.remove('active');
-            currentOrderId = null;
+            currentChatOrderId = null;
         }
 
-        function loadChatMessages() {
-            if (!currentOrderId) return;
+        // Загрузить сообщения чата
+        function loadChatMessages(orderId) {
+            const orderMessages = database.messages
+                .filter(m => m.orderId === orderId)
+                .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
             
-            const messages = SiteCoreDB.getMessages(currentOrderId);
             const container = document.getElementById('chat-messages');
             
-            if (messages.length === 0) {
+            if (orderMessages.length === 0) {
                 container.innerHTML = `
                     <div style="text-align: center; padding: 40px; color: var(--gray);">
-                        <p>Нет сообщений. Начните общение первым!</p>
+                        <p>Нет сообщений</p>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = messages.map(msg => {
-                if (msg.senderType === 'system') {
+            container.innerHTML = orderMessages.map(msg => {
+                if (msg.sender === 'system') {
                     return `
-                        <div class="message message-system">
-                            <div style="background: var(--gray-light); color: var(--gray); padding: 8px 16px; border-radius: 12px; font-size: 12px; display: inline-block;">
-                                ${msg.text}
-                            </div>
-                            <div style="font-size: 11px; color: var(--gray); margin-top: 4px;">
-                                ${new Date(msg.timestamp).toLocaleString()}
-                            </div>
+                        <div class="message-system">
+                            ${msg.text}
                         </div>
                     `;
                 } else {
-                    const isClient = msg.senderId === currentUser.id;
+                    const isClient = msg.sender === currentUser.id;
+                    const senderName = isClient ? 'Вы' : (msg.senderName || 'Разработчик');
+                    
                     return `
-                        <div class="message ${isClient ? 'client' : 'executor'}">
-                            <div class="message-sender">${isClient ? 'Вы' : 'Исполнитель'}</div>
-                            <div class="message-content">${msg.text}</div>
+                        <div class="message ${isClient ? 'client' : 'developer'}">
+                            <div class="message-sender">${senderName}</div>
+                            <div>${msg.text}</div>
                             <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         </div>
                     `;
@@ -1103,40 +1504,80 @@
             container.scrollTop = container.scrollHeight;
         }
 
-        function sendMessage() {
+        // Отправить сообщение
+        async function sendMessage() {
             const input = document.getElementById('chat-input');
             const message = input.value.trim();
             
-            if (!message || !currentOrderId) return;
+            if (!message || !currentChatOrderId) return;
             
-            SiteCoreDB.addMessage(currentOrderId, currentUser.id, 'client', message);
-            input.value = '';
-            loadChatMessages();
-        }
-
-        function cancelOrder(orderId) {
-            if (confirm('Вы уверены, что хотите отменить заказ?')) {
-                const order = SiteCoreDB.getOrderById(orderId);
-                if (order && !order.assignedTo) {
-                    SiteCoreDB.updateOrderStatus(orderId, 'rejected');
-                    showNotification('Заказ отменен', 'warning');
-                    loadStats();
-                    loadOrders();
-                }
+            // Создаем сообщение
+            const newMessage = {
+                id: 'msg_' + Date.now(),
+                orderId: currentChatOrderId,
+                text: message,
+                sender: currentUser.id,
+                senderName: currentUser.name,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Добавляем в базу
+            database.messages.push(newMessage);
+            
+            // Сохраняем базу
+            const saved = await saveDatabase();
+            
+            if (saved) {
+                // Очищаем поле ввода
+                input.value = '';
+                
+                // Обновляем сообщения
+                loadChatMessages(currentChatOrderId);
+            } else {
+                showNotification('Ошибка при отправке сообщения', 'error');
             }
         }
 
-        function getStatusText(status) {
-            const statuses = {
-                'new': 'Новый',
-                'in_progress': 'В работе',
-                'review': 'На проверке',
-                'completed': 'Завершен',
-                'rejected': 'Отклонен'
-            };
-            return statuses[status] || status;
+        // Настройка обработчиков событий
+        function setupEventListeners() {
+            // Счетчик символов в промте
+            const promptInput = document.getElementById('project-prompt');
+            if (promptInput) {
+                promptInput.addEventListener('input', updatePromptCounter);
+            }
         }
 
+        // Обновление счетчика символов
+        function updatePromptCounter() {
+            const prompt = document.getElementById('project-prompt').value;
+            const counter = document.getElementById('prompt-counter');
+            
+            const length = prompt.length;
+            let text = `${length} символов`;
+            
+            if (length < 300) {
+                text += ` (нужно еще ${300 - length})`;
+                counter.className = 'prompt-counter error';
+            } else if (length > 2500) {
+                text += ` (превышено на ${length - 2500})`;
+                counter.className = 'prompt-counter error';
+            } else {
+                counter.className = 'prompt-counter';
+            }
+            
+            counter.textContent = text;
+        }
+
+        // Форматирование валюты
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ru-RU', {
+                style: 'currency',
+                currency: 'RUB',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Показать уведомление
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             notification.textContent = message;
@@ -1147,8 +1588,9 @@
             }, 4000);
         }
 
+        // Выход
         function logout() {
-            localStorage.removeItem('current_user');
+            sessionStorage.removeItem('currentUser');
             window.location.href = 'index.html';
         }
 
