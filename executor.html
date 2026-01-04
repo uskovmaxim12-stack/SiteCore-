@@ -1127,542 +1127,151 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Текущий пользователь и состояние
-        let currentUser = null;
-        let currentOrderId = null;
+       // В начале файла executor.html замените все содержимое <script> на это:
 
-        // Инициализация
-        function init() {
-            // Загружаем синхронизированные данные
-            loadSyncData();
-            
-            // Проверка авторизации
-            const userData = localStorage.getItem('currentUser');
-            if (!userData) {
-                window.location.href = 'index.html';
-                return;
-            }
+let currentUser = null;
+let currentView = 'available';
+let currentOrderId = null;
 
-            currentUser = JSON.parse(userData);
-            
-            // Если это исполнитель, редирект
-            if (currentUser.role !== 'client') {
-                window.location.href = 'executor.html';
-                return;
-            }
+// Инициализация
+async function init() {
+    // Проверка авторизации
+    const userData = localStorage.getItem('current_user');
+    if (!userData) {
+        window.location.href = 'index.html';
+        return;
+    }
 
-            updateUserInfo();
+    currentUser = JSON.parse(userData);
+    
+    // Если это клиент, редирект
+    if (currentUser.type !== 'executor') {
+        window.location.href = 'client.html';
+        return;
+    }
+
+    updateUserInfo();
+    loadDashboardData();
+    loadAvailableOrders();
+    
+    // Запускаем периодическую проверку новых заказов
+    setInterval(checkNewOrders, 30000);
+}
+
+// Обновление информации пользователя
+function updateUserInfo() {
+    document.getElementById('current-user-info').innerHTML = `
+        <div class="user-avatar">${currentUser.avatar}</div>
+        <div class="user-name">${currentUser.name}</div>
+    `;
+
+    document.getElementById('executor-name').textContent = currentUser.name;
+    
+    // Заголовок приветствия
+    const now = new Date();
+    const hours = now.getHours();
+    let greeting;
+    
+    if (hours < 12) greeting = 'Доброе утро';
+    else if (hours < 18) greeting = 'Добрый день';
+    else greeting = 'Добрый вечер';
+    
+    document.getElementById('welcome-title').textContent = `${greeting}, ${currentUser.name}!`;
+}
+
+// Загрузка дашборда
+function loadDashboardData() {
+    const availableOrders = window.SiteCoreDB.getAvailableOrders();
+    const myOrders = window.SiteCoreDB.getOrdersForExecutor(currentUser.id);
+    const completedOrders = myOrders.filter(order => order.status === 'completed');
+    
+    // Обновляем бейдж
+    document.getElementById('stats-badge').innerHTML = `
+        <i class="fas fa-tasks"></i>
+        <span>${myOrders.length} активных заказов</span>
+    `;
+    
+    // Обновляем быструю статистику
+    document.getElementById('quick-stats').innerHTML = `
+        <div class="quick-stat">
+            <div class="quick-stat-value">${availableOrders.length}</div>
+            <div class="quick-stat-label">Доступных заказов</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">${myOrders.length}</div>
+            <div class="quick-stat-label">Мои заказы</div>
+        </div>
+        <div class="quick-stat">
+            <div class="quick-stat-value">${completedOrders.length}</div>
+            <div class="quick-stat-label">Завершено</div>
+        </div>
+    `;
+}
+
+// Проверка новых заказов
+function checkNewOrders() {
+    if (currentView === 'available') {
+        loadAvailableOrders();
+    } else if (currentView === 'my') {
+        loadMyOrders();
+    }
+}
+
+// Взять заказ в работу
+function takeOrder(orderId) {
+    try {
+        window.SiteCoreDB.updateOrderStatus(orderId, 'in_progress', currentUser.id);
+        showNotification('Заказ успешно взят в работу!', 'success');
+        
+        setTimeout(() => {
             loadDashboardData();
-            loadOrders();
-            
-            // Синхронизация каждые 30 секунд
-            setInterval(syncData, 30000);
-        }
+            loadAvailableOrders();
+            loadMyOrders();
+        }, 500);
+    } catch (error) {
+        showNotification(error.message, 'error');
+    }
+}
 
-        // Загрузка синхронизированных данных
-        function loadSyncData() {
-            try {
-                const syncData = localStorage.getItem('sitecore_sync');
-                if (syncData) {
-                    const data = JSON.parse(syncData);
-                    
-                    // Объединяем заказы
-                    if (data.orders) {
-                        const localOrders = JSON.parse(localStorage.getItem('sitecore_orders') || '[]');
-                        const mergedOrders = mergeArrays(localOrders, data.orders, 'id');
-                        localStorage.setItem('sitecore_orders', JSON.stringify(mergedOrders));
-                    }
+// Отклонить заказ
+function rejectOrder(orderId) {
+    const reason = prompt('Укажите причину отказа (необязательно):', '');
+    try {
+        window.SiteCoreDB.rejectOrder(orderId, currentUser.id, reason);
+        showNotification('Заказ отклонен', 'warning');
+        
+        setTimeout(() => {
+            loadDashboardData();
+            loadAvailableOrders();
+            loadMyOrders();
+        }, 500);
+    } catch (error) {
+        showNotification(error.message, 'error');
+    }
+}
 
-                    // Объединяем пользователей
-                    if (data.users) {
-                        const localUsers = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                        const mergedUsers = mergeArrays(localUsers, data.users, 'id');
-                        localStorage.setItem('sitecore_users', JSON.stringify(mergedUsers));
-                    }
-
-                    // Объединяем сообщения
-                    if (data.messages) {
-                        const localMessages = JSON.parse(localStorage.getItem('sitecore_messages') || '{}');
-                        const mergedMessages = { ...localMessages, ...data.messages };
-                        localStorage.setItem('sitecore_messages', JSON.stringify(mergedMessages));
-                    }
-                }
-            } catch (e) {
-                console.log('Ошибка синхронизации:', e);
-            }
-        }
-
-        // Слияние массивов с уникальными элементами
-        function mergeArrays(arr1, arr2, key) {
-            const map = new Map();
-            [...arr1, ...arr2].forEach(item => {
-                if (item[key]) {
-                    map.set(item[key], item);
-                }
-            });
-            return Array.from(map.values());
-        }
-
-        // Синхронизация данных
-        function syncData() {
-            const data = {
-                orders: JSON.parse(localStorage.getItem('sitecore_orders') || '[]'),
-                users: JSON.parse(localStorage.getItem('sitecore_users') || '[]'),
-                messages: JSON.parse(localStorage.getItem('sitecore_messages') || '{}'),
-                timestamp: new Date().toISOString()
-            };
-            
-            localStorage.setItem('sitecore_sync', JSON.stringify(data));
-            console.log('Данные синхронизированы:', new Date().toLocaleTimeString());
-        }
-
-        // Обновление информации пользователя
-        function updateUserInfo() {
-            const avatarLetter = currentUser.name.charAt(0).toUpperCase();
-            
-            document.getElementById('current-user-info').innerHTML = `
-                <div class="user-avatar">${avatarLetter}</div>
-                <div class="user-name">${currentUser.name}</div>
-            `;
-
-            document.getElementById('client-name').textContent = currentUser.name;
-            
-            // Заголовок приветствия
-            const now = new Date();
-            const hours = now.getHours();
-            let greeting;
-            
-            if (hours < 12) greeting = 'Доброе утро';
-            else if (hours < 18) greeting = 'Добрый день';
-            else greeting = 'Добрый вечер';
-            
-            document.getElementById('welcome-title').textContent = `${greeting}, ${currentUser.name}!`;
-        }
-
-        // Загрузка дашборда
-        function loadDashboardData() {
-            const orders = getAllOrders();
-            const myOrders = orders.filter(order => order.clientId === currentUser.id);
-            const activeOrders = myOrders.filter(order => 
-                order.status === 'new' || order.status === 'in_progress' || order.status === 'review'
-            );
-            const completedOrders = myOrders.filter(order => order.status === 'completed');
-            
-            // Обновляем бейдж
-            document.getElementById('stats-badge').innerHTML = `
-                <i class="fas fa-tasks"></i>
-                <span>${myOrders.length} заказов</span>
-            `;
-            
-            // Обновляем быструю статистику
-            document.getElementById('quick-stats').innerHTML = `
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${myOrders.length}</div>
-                    <div class="quick-stat-label">Всего заказов</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${activeOrders.length}</div>
-                    <div class="quick-stat-label">Активные</div>
-                </div>
-                <div class="quick-stat">
-                    <div class="quick-stat-value">${completedOrders.length}</div>
-                    <div class="quick-stat-label">Завершено</div>
-                </div>
-            `;
-        }
-
-        // Загрузка заказов
-        function loadOrders() {
-            const orders = getAllOrders();
-            const myOrders = orders.filter(order => order.clientId === currentUser.id);
-            
-            const container = document.getElementById('my-orders');
-            
-            if (myOrders.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--gray); grid-column: 1/-1;">
-                        <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <h3 style="margin-bottom: 12px;">У вас пока нет заказов</h3>
-                        <p style="margin-bottom: 20px; max-width: 300px; margin: 0 auto;">Создайте свой первый заказ на разработку сайта!</p>
-                        <button class="btn btn-primary" onclick="showCreateOrderModal()">
-                            <i class="fas fa-plus-circle"></i> Создать заказ
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = myOrders.map(order => {
-                const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                const executor = users.find(u => u.id === order.assignedTo);
-                const hasExecutor = !!executor;
-                const canChat = hasExecutor && order.status !== 'rejected';
+// Удалить заказ
+function deleteOrder(orderId) {
+    if (confirm('Вы уверены, что хотите удалить этот заказ? Это действие нельзя отменить.')) {
+        try {
+            const success = window.SiteCoreDB.deleteOrder(orderId, currentUser.id);
+            if (success) {
+                showNotification('Заказ удален', 'success');
                 
-                return `
-                <div class="order-card" onclick="openOrderModal('${order.id}')">
-                    <div class="order-card-header">
-                        <div>
-                            <h3>${order.projectName}</h3>
-                            <div class="order-executor">${hasExecutor ? `Исполнитель: ${executor.name}` : 'Исполнитель не назначен'}</div>
-                        </div>
-                        <div class="order-status status-${order.status}">
-                            ${getStatusText(order.status)}
-                        </div>
-                    </div>
-                    
-                    <div class="order-card-body">
-                        <div class="order-details">
-                            <div class="order-detail">
-                                <div class="order-detail-label">Тип</div>
-                                <div class="order-detail-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Бюджет</div>
-                                <div class="order-detail-value">${formatCurrency(order.budget)}</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Срок</div>
-                                <div class="order-detail-value">${order.deadline} дней</div>
-                            </div>
-                            <div class="order-detail">
-                                <div class="order-detail-label">Создан</div>
-                                <div class="order-detail-value">${new Date(order.createdDate).toLocaleDateString()}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="order-prompt-preview" title="${order.prompt}">
-                            ${order.prompt.substring(0, 80)}${order.prompt.length > 80 ? '...' : ''}
-                        </div>
-                    </div>
-                    
-                    <div class="order-card-actions">
-                        <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); openOrderModal('${order.id}')">
-                            <i class="fas fa-eye"></i> Подробнее
-                        </button>
-                        
-                        ${canChat ? `
-                            <button class="btn btn-success btn-small" onclick="event.stopPropagation(); openOrderModal('${order.id}')">
-                                <i class="fas fa-comments"></i> Общение
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        // Показать модальное окно создания заказа
-        function showCreateOrderModal() {
-            document.getElementById('create-order-modal').classList.add('active');
-            
-            // Обработчик выбора типа
-            document.querySelectorAll('.type-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
-                    this.classList.add('selected');
-                    document.getElementById('project-type').value = this.dataset.type;
-                });
-            });
-            
-            // Счетчик символов для промта
-            const promptTextarea = document.getElementById('project-prompt');
-            const charCounter = document.getElementById('char-counter');
-            
-            promptTextarea.addEventListener('input', function() {
-                const length = this.value.length;
-                charCounter.textContent = `${length}/2500 символов`;
-                
-                if (length < 300) {
-                    charCounter.classList.add('error');
-                } else {
-                    charCounter.classList.remove('error');
-                }
-            });
-        }
-
-        // Скрыть модальное окно создания заказа
-        function hideCreateOrderModal() {
-            document.getElementById('create-order-modal').classList.remove('active');
-            document.getElementById('create-order-form').reset();
-            document.getElementById('char-counter').textContent = '0/2500 символов';
-            document.getElementById('char-counter').classList.remove('error');
-        }
-
-        // Создание заказа
-        document.getElementById('create-order-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const projectName = document.getElementById('project-name').value.trim();
-            const projectType = document.getElementById('project-type').value;
-            const budget = parseInt(document.getElementById('project-budget').value);
-            const deadline = parseInt(document.getElementById('project-deadline').value);
-            const prompt = document.getElementById('project-prompt').value.trim();
-            
-            // Проверка длины промта
-            if (prompt.length < 300) {
-                showNotification('Описание проекта должно содержать минимум 300 символов', 'error');
-                return;
+                setTimeout(() => {
+                    loadDashboardData();
+                    loadAvailableOrders();
+                    loadMyOrders();
+                }, 500);
             }
-            
-            if (prompt.length > 2500) {
-                showNotification('Описание проекта не должно превышать 2500 символов', 'error');
-                return;
-            }
-            
-            // Создаем заказ
-            const orders = getAllOrders();
-            const newOrder = {
-                id: 'order-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
-                clientId: currentUser.id,
-                clientName: currentUser.name,
-                clientEmail: currentUser.username,
-                clientPhone: currentUser.phone || '',
-                clientTelegram: currentUser.telegram || '',
-                projectName: projectName,
-                projectType: projectType,
-                budget: budget,
-                deadline: deadline,
-                prompt: prompt,
-                status: 'new',
-                assignedTo: null,
-                createdDate: new Date().toISOString(),
-                updatedDate: new Date().toISOString(),
-                messages: []
-            };
-            
-            orders.push(newOrder);
-            localStorage.setItem('sitecore_orders', JSON.stringify(orders));
-            
-            // Синхронизируем
-            syncData();
-            
-            showNotification('Заказ успешно создан!', 'success');
-            hideCreateOrderModal();
-            
-            // Перезагружаем данные
-            setTimeout(() => {
-                loadDashboardData();
-                loadOrders();
-            }, 500);
-        });
-
-        // Открыть модальное окно заказа
-        function openOrderModal(orderId) {
-            currentOrderId = orderId;
-            const orders = getAllOrders();
-            const order = orders.find(o => o.id === orderId);
-            
-            if (!order) {
-                showNotification('Заказ не найден', 'error');
-                return;
-            }
-            
-            // Заполняем информацию о заказе
-            document.getElementById('modal-order-title').textContent = order.projectName;
-            
-            document.getElementById('order-info-grid').innerHTML = `
-                <div class="info-item">
-                    <span class="info-label">Тип сайта:</span>
-                    <span class="info-value">${order.projectType === 'static' ? 'Статический' : 'Динамический'}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Бюджет:</span>
-                    <span class="info-value">${formatCurrency(order.budget)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Срок:</span>
-                    <span class="info-value">${order.deadline} дней</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Статус:</span>
-                    <span class="info-value">${getStatusText(order.status)}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Создан:</span>
-                    <span class="info-value">${new Date(order.createdDate).toLocaleDateString()}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Исполнитель:</span>
-                    <span class="info-value">${order.assignedTo ? 'Назначен' : 'Не назначен'}</span>
-                </div>
-            `;
-            
-            // Заполняем промт
-            document.getElementById('modal-prompt-content').textContent = order.prompt;
-            
-            // Заполняем информацию об исполнителе
-            const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-            const executor = users.find(u => u.id === order.assignedTo);
-            
-            if (executor) {
-                document.getElementById('executor-info-panel').style.display = 'block';
-                document.getElementById('executor-contact-list').innerHTML = `
-                    <div class="contact-info">
-                        <i class="fas fa-user"></i>
-                        <span>${executor.name}</span>
-                    </div>
-                    <div class="contact-info">
-                        <i class="fas fa-envelope"></i>
-                        <span>${executor.username}</span>
-                    </div>
-                `;
-            } else {
-                document.getElementById('executor-info-panel').style.display = 'none';
-            }
-            
-            // Показываем/скрываем чат
-            const canChat = !!executor && order.status !== 'rejected';
-            
-            if (canChat) {
-                document.getElementById('chat-container').style.display = 'block';
-                loadMessages(orderId);
-            } else {
-                document.getElementById('chat-container').style.display = 'none';
-            }
-            
-            // Показываем модальное окно
-            document.getElementById('order-modal').classList.add('active');
+        } catch (error) {
+            showNotification(error.message, 'error');
         }
+    }
+}
 
-        // Закрыть модальное окно заказа
-        function closeOrderModal() {
-            document.getElementById('order-modal').classList.remove('active');
-            currentOrderId = null;
-        }
-
-        // Загрузить сообщения
-        function loadMessages(orderId) {
-            const orders = getAllOrders();
-            const order = orders.find(o => o.id === orderId);
-            
-            if (!order || !order.messages) {
-                document.getElementById('chat-messages').innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: var(--gray);">
-                        <p>Нет сообщений</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const messages = order.messages;
-            const chatMessages = document.getElementById('chat-messages');
-            
-            if (messages.length === 0) {
-                chatMessages.innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: var(--gray);">
-                        <p>Нет сообщений</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            chatMessages.innerHTML = messages.map(msg => {
-                if (msg.sender === 'system') {
-                    return `
-                        <div style="text-align: center; margin: 8px 0;">
-                            <span style="background: var(--gray-light); color: var(--gray); padding: 4px 12px; border-radius: 12px; font-size: 11px;">
-                                ${msg.text}
-                            </span>
-                        </div>
-                    `;
-                } else {
-                    const isClient = msg.sender === currentUser.id;
-                    const users = JSON.parse(localStorage.getItem('sitecore_users') || '[]');
-                    const sender = users.find(u => u.id === msg.sender);
-                    const senderName = isClient ? 'Вы' : (sender ? sender.name : 'Неизвестный');
-                    
-                    return `
-                        <div class="message ${isClient ? 'client' : ''}">
-                            <div class="message-sender">${senderName}</div>
-                            <div class="message-content">${msg.text}</div>
-                            <div class="message-time">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                        </div>
-                    `;
-                }
-            }).join('');
-            
-            // Прокрутка вниз
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Отправить сообщение
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const message = input.value.trim();
-            
-            if (!message || !currentOrderId) return;
-            
-            // Сохраняем сообщение
-            const orders = getAllOrders();
-            const orderIndex = orders.findIndex(o => o.id === currentOrderId);
-            
-            if (orderIndex === -1) return;
-            
-            if (!orders[orderIndex].messages) {
-                orders[orderIndex].messages = [];
-            }
-            
-            orders[orderIndex].messages.push({
-                id: 'msg-' + Date.now(),
-                text: message,
-                sender: currentUser.id,
-                timestamp: new Date().toISOString(),
-                read: false
-            });
-            
-            localStorage.setItem('sitecore_orders', JSON.stringify(orders));
-            
-            // Синхронизируем
-            syncData();
-            
-            // Очищаем поле ввода
-            input.value = '';
-            
-            // Обновляем сообщения
-            loadMessages(currentOrderId);
-        }
-
-        // Вспомогательные функции
-        function getAllOrders() {
-            return JSON.parse(localStorage.getItem('sitecore_orders') || '[]');
-        }
-
-        function getStatusText(status) {
-            const statuses = {
-                'new': 'Новый',
-                'in_progress': 'В работе',
-                'review': 'На проверке',
-                'completed': 'Завершён',
-                'rejected': 'Отклонён'
-            };
-            return statuses[status] || status;
-        }
-
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('ru-RU', {
-                style: 'currency',
-                currency: 'RUB',
-                minimumFractionDigits: 0
-            }).format(amount);
-        }
-
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i> ${message}`;
-            notification.className = `notification ${type} show`;
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 4000);
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        }
-
-        // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', init);
+// Инициализация при загрузке
+document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
