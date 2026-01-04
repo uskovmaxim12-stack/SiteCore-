@@ -287,3 +287,175 @@ body {
         max-width: none;
     }
 }
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .user-menu {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .welcome-section {
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+    
+    .filters-section {
+        padding: 20px;
+    }
+    
+    .search-box {
+        width: 100%;
+        margin-top: 15px;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .orders-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .kanban-board {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .kanban-column {
+        min-height: auto;
+    }
+    
+    .order-card {
+        padding: 20px;
+    }
+    
+    .order-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .order-card-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    .order-management-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chat-input-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-text {
+        font-size: 20px;
+    }
+    
+    .user-name {
+        font-size: 14px;
+    }
+    
+    .section-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .section-tab {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .order-card h3 {
+        font-size: 18px;
+    }
+    
+    .order-status {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+    
+    .client-card {
+        padding: 20px;
+    }
+    
+    .client-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .client-stat {
+        text-align: center;
+    }
+}
+
+/* Планшетная адаптация */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .orders-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .kanban-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .clients-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+}
+
+/* Поддержка темной темы */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #1a1a1a;
+        color: #fff;
+    }
+    
+    .header, .filters-section, .order-card, .kanban-column, .client-card, .modal-content {
+        background: #2d2d2d;
+        color: #fff;
+    }
+    
+    input, select, textarea {
+        background: #3d3d3d;
+        color: #fff;
+        border-color: #555;
+    }
+    
+    .gray-lighter {
+        background: #3d3d3d;
+    }
+}
