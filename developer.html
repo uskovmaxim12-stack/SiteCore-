@@ -6,52 +6,2018 @@
     <title>SiteCore | Панель разработчика</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Все стили остаются без изменений */
-    </style>
-</head>
-<body>
-    <!-- HTML структура остается без изменений -->
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    <script>
-        // Загрузка базы данных из localStorage
-        function loadDatabase() {
-            const database = localStorage.getItem('sitecore_database');
-            if (database) {
-                return JSON.parse(database);
-            } else {
-                // Если базы нет, создаем пустую структуру
-                return {
-                    users: { 
-                        clients: [],
-                        developers: [
-                            {
-                                id: "dev_1",
-                                username: "Александр",
-                                password: "789563",
-                                avatar: "А",
-                                email: "alexander@sitecore.ru"
-                            },
-                            {
-                                id: "dev_2",
-                                username: "Максим",
-                                password: "140612",
-                                avatar: "М",
-                                email: "maxim@sitecore.ru"
-                            }
-                        ]
-                    },
-                    orders: [],
-                    messages: [],
-                    lastUpdate: new Date().toISOString()
-                };
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --success: #38b000;
+            --warning: #ff9e00;
+            --danger: #e63946;
+            --dark: #1d3557;
+            --gray-dark: #457b9d;
+            --gray: #8d99ae;
+            --gray-light: #edf2f4;
+            --gray-lighter: #f8f9fa;
+            --white: #ffffff;
+            --radius: 12px;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--gray-lighter);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Шапка */
+        .header {
+            background: var(--white);
+            padding: 0 40px;
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: var(--gray-lighter);
+            border-radius: 50px;
+            transition: var(--transition);
+        }
+
+        .user-info:hover {
+            background: var(--gray-light);
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .logout-btn {
+            padding: 10px 24px;
+            background: var(--gray-lighter);
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            color: var(--gray-dark);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: var(--gray-light);
+            color: var(--dark);
+        }
+
+        /* Навигация */
+        .nav-menu {
+            display: flex;
+            gap: 5px;
+            padding: 15px 0;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .nav-menu::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 2px;
+        }
+
+        .nav-menu::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .nav-item {
+            padding: 14px 28px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            color: var(--dark);
+            background: var(--gray-lighter);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .nav-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 6px;
+        }
+
+        /* Основной контент */
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 30px 40px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        /* Главный контент */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Приветствие */
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop') center/cover;
+            opacity: 0.1;
+        }
+
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .welcome-header h1 {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .stats-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .welcome-info h2 {
+            font-size: 26px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .welcome-info p {
+            font-size: 18px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            max-width: 700px;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .quick-stat {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .quick-stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .quick-stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .quick-stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Секция с контентом */
+        .content-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-light);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        // Сохранение базы данных
-        function saveDatabase(database) {
-            database.lastUpdate = new Date().toISOString();
-            localStorage.setItem('sitecore_database', JSON.stringify(database));
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--gray-light);
         }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--dark);
+            border: 2px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: var(--gray-lighter);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #2d8c00;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c1121f;
+            transform: translateY(-2px);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+
+        /* Управление новостями */
+        .news-management {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .news-list-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .news-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .news-list-container::-webkit-scrollbar-track {
+            background: var(--gray-lighter);
+            border-radius: 3px;
+        }
+
+        .news-list-container::-webkit-scrollbar-thumb {
+            background: var(--gray-light);
+            border-radius: 3px;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-item {
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .news-item:hover {
+            border-color: var(--primary);
+            background: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .news-item.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .news-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .news-item-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .news-item-date {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .news-item-content {
+            font-size: 14px;
+            color: var(--gray-dark);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .news-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .news-form-container {
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-btn {
+            background: var(--gray-light);
+            color: var(--dark);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border: 2px dashed var(--gray);
+            transition: var(--transition);
+        }
+
+        .file-upload-btn:hover {
+            background: var(--gray-lighter);
+            border-color: var(--primary);
+        }
+
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .file-preview.active {
+            display: block;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--white);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 2px solid var(--gray-light);
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        .char-counter.warning {
+            color: var(--warning);
+        }
+
+        .char-counter.error {
+            color: var(--danger);
+        }
+
+        /* Управление заказами */
+        .orders-tabs {
+            display: flex;
+            gap: 5px;
+            background: var(--gray-lighter);
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 25px;
+        }
+
+        .order-tab {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .order-tab.active {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow-light);
+        }
+
+        .orders-container {
+            max-height: 700px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .orders-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .orders-container::-webkit-scrollbar-track {
+            background: var(--gray-lighter);
+            border-radius: 3px;
+        }
+
+        .orders-container::-webkit-scrollbar-thumb {
+            background: var(--gray-light);
+            border-radius: 3px;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 25px;
+        }
+
+        .order-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-light);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .order-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .order-client {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .order-status {
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-new { background: #dbeafe; color: #1d4ed8; }
+        .status-progress { background: #fef3c7; color: #d97706; }
+        .status-review { background: #fce7f3; color: #be185d; }
+        .status-completed { background: #dcfce7; color: #16a34a; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+
+        .order-card-body {
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .order-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .order-detail-label {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 4px;
+        }
+
+        .order-detail-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .order-prompt-preview {
+            background: var(--gray-lighter);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--gray-dark);
+            line-height: 1.5;
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .order-prompt-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, transparent, var(--gray-lighter));
+        }
+
+        .order-card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-header {
+            padding: 30px 40px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--gray-lighter);
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        /* Чат */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: var(--gray-light);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            position: relative;
+        }
+
+        .message.developer {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.client {
+            align-self: flex-start;
+            background: var(--white);
+            color: var(--dark);
+            border: 1px solid var(--gray-light);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-system {
+            align-self: center;
+            background: var(--gray-light);
+            color: var(--gray);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            max-width: 80%;
+            text-align: center;
+        }
+
+        .message-sender {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            text-align: right;
+            margin-top: 4px;
+            opacity: 0.7;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input-container textarea {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 15px;
+            resize: none;
+            min-height: 60px;
+            background: var(--white);
+        }
+
+        .chat-input-container textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Клиенты */
+        .clients-container {
+            max-height: 700px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .client-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-light);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .client-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .client-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .client-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .client-info h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .client-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .client-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        .contact-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+
+        .client-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .client-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .client-stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .client-stat-label {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-light);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card.wide {
+            grid-column: 1 / -1;
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-header h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .stat-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 20px 0;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--primary), var(--accent));
+            border-radius: 6px 6px 0 0;
+            min-height: 10px;
+            position: relative;
+        }
+
+        .chart-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .chart-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .recent-orders {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .recent-order {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .recent-order:hover {
+            border-color: var(--primary);
+            background: var(--white);
+        }
+
+        .recent-order-info h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .recent-order-info p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* Боковая панель */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Информация */
+        .info-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .info-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--dark);
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            border: none;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            transition: var(--transition);
+        }
+
+        .info-item:hover {
+            background: var(--gray-light);
+            transform: translateX(5px);
+        }
+
+        .info-item i {
+            width: 24px;
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--dark);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: none;
+            align-items: center;
+            gap: 15px;
+            max-width: 400px;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            display: flex;
+            animation: slideInRight 0.5s ease;
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1400px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                grid-row: 1;
+            }
+            
+            .main-content {
+                grid-row: 2;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .news-management {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 20px;
+            }
+            
+            .container {
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .welcome-section {
+                padding: 30px 25px;
+            }
+            
+            .welcome-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-menu {
+                padding: 10px 0;
+            }
+            
+            .nav-item {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .clients-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .modal-body {
+                padding: 25px;
+            }
+            
+            .modal-header {
+                padding: 25px 25px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-top {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 0;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .welcome-section {
+                padding: 25px 20px;
+            }
+            
+            .welcome-header h1 {
+                font-size: 28px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            
+            .order-card-actions {
+                flex-direction: column;
+            }
+            
+            .notification {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+        }
+
+        /* Для очень высоких экранов */
+        @media (min-height: 1000px) {
+            .container {
+                padding: 40px;
+            }
+            
+            .main-content {
+                gap: 40px;
+            }
+            
+            .orders-container, .clients-container, .news-list-container {
+                max-height: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="header-top">
+            <a href="#" class="logo" onclick="showSection('dashboard')">
+                <div class="logo-icon">SC</div>
+                <div class="logo-text">SiteCore</div>
+            </a>
+            
+            <div class="user-menu">
+                <div class="user-info" id="current-user-info">
+                    <div class="user-avatar">Р</div>
+                    <div class="user-name">Разработчик</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </div>
+        
+        <!-- Навигация -->
+        <div class="nav-menu">
+            <button class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-chart-line"></i> Дашборд
+            </button>
+            <button class="nav-item" onclick="showSection('news')">
+                <i class="fas fa-newspaper"></i> Новости
+                <span class="nav-badge" id="news-badge">0</span>
+            </button>
+            <button class="nav-item" onclick="showSection('orders')">
+                <i class="fas fa-tasks"></i> Заказы
+                <span class="nav-badge" id="orders-badge">0</span>
+            </button>
+            <button class="nav-item" onclick="showSection('clients')">
+                <i class="fas fa-users"></i> Клиенты
+                <span class="nav-badge" id="clients-badge">0</span>
+            </button>
+            <button class="nav-item" onclick="showSection('statistics')">
+                <i class="fas fa-chart-pie"></i> Статистика
+            </button>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <!-- Главный контент -->
+        <div class="main-content">
+            <!-- Дашборд -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="welcome-section">
+                    <div class="welcome-header">
+                        <h1 id="welcome-title">Добро пожаловать!</h1>
+                        <div class="stats-badge" id="stats-badge">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Сегодня: <span id="today-date">27 октября</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="welcome-info">
+                        <h2 id="developer-name">Разработчик SiteCore</h2>
+                        <p>Управляйте заказами, публикуйте новости и следите за статистикой платформы. Все инструменты для эффективной работы в одной панели.</p>
+                        <div class="quick-stats" id="quick-stats">
+                            <!-- Заполняется JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2>Быстрые действия</h2>
+                </div>
+
+                <div class="orders-grid" style="margin-top: 20px;">
+                    <div class="order-card" onclick="showSection('orders')" style="cursor: pointer;">
+                        <div class="order-card-header">
+                            <div>
+                                <h3>Управление заказами</h3>
+                                <div class="order-client">Назначение статусов и общение с клиентами</div>
+                            </div>
+                            <div class="order-status status-progress">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-details">
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Активные заказы</div>
+                                    <div class="order-detail-value" id="dashboard-active-orders">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Новые заказы</div>
+                                    <div class="order-detail-value" id="dashboard-new-orders">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">На проверке</div>
+                                    <div class="order-detail-value" id="dashboard-review-orders">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Завершено</div>
+                                    <div class="order-detail-value" id="dashboard-completed-orders">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-card-actions">
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-arrow-right"></i> Перейти
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="order-card" onclick="showSection('news')" style="cursor: pointer;">
+                        <div class="order-card-header">
+                            <div>
+                                <h3>Управление новостями</h3>
+                                <div class="order-client">Публикация новостей для клиентов</div>
+                            </div>
+                            <div class="order-status status-new">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                        </div>
+                        <div class="order-card-body">
+                            <div class="order-details">
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Всего новостей</div>
+                                    <div class="order-detail-value" id="dashboard-total-news">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">За месяц</div>
+                                    <div class="order-detail-value" id="dashboard-month-news">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Просмотры</div>
+                                    <div class="order-detail-value" id="dashboard-news-views">0</div>
+                                </div>
+                                <div class="order-detail">
+                                    <div class="order-detail-label">Лайки</div>
+                                    <div class="order-detail-value" id="dashboard-news-likes">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-card-actions">
+                            <button class="btn btn-primary btn-small">
+                                <i class="fas fa-arrow-right"></i> Перейти
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Управление новостями -->
+            <section id="news-section" class="content-section">
+                <div class="section-header">
+                    <h2>Управление новостями</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshNews()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                        <button class="btn btn-primary" onclick="newNews()">
+                            <i class="fas fa-plus"></i> Новая новость
+                        </button>
+                    </div>
+                </div>
+
+                <div class="news-management">
+                    <div>
+                        <h3 style="margin-bottom: 20px; color: var(--dark);">Список новостей</h3>
+                        <div class="news-list-container">
+                            <div class="news-list" id="news-list">
+                                <!-- Новости загружаются через JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: 20px; color: var(--dark);" id="news-form-title">Новая новость</h3>
+                        <div class="news-form-container">
+                            <form id="news-form" onsubmit="return saveNews(event)">
+                                <div class="form-group">
+                                    <label for="news-title">Заголовок *</label>
+                                    <input type="text" id="news-title" class="form-control" placeholder="Введите заголовок новости" required maxlength="100">
+                                    <div class="char-counter" id="title-counter">0/100</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="news-content">Содержание *</label>
+                                    <textarea id="news-content" class="form-control" placeholder="Введите содержание новости..." required maxlength="2000"></textarea>
+                                    <div class="char-counter" id="content-counter">0/2000</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Изображение или видео</label>
+                                    <div class="file-upload">
+                                        <button type="button" class="file-upload-btn">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Загрузить файл</span>
+                                        </button>
+                                        <input type="file" class="file-upload-input" id="news-file" accept="image/*,video/*" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="file-preview" id="file-preview">
+                                        <!-- Превью файла -->
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="news-author">Автор</label>
+                                    <input type="text" id="news-author" class="form-control" value="Команда SiteCore" required>
+                                </div>
+
+                                <input type="hidden" id="news-id" value="">
+                                
+                                <div style="display: flex; gap: 15px; margin-top: 30px;">
+                                    <button type="button" class="btn btn-secondary" onclick="clearNewsForm()" id="cancel-news-btn" style="display: none;">
+                                        <i class="fas fa-times"></i> Отмена
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" id="save-news-btn">
+                                        <i class="fas fa-save"></i> Опубликовать
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteNews()" id="delete-news-btn" style="display: none;">
+                                        <i class="fas fa-trash"></i> Удалить
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Управление заказами -->
+            <section id="orders-section" class="content-section">
+                <div class="section-header">
+                    <h2>Управление заказами</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshOrders()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                    </div>
+                </div>
+
+                <div class="orders-tabs">
+                    <button class="order-tab active" onclick="showOrderTab('available')">Доступные</button>
+                    <button class="order-tab" onclick="showOrderTab('my')">Мои заказы</button>
+                    <button class="order-tab" onclick="showOrderTab('all')">Все заказы</button>
+                    <button class="order-tab" onclick="showOrderTab('completed')">Завершённые</button>
+                </div>
+
+                <div class="orders-container">
+                    <div class="orders-grid" id="orders-grid">
+                        <!-- Заказы загружаются через JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Клиенты -->
+            <section id="clients-section" class="content-section">
+                <div class="section-header">
+                    <h2>Клиенты</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="refreshClients()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                        <button class="btn btn-primary" onclick="exportClients()">
+                            <i class="fas fa-download"></i> Экспорт
+                        </button>
+                    </div>
+                </div>
+
+                <div class="clients-container">
+                    <div class="clients-grid" id="clients-grid">
+                        <!-- Клиенты загружаются через JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Статистика -->
+            <section id="statistics-section" class="content-section">
+                <div class="section-header">
+                    <h2>Статистика</h2>
+                    <div class="section-actions">
+                        <select id="stats-period" class="form-control" style="width: 200px;" onchange="loadStatistics()">
+                            <option value="month">За последний месяц</option>
+                            <option value="quarter">За последний квартал</option>
+                            <option value="year">За последний год</option>
+                            <option value="all">За всё время</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <h4>Доходы</h4>
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="total-income">0 ₽</div>
+                        <div class="stat-label">Общий доход от выполненных заказов</div>
+                        <div class="stat-chart" id="income-chart">
+                            <!-- График доходов -->
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <h4>Заказы</h4>
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="total-orders">0</div>
+                        <div class="stat-label">Всего заказов выполнено</div>
+                        <div class="stat-chart" id="orders-chart">
+                            <!-- График заказов -->
+                        </div>
+                    </div>
+
+                    <div class="stat-card wide">
+                        <div class="stat-card-header">
+                            <h4>Активность клиентов</h4>
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="recent-orders" id="recent-activity">
+                            <!-- Последняя активность -->
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <h4>Новости</h4>
+                            <div class="stat-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value" id="total-news">0</div>
+                        <div class="stat-label">Опубликовано новостей</div>
+                        <div class="stat-chart" id="news-chart">
+                            <!-- График новостей -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Боковая панель -->
+        <div class="sidebar">
+            <!-- Информация о системе -->
+            <div class="info-card">
+                <h3>Информация о системе</h3>
+                <div class="info-list">
+                    <div class="info-item">
+                        <i class="fas fa-database"></i>
+                        <span>База данных: <strong id="db-size">0 заказов</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Сегодня: <strong id="current-date">27 октября 2024</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Время работы: <strong id="uptime">24/7</strong></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Статус: <strong style="color: var(--success);">✓ Активен</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Быстрые действия -->
+            <div class="info-card">
+                <h3>Быстрые действия</h3>
+                <div class="quick-actions">
+                    <button class="info-item" onclick="newNews()">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Создать новость</span>
+                    </button>
+                    <button class="info-item" onclick="showOrderTab('available')">
+                        <i class="fas fa-search"></i>
+                        <span>Просмотреть доступные заказы</span>
+                    </button>
+                    <button class="info-item" onclick="exportStatistics()">
+                        <i class="fas fa-file-export"></i>
+                        <span>Экспорт статистики</span>
+                    </button>
+                    <button class="info-item" onclick="clearCache()">
+                        <i class="fas fa-broom"></i>
+                        <span>Очистить кэш</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Последние действия -->
+            <div class="info-card">
+                <h3>Последние действия</h3>
+                <div class="recent-orders" id="recent-actions" style="max-height: 300px; overflow-y: auto;">
+                    <!-- Последние действия -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно управления заказом -->
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-order-title">Управление заказом</h3>
+                <button class="modal-close" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px;">
+                    <div>
+                        <div style="background: var(--gray-lighter); border-radius: 12px; padding: 25px; margin-bottom: 25px;">
+                            <h4 style="margin-bottom: 20px; color: var(--dark);">Информация о заказе</h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Клиент</div>
+                                    <div style="font-weight: 600;" id="modal-client-name"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Email</div>
+                                    <div style="font-weight: 600;" id="modal-client-email"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Телефон</div>
+                                    <div style="font-weight: 600;" id="modal-client-phone"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Telegram</div>
+                                    <div style="font-weight: 600;" id="modal-client-telegram"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Тип сайта</div>
+                                    <div style="font-weight: 600;" id="modal-project-type"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Бюджет</div>
+                                    <div style="font-weight: 600;" id="modal-project-budget"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Срок</div>
+                                    <div style="font-weight: 600;" id="modal-project-deadline"></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; color: var(--gray); margin-bottom: 5px;">Создан</div>
+                                    <div style="font-weight: 600;" id="modal-created-date"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--gray-lighter); border-radius: 12px; padding: 25px;">
+                            <h4 style="margin-bottom: 20px; color: var(--dark);">Промт от клиента</h4>
+                            <div style="background: var(--white); padding: 20px; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                                <div id="modal-prompt-content"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="background: var(--gray-lighter); border-radius: 12px; padding: 25px; margin-bottom: 25px;">
+                            <h4 style="margin-bottom: 20px; color: var(--dark);">Управление статусом</h4>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="btn btn-secondary" onclick="updateOrderStatus('new')" id="status-new-btn">
+                                    <i class="fas fa-circle" style="color: #1d4ed8;"></i> Новый
+                                </button>
+                                <button class="btn btn-secondary" onclick="updateOrderStatus('in-progress')" id="status-progress-btn">
+                                    <i class="fas fa-circle" style="color: #d97706;"></i> В работе
+                                </button>
+                                <button class="btn btn-secondary" onclick="updateOrderStatus('review')" id="status-review-btn">
+                                    <i class="fas fa-circle" style="color: #be185d;"></i> На проверке
+                                </button>
+                                <button class="btn btn-secondary" onclick="updateOrderStatus('completed')" id="status-completed-btn">
+                                    <i class="fas fa-circle" style="color: #16a34a;"></i> Завершён
+                                </button>
+                                <button class="btn btn-secondary" onclick="updateOrderStatus('cancelled')" id="status-cancelled-btn">
+                                    <i class="fas fa-circle" style="color: #dc2626;"></i> Отменён
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="background: var(--gray-lighter); border-radius: 12px; padding: 25px;">
+                            <h4 style="margin-bottom: 20px; color: var(--dark);">Действия</h4>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <button class="btn btn-primary" onclick="takeOrder()" id="take-order-btn">
+                                    <i class="fas fa-hand-paper"></i> Взять в работу
+                                </button>
+                                <button class="btn btn-success" onclick="completeOrder()" id="complete-order-btn">
+                                    <i class="fas fa-check-circle"></i> Завершить заказ
+                                </button>
+                                <button class="btn btn-danger" onclick="rejectOrder()">
+                                    <i class="fas fa-ban"></i> Отклонить заказ
+                                </button>
+                                <button class="btn btn-secondary" onclick="copyOrderInfo()">
+                                    <i class="fas fa-copy"></i> Скопировать данные
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--gray-light);">
+                        <h4 style="color: var(--dark);">Общение с клиентом</h4>
+                        <div style="font-size: 14px; color: var(--gray);">
+                            <i class="fas fa-comments"></i> <span id="message-count">0 сообщений</span>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Сообщения загружаются через JavaScript -->
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea id="chat-input" placeholder="Введите сообщение для клиента..." onkeydown="if(event.key === 'Enter' && !event.shiftKey) {event.preventDefault(); sendMessage();}"></textarea>
+                        <button class="btn btn-primary" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Глобальные переменные
+        const DEVELOPERS = {
+            "789563": {
+                id: "dev_1",
+                name: "Александр",
+                avatar: "А",
+                email: "alexander@sitecore.ru"
+            },
+            "140612": {
+                id: "dev_2",
+                name: "Максим",
+                avatar: "М",
+                email: "maxim@sitecore.ru"
+            }
+        };
+
+        let currentUser = null;
+        let currentDatabase = null;
+        let currentOrderId = null;
+        let currentNewsId = null;
+        let currentOrderTab = 'available';
+        let uploadedFile = null;
 
         // Инициализация
         function init() {
@@ -62,120 +2028,761 @@
                 return;
             }
 
-            const currentUser = JSON.parse(userData);
+            currentUser = JSON.parse(userData);
             
             if (currentUser.type !== 'developer') {
                 window.location.href = 'client.html';
                 return;
             }
 
-            // Загружаем базу данных
-            const database = loadDatabase();
+            // Установка реальной даты
+            updateRealDate();
             
-            // Обновляем информацию пользователя
-            updateUserInfo(currentUser);
-            loadDashboardData(currentUser, database);
-            loadAvailableOrders(database);
+            // Загрузка базы данных
+            loadDatabase();
+            
+            // Обновление интерфейса
+            updateUserInfo();
+            loadDashboard();
+            loadNewsList();
+            loadOrders('available');
+            
+            // Слушатели для счетчиков символов
+            document.getElementById('news-title')?.addEventListener('input', updateCharCounters);
+            document.getElementById('news-content')?.addEventListener('input', updateCharCounters);
+            
+            // Автоматическое сохранение каждые 30 секунд
+            setInterval(autoSave, 30000);
+            
+            // Автоматическое обновление каждую минуту
+            setInterval(refreshData, 60000);
         }
 
-        // Обновление информации пользователя
-        function updateUserInfo(currentUser) {
-            const userInfoElement = document.getElementById('current-user-info');
-            if (userInfoElement) {
-                userInfoElement.innerHTML = `
-                    <div class="user-avatar">${currentUser.avatar}</div>
-                    <div class="user-name">${currentUser.name}</div>
-                `;
-            }
-
-            const executorNameElement = document.getElementById('executor-name');
-            if (executorNameElement) {
-                executorNameElement.textContent = currentUser.name;
-            }
-            
-            // Заголовок приветствия
+        // Обновление реальной даты и времени
+        function updateRealDate() {
             const now = new Date();
             const hours = now.getHours();
-            let greeting;
             
+            // Правильное приветствие по времени
+            let greeting;
             if (hours < 12) greeting = 'Доброе утро';
             else if (hours < 18) greeting = 'Добрый день';
             else greeting = 'Добрый вечер';
             
-            const welcomeTitle = document.getElementById('welcome-title');
-            if (welcomeTitle) {
-                welcomeTitle.textContent = `${greeting}, ${currentUser.name}!`;
+            document.getElementById('welcome-title').textContent = `${greeting}, ${currentUser?.name || 'Разработчик'}!`;
+            
+            // Форматирование даты
+            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            const days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+            
+            const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            const dayStr = days[now.getDay()];
+            
+            document.getElementById('today-date').textContent = dateStr;
+            document.getElementById('current-date').textContent = `${dateStr}, ${dayStr}`;
+            
+            // Обновление дней до конца месяца для рекламы
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const daysLeft = lastDay - now.getDate();
+            document.getElementById('dashboard-days-left').textContent = daysLeft;
+            
+            // Обновление времени каждую минуту
+            setTimeout(updateRealDate, 60000);
+        }
+
+        // Загрузка базы данных
+        function loadDatabase() {
+            const db = localStorage.getItem('sitecore_database');
+            if (db) {
+                currentDatabase = JSON.parse(db);
+                
+                // Инициализация структуры если её нет
+                if (!currentDatabase.news) currentDatabase.news = [];
+                if (!currentDatabase.orders) currentDatabase.orders = [];
+                if (!currentDatabase.users) currentDatabase.users = { clients: [], developers: [] };
+                if (!currentDatabase.messages) currentDatabase.messages = [];
+                if (!currentDatabase.settings) currentDatabase.settings = {};
+                
+                // Сохранение обновлённой базы
+                saveDatabase();
+            } else {
+                // Создание новой базы данных с демо-данными
+                currentDatabase = {
+                    users: {
+                        clients: [],
+                        developers: [
+                            {
+                                id: "dev_1",
+                                name: "Александр",
+                                email: "alexander@sitecore.ru",
+                                avatar: "А"
+                            },
+                            {
+                                id: "dev_2",
+                                name: "Максим",
+                                email: "maxim@sitecore.ru",
+                                avatar: "М"
+                            }
+                        ]
+                    },
+                    orders: [],
+                    messages: [],
+                    news: [],
+                    settings: {
+                        created: new Date().toISOString(),
+                        lastUpdate: new Date().toISOString(),
+                        version: "1.0.0"
+                    }
+                };
+                
+                // Создание демо-новостей
+                const demoNews = [
+                    {
+                        id: 'news_1',
+                        title: 'Запуск новой платформы SiteCore!',
+                        content: 'Мы рады сообщить о запуске новой платформы для заказа сайтов. Теперь весь процесс от заявки до готового сайта стал еще проще и прозрачнее.',
+                        author: 'Команда SiteCore',
+                        authorAvatar: 'SC',
+                        publishedAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 дня назад
+                        likes: 24,
+                        comments: 8,
+                        views: 156
+                    },
+                    {
+                        id: 'news_2',
+                        title: 'Специальное предложение: скидка 15% до конца месяца',
+                        content: 'Только до конца месяца действует специальное предложение для новых клиентов. Закажите разработку сайта и получите скидку 15%. Успейте воспользоваться!',
+                        author: 'Команда SiteCore',
+                        authorAvatar: 'SC',
+                        publishedAt: new Date(Date.now() - 86400000).toISOString(), // 1 день назад
+                        likes: 18,
+                        comments: 5,
+                        views: 98
+                    }
+                ];
+                
+                currentDatabase.news = demoNews;
+                saveDatabase();
             }
+            
+            // Обновление информации о базе данных
+            updateDatabaseInfo();
+        }
+
+        // Сохранение базы данных
+        function saveDatabase() {
+            currentDatabase.settings.lastUpdate = new Date().toISOString();
+            localStorage.setItem('sitecore_database', JSON.stringify(currentDatabase));
+            updateDatabaseInfo();
+        }
+
+        // Автосохранение
+        function autoSave() {
+            saveDatabase();
+            showNotification('Автосохранение выполнено', 'success');
+        }
+
+        // Обновление информации о базе данных
+        function updateDatabaseInfo() {
+            const totalOrders = currentDatabase.orders.length;
+            const totalNews = currentDatabase.news.length;
+            const totalClients = currentDatabase.users.clients.length;
+            
+            document.getElementById('db-size').textContent = `${totalOrders} заказов, ${totalNews} новостей, ${totalClients} клиентов`;
+            
+            // Обновление бейджей
+            const activeOrders = currentDatabase.orders.filter(order => 
+                order.status === 'new' || order.status === 'in-progress' || order.status === 'review'
+            ).length;
+            
+            document.getElementById('orders-badge').textContent = activeOrders;
+            document.getElementById('news-badge').textContent = totalNews;
+            document.getElementById('clients-badge').textContent = totalClients;
+        }
+
+        // Обновление информации пользователя
+        function updateUserInfo() {
+            document.getElementById('developer-name').textContent = currentUser.name;
+            document.getElementById('current-user-info').innerHTML = `
+                <div class="user-avatar">${currentUser.avatar}</div>
+                <div class="user-name">${currentUser.name}</div>
+            `;
+        }
+
+        // Показать раздел
+        function showSection(section) {
+            // Обновляем активные пункты меню
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.textContent.includes(getSectionName(section))) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Показываем выбранный раздел
+            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(section + '-section').classList.add('active');
+            
+            // Загружаем данные для раздела
+            switch(section) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'news':
+                    loadNewsList();
+                    break;
+                case 'orders':
+                    loadOrders(currentOrderTab);
+                    break;
+                case 'clients':
+                    loadClients();
+                    break;
+                case 'statistics':
+                    loadStatistics();
+                    break;
+            }
+        }
+
+        // Получить название раздела
+        function getSectionName(section) {
+            const names = {
+                'dashboard': 'Дашборд',
+                'news': 'Новости',
+                'orders': 'Заказы',
+                'clients': 'Клиенты',
+                'statistics': 'Статистика'
+            };
+            return names[section] || section;
         }
 
         // Загрузка дашборда
-        function loadDashboardData(currentUser, database) {
-            if (!database.orders) return;
+        function loadDashboard() {
+            const orders = currentDatabase.orders || [];
+            const news = currentDatabase.news || [];
+            const clients = currentDatabase.users.clients || [];
             
-            const orders = database.orders;
-            const myOrders = orders.filter(order => order.assignedTo === currentUser.id);
-            const availableOrders = orders.filter(order => !order.assignedTo && order.status === 'new');
+            // Статистика заказов
+            const newOrders = orders.filter(o => o.status === 'new').length;
+            const activeOrders = orders.filter(o => o.status === 'in-progress').length;
+            const reviewOrders = orders.filter(o => o.status === 'review').length;
+            const completedOrders = orders.filter(o => o.status === 'completed').length;
             
-            const statsBadge = document.getElementById('stats-badge');
-            if (statsBadge) {
-                statsBadge.innerHTML = `
-                    <i class="fas fa-tasks"></i>
-                    <span>${myOrders.length} активных заказов</span>
-                `;
-            }
+            // Статистика новостей
+            const totalNews = news.length;
+            const monthNews = news.filter(n => {
+                const newsDate = new Date(n.publishedAt);
+                const monthAgo = new Date(Date.now() - 30 * 86400000);
+                return newsDate > monthAgo;
+            }).length;
             
-            const quickStats = document.getElementById('quick-stats');
-            if (quickStats) {
-                quickStats.innerHTML = `
-                    <div class="quick-stat">
-                        <div class="quick-stat-value">${availableOrders.length}</div>
-                        <div class="quick-stat-label">Доступных заказов</div>
-                    </div>
-                    <div class="quick-stat">
-                        <div class="quick-stat-value">${myOrders.length}</div>
-                        <div class="quick-stat-label">Мои заказы</div>
-                    </div>
-                    <div class="quick-stat">
-                        <div class="quick-stat-value">${myOrders.filter(o => o.status === 'completed').length}</div>
-                        <div class="quick-stat-label">Завершено</div>
-                    </div>
-                `;
-            }
+            const totalViews = news.reduce((sum, n) => sum + (n.views || 0), 0);
+            const totalLikes = news.reduce((sum, n) => sum + (n.likes || 0), 0);
+            
+            // Обновление быстрой статистики
+            document.getElementById('dashboard-active-orders').textContent = activeOrders + reviewOrders;
+            document.getElementById('dashboard-new-orders').textContent = newOrders;
+            document.getElementById('dashboard-review-orders').textContent = reviewOrders;
+            document.getElementById('dashboard-completed-orders').textContent = completedOrders;
+            
+            document.getElementById('dashboard-total-news').textContent = totalNews;
+            document.getElementById('dashboard-month-news').textContent = monthNews;
+            document.getElementById('dashboard-news-views').textContent = totalViews;
+            document.getElementById('dashboard-news-likes').textContent = totalLikes;
+            
+            // Обновление общей статистики
+            document.getElementById('quick-stats').innerHTML = `
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${orders.length}</div>
+                    <div class="quick-stat-label">Всего заказов</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${clients.length}</div>
+                    <div class="quick-stat-label">Активных клиентов</div>
+                </div>
+                <div class="quick-stat">
+                    <div class="quick-stat-value">${totalNews}</div>
+                    <div class="quick-stat-label">Опубликованных новостей</div>
+                </div>
+            `;
+            
+            // Загрузка последних действий
+            loadRecentActions();
         }
 
-        // Загрузка доступных заказов
-        function loadAvailableOrders(database) {
-            if (!database.orders) return;
-            
-            const orders = database.orders;
-            const availableOrders = orders.filter(order => !order.assignedTo && order.status === 'new');
-            const container = document.getElementById('available-orders');
-            
+        // Загрузка последних действий
+        function loadRecentActions() {
+            const container = document.getElementById('recent-actions');
             if (!container) return;
             
-            if (availableOrders.length === 0) {
+            // Собираем последние действия из разных источников
+            const recentOrders = [...currentDatabase.orders]
+                .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt))
+                .slice(0, 3);
+            
+            const recentNews = [...currentDatabase.news]
+                .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+                .slice(0, 2);
+            
+            let actions = [];
+            
+            // Добавляем заказы
+            recentOrders.forEach(order => {
+                const time = new Date(order.updatedAt || order.createdAt);
+                const timeStr = time.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = time.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+                
+                actions.push({
+                    icon: 'fas fa-tasks',
+                    color: 'var(--primary)',
+                    text: `Заказ "${order.projectName}"`,
+                    subtext: `Статус: ${getStatusText(order.status)} • ${dateStr} ${timeStr}`,
+                    time: time
+                });
+            });
+            
+            // Добавляем новости
+            recentNews.forEach(news => {
+                const time = new Date(news.publishedAt);
+                const timeStr = time.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = time.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+                
+                actions.push({
+                    icon: 'fas fa-newspaper',
+                    color: 'var(--success)',
+                    text: `Опубликована новость: "${news.title}"`,
+                    subtext: `${dateStr} ${timeStr} • ${news.views || 0} просмотров`,
+                    time: time
+                });
+            });
+            
+            // Сортируем по времени
+            actions.sort((a, b) => b.time - a.time);
+            
+            // Отображаем
+            container.innerHTML = actions.slice(0, 5).map(action => `
+                <div class="recent-order">
+                    <div class="recent-order-info">
+                        <h5 style="display: flex; align-items: center; gap: 10px;">
+                            <i class="${action.icon}" style="color: ${action.color};"></i>
+                            ${action.text}
+                        </h5>
+                        <p>${action.subtext}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Загрузка новостей
+        function loadNewsList() {
+            const container = document.getElementById('news-list');
+            if (!container) return;
+            
+            const news = currentDatabase.news || [];
+            
+            if (news.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--gray); grid-column: 1/-1;">
-                        <i class="fas fa-check-circle" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
-                        <h3 style="margin-bottom: 12px; font-size: 18px;">Нет доступных заказов</h3>
-                        <p style="margin-bottom: 20px; max-width: 350px; margin: 0 auto 20px; font-size: 14px;">Все заказы взяты в работу. Загляните позже!</p>
+                    <div style="text-align: center; padding: 40px; color: var(--gray);">
+                        <i class="fas fa-newspaper" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <h4 style="margin-bottom: 10px;">Новостей пока нет</h4>
+                        <p>Создайте первую новость для клиентов</p>
+                        <button class="btn btn-primary" onclick="newNews()" style="margin-top: 15px;">
+                            <i class="fas fa-plus"></i> Создать новость
+                        </button>
                     </div>
                 `;
                 return;
             }
             
-            container.innerHTML = availableOrders.map(order => {
-                const client = database.users?.clients?.find(c => c.id === order.clientId) || order;
+            // Сортируем по дате (новые сначала)
+            const sortedNews = [...news].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+            
+            container.innerHTML = sortedNews.map(item => {
+                const date = new Date(item.publishedAt);
+                const formattedDate = date.toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                
+                const isActive = currentNewsId === item.id;
                 
                 return `
-                    <div class="order-card" onclick="openOrderModal('${order.id}', true)">
+                    <div class="news-item ${isActive ? 'active' : ''}" onclick="editNews('${item.id}')">
+                        <div class="news-item-header">
+                            <div>
+                                <div class="news-item-title">${item.title}</div>
+                                <div class="news-item-date">${formattedDate}</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                <i class="fas fa-eye" style="color: var(--gray); font-size: 12px;"></i>
+                                <span style="font-size: 12px; color: var(--gray);">${item.views || 0}</span>
+                            </div>
+                        </div>
+                        <div class="news-item-content">
+                            ${item.content.substring(0, 150)}${item.content.length > 150 ? '...' : ''}
+                        </div>
+                        <div class="news-item-actions">
+                            <button class="btn btn-success btn-small" onclick="event.stopPropagation(); publishNews('${item.id}')">
+                                <i class="fas fa-share"></i> Опубликовать
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="event.stopPropagation(); deleteNews('${item.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Новая новость
+        function newNews() {
+            currentNewsId = null;
+            uploadedFile = null;
+            
+            document.getElementById('news-form-title').textContent = 'Новая новость';
+            document.getElementById('news-id').value = '';
+            document.getElementById('news-title').value = '';
+            document.getElementById('news-content').value = '';
+            document.getElementById('news-author').value = currentUser.name || 'Команда SiteCore';
+            
+            document.getElementById('save-news-btn').innerHTML = '<i class="fas fa-save"></i> Опубликовать';
+            document.getElementById('cancel-news-btn').style.display = 'none';
+            document.getElementById('delete-news-btn').style.display = 'none';
+            
+            document.getElementById('file-preview').classList.remove('active');
+            document.getElementById('file-preview').innerHTML = '';
+            
+            updateCharCounters();
+            
+            // Прокрутка к форме
+            document.getElementById('news-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Редактировать новость
+        function editNews(newsId) {
+            const news = currentDatabase.news.find(n => n.id === newsId);
+            if (!news) return;
+            
+            currentNewsId = newsId;
+            uploadedFile = news.file || null;
+            
+            document.getElementById('news-form-title').textContent = 'Редактирование новости';
+            document.getElementById('news-id').value = newsId;
+            document.getElementById('news-title').value = news.title;
+            document.getElementById('news-content').value = news.content;
+            document.getElementById('news-author').value = news.author;
+            
+            document.getElementById('save-news-btn').innerHTML = '<i class="fas fa-save"></i> Сохранить изменения';
+            document.getElementById('cancel-news-btn').style.display = 'inline-flex';
+            document.getElementById('delete-news-btn').style.display = 'inline-flex';
+            
+            // Показ превью файла
+            if (news.file) {
+                showFilePreview(news.file);
+            }
+            
+            updateCharCounters();
+            
+            // Прокрутка к форме
+            document.getElementById('news-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Сохранение новости
+        function saveNews(event) {
+            event.preventDefault();
+            
+            const newsId = document.getElementById('news-id').value;
+            const title = document.getElementById('news-title').value.trim();
+            const content = document.getElementById('news-content').value.trim();
+            const author = document.getElementById('news-author').value.trim();
+            
+            if (!title || !content || !author) {
+                showNotification('Заполните все обязательные поля', 'error');
+                return;
+            }
+            
+            if (title.length > 100) {
+                showNotification('Заголовок не должен превышать 100 символов', 'error');
+                return;
+            }
+            
+            if (content.length > 2000) {
+                showNotification('Содержание не должно превышать 2000 символов', 'error');
+                return;
+            }
+            
+            let newsItem;
+            
+            if (newsId) {
+                // Редактирование существующей новости
+                const index = currentDatabase.news.findIndex(n => n.id === newsId);
+                if (index !== -1) {
+                    newsItem = {
+                        ...currentDatabase.news[index],
+                        title,
+                        content,
+                        author,
+                        updatedAt: new Date().toISOString(),
+                        file: uploadedFile || currentDatabase.news[index].file
+                    };
+                    currentDatabase.news[index] = newsItem;
+                }
+            } else {
+                // Создание новой новости
+                newsItem = {
+                    id: 'news_' + Date.now(),
+                    title,
+                    content,
+                    author,
+                    authorAvatar: author.charAt(0).toUpperCase(),
+                    publishedAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    views: 0,
+                    likes: 0,
+                    comments: 0,
+                    file: uploadedFile
+                };
+                currentDatabase.news.unshift(newsItem);
+            }
+            
+            saveDatabase();
+            loadNewsList();
+            
+            showNotification(newsId ? 'Новость обновлена' : 'Новость опубликована', 'success');
+            
+            if (!newsId) {
+                newNews(); // Сброс формы для новой новости
+            }
+        }
+
+        // Удаление новости
+        function deleteNews(newsId) {
+            if (!newsId) newsId = currentNewsId;
+            if (!newsId) return;
+            
+            if (!confirm('Вы уверены, что хотите удалить эту новость?')) {
+                return;
+            }
+            
+            const index = currentDatabase.news.findIndex(n => n.id === newsId);
+            if (index !== -1) {
+                currentDatabase.news.splice(index, 1);
+                saveDatabase();
+                loadNewsList();
+                newNews();
+                showNotification('Новость удалена', 'success');
+            }
+        }
+
+        // Опубликовать новость
+        function publishNews(newsId) {
+            const news = currentDatabase.news.find(n => n.id === newsId);
+            if (!news) return;
+            
+            news.publishedAt = new Date().toISOString();
+            saveDatabase();
+            loadNewsList();
+            
+            showNotification('Новость опубликована для клиентов', 'success');
+        }
+
+        // Обработка загрузки файла
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Проверка размера файла (максимум 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Файл слишком большой. Максимальный размер: 5MB', 'error');
+                return;
+            }
+            
+            // Проверка типа файла
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/webm'];
+            if (!validTypes.includes(file.type)) {
+                showNotification('Неподдерживаемый тип файла. Разрешены: изображения и видео', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedFile = {
+                    name: file.name,
+                    type: file.type,
+                    size: file.size,
+                    data: e.target.result
+                };
+                showFilePreview(uploadedFile);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Показ превью файла
+        function showFilePreview(file) {
+            const container = document.getElementById('file-preview');
+            const isImage = file.type.startsWith('image/');
+            const isVideo = file.type.startsWith('video/');
+            
+            let previewHTML = '';
+            
+            if (isImage) {
+                previewHTML = `
+                    <img src="${file.data}" alt="${file.name}" class="preview-image">
+                `;
+            } else if (isVideo) {
+                previewHTML = `
+                    <video controls class="preview-image">
+                        <source src="${file.data}" type="${file.type}">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                `;
+            }
+            
+            previewHTML += `
+                <div class="file-info">
+                    <div>
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <button type="button" class="remove-file" onclick="removeFile()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            container.innerHTML = previewHTML;
+            container.classList.add('active');
+        }
+
+        // Удаление файла
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('file-preview').classList.remove('active');
+            document.getElementById('file-preview').innerHTML = '';
+            document.getElementById('news-file').value = '';
+        }
+
+        // Форматирование размера файла
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' Б';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' МБ';
+        }
+
+        // Обновление счетчиков символов
+        function updateCharCounters() {
+            const title = document.getElementById('news-title').value;
+            const content = document.getElementById('news-content').value;
+            
+            const titleCounter = document.getElementById('title-counter');
+            const contentCounter = document.getElementById('content-counter');
+            
+            titleCounter.textContent = `${title.length}/100`;
+            contentCounter.textContent = `${content.length}/2000`;
+            
+            if (title.length > 100) {
+                titleCounter.classList.add('error');
+            } else if (title.length > 80) {
+                titleCounter.classList.add('warning');
+            } else {
+                titleCounter.classList.remove('error', 'warning');
+            }
+            
+            if (content.length > 2000) {
+                contentCounter.classList.add('error');
+            } else if (content.length > 1800) {
+                contentCounter.classList.add('warning');
+            } else {
+                contentCounter.classList.remove('error', 'warning');
+            }
+        }
+
+        // Очистка формы новости
+        function clearNewsForm() {
+            newNews();
+        }
+
+        // Обновление новостей
+        function refreshNews() {
+            loadNewsList();
+            showNotification('Список новостей обновлён', 'success');
+        }
+
+        // Показать вкладку заказов
+        function showOrderTab(tab) {
+            currentOrderTab = tab;
+            
+            // Обновляем активные табы
+            document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.order-tab').forEach(t => {
+                if (t.textContent.includes(getOrderTabName(tab))) {
+                    t.classList.add('active');
+                }
+            });
+            
+            loadOrders(tab);
+        }
+
+        // Получить название вкладки заказов
+        function getOrderTabName(tab) {
+            const names = {
+                'available': 'Доступные',
+                'my': 'Мои заказы',
+                'all': 'Все заказы',
+                'completed': 'Завершённые'
+            };
+            return names[tab] || tab;
+        }
+
+        // Загрузка заказов
+        function loadOrders(tab) {
+            const container = document.getElementById('orders-grid');
+            if (!container) return;
+            
+            let orders = currentDatabase.orders || [];
+            
+            // Фильтрация по вкладке
+            switch(tab) {
+                case 'available':
+                    orders = orders.filter(o => !o.assignedTo && o.status === 'new');
+                    break;
+                case 'my':
+                    orders = orders.filter(o => o.assignedTo === currentUser.id);
+                    break;
+                case 'completed':
+                    orders = orders.filter(o => o.status === 'completed');
+                    break;
+                case 'all':
+                    // Все заказы
+                    break;
+            }
+            
+            // Сортировка по дате (новые сначала)
+            orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            if (orders.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px; color: var(--gray); grid-column: 1/-1;">
+                        <i class="fas fa-inbox" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 15px;">Заказов не найдено</h3>
+                        <p>${getEmptyOrderMessage(tab)}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = orders.map(order => {
+                const client = currentDatabase.users.clients?.find(c => c.id === order.clientId) || order;
+                
+                return `
+                    <div class="order-card" onclick="openOrderModal('${order.id}')">
                         <div class="order-card-header">
                             <div>
                                 <h3>${order.projectName}</h3>
                                 <div class="order-client">${client.name || order.clientName}</div>
                             </div>
-                            <div class="order-status status-${order.status}">
-                                Новый
+                            <div class="order-status ${getStatusClass(order.status)}">
+                                ${getStatusText(order.status)}
                             </div>
                         </div>
                         
@@ -191,30 +2798,73 @@
                                 </div>
                                 <div class="order-detail">
                                     <div class="order-detail-label">Срок</div>
-                                    <div class="order-detail-value">${order.deadline} дн.</div>
+                                    <div class="order-detail-value">${order.deadline} дней</div>
                                 </div>
                                 <div class="order-detail">
-                                    <div class="order-detail-label">Клиент</div>
-                                    <div class="order-detail-value">${client.name || order.clientName}</div>
+                                    <div class="order-detail-label">Разработчик</div>
+                                    <div class="order-detail-value">${order.assignedTo ? getDeveloperName(order.assignedTo) : 'Не назначен'}</div>
                                 </div>
                             </div>
                             
                             <div class="order-prompt-preview">
-                                ${(order.prompt || '').substring(0, 100)}...
+                                ${order.prompt?.substring(0, 150) || 'Нет описания'}...
                             </div>
                         </div>
                         
                         <div class="order-card-actions">
-                            <button class="btn btn-secondary" onclick="event.stopPropagation(); openOrderModal('${order.id}', true)">
-                                <i class="fas fa-eye"></i> Подробнее
+                            <button class="btn btn-primary btn-small" onclick="event.stopPropagation(); openOrderModal('${order.id}')">
+                                <i class="fas fa-eye"></i> Просмотр
                             </button>
-                            <button class="btn btn-primary" onclick="event.stopPropagation(); takeOrder('${order.id}')">
-                                <i class="fas fa-hand-paper"></i> Взять в работу
-                            </button>
+                            ${!order.assignedTo ? `
+                                <button class="btn btn-success btn-small" onclick="event.stopPropagation(); takeOrder('${order.id}')">
+                                    <i class="fas fa-hand-paper"></i> Взять в работу
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // Получить сообщение для пустой вкладки заказов
+        function getEmptyOrderMessage(tab) {
+            const messages = {
+                'available': 'Все доступные заказы уже взяты в работу',
+                'my': 'У вас пока нет заказов в работе',
+                'all': 'Заказов в системе пока нет',
+                'completed': 'Завершённых заказов пока нет'
+            };
+            return messages[tab] || 'Заказов не найдено';
+        }
+
+        // Получить класс статуса
+        function getStatusClass(status) {
+            const classes = {
+                'new': 'status-new',
+                'in-progress': 'status-progress',
+                'review': 'status-review',
+                'completed': 'status-completed',
+                'cancelled': 'status-cancelled'
+            };
+            return classes[status] || 'status-new';
+        }
+
+        // Получить текст статуса
+        function getStatusText(status) {
+            const texts = {
+                'new': 'Новый',
+                'in-progress': 'В работе',
+                'review': 'На проверке',
+                'completed': 'Завершён',
+                'cancelled': 'Отменён'
+            };
+            return texts[status] || 'Новый';
+        }
+
+        // Получить имя разработчика
+        function getDeveloperName(developerId) {
+            const developer = currentDatabase.users.developers?.find(d => d.id === developerId);
+            return developer ? developer.name : 'Неизвестно';
         }
 
         // Форматирование валюты
@@ -226,8 +2876,569 @@
             }).format(amount);
         }
 
+        // Открыть модальное окно заказа
+        function openOrderModal(orderId) {
+            const order = currentDatabase.orders.find(o => o.id === orderId);
+            if (!order) {
+                showNotification('Заказ не найден', 'error');
+                return;
+            }
+            
+            currentOrderId = orderId;
+            
+            const client = currentDatabase.users.clients?.find(c => c.id === order.clientId) || order;
+            const developer = order.assignedTo ? getDeveloperName(order.assignedTo) : 'Не назначен';
+            
+            // Заполнение информации о заказе
+            document.getElementById('modal-order-title').textContent = order.projectName;
+            document.getElementById('modal-client-name').textContent = client.name || order.clientName;
+            document.getElementById('modal-client-email').textContent = client.email || order.clientEmail;
+            document.getElementById('modal-client-phone').textContent = client.phone || order.clientPhone || 'Не указан';
+            document.getElementById('modal-client-telegram').textContent = client.telegram || order.clientTelegram || 'Не указан';
+            document.getElementById('modal-project-type').textContent = order.projectType === 'static' ? 'Статический' : 'Динамический';
+            document.getElementById('modal-project-budget').textContent = formatCurrency(order.budget);
+            document.getElementById('modal-project-deadline').textContent = `${order.deadline} дней`;
+            document.getElementById('modal-created-date').textContent = new Date(order.createdAt).toLocaleDateString('ru-RU');
+            document.getElementById('modal-prompt-content').textContent = order.prompt || 'Нет описания';
+            
+            // Обновление статусов кнопок
+            document.querySelectorAll('[id^="status-"]').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+            });
+            
+            const activeBtn = document.getElementById(`status-${order.status.replace('-', '')}-btn`);
+            if (activeBtn) {
+                activeBtn.classList.remove('btn-secondary');
+                activeBtn.classList.add('btn-primary');
+            }
+            
+            // Настройка кнопок действий
+            document.getElementById('take-order-btn').style.display = !order.assignedTo ? 'block' : 'none';
+            document.getElementById('complete-order-btn').style.display = order.assignedTo === currentUser.id && order.status !== 'completed' ? 'block' : 'none';
+            
+            // Загрузка сообщений
+            loadOrderMessages(orderId);
+            
+            // Показ модального окна
+            document.getElementById('order-modal').classList.add('active');
+        }
+
+        // Закрыть модальное окно заказа
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.remove('active');
+            currentOrderId = null;
+        }
+
+        // Загрузка сообщений заказа
+        function loadOrderMessages(orderId) {
+            const container = document.getElementById('chat-messages');
+            if (!container) return;
+            
+            const messages = currentDatabase.messages.filter(m => m.orderId === orderId);
+            const order = currentDatabase.orders.find(o => o.id === orderId);
+            
+            if (!messages.length) {
+                container.innerHTML = `
+                    <div class="message-system">
+                        Начните общение с клиентом. Все сообщения сохраняются в истории.
+                    </div>
+                `;
+                document.getElementById('message-count').textContent = '0 сообщений';
+                return;
+            }
+            
+            // Сортировка по времени
+            messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            
+            container.innerHTML = messages.map(msg => {
+                const time = new Date(msg.timestamp);
+                const timeStr = time.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                
+                if (msg.sender === 'system') {
+                    return `
+                        <div class="message-system">
+                            <div>${msg.text}</div>
+                            <div style="font-size: 11px; margin-top: 5px; opacity: 0.7;">${timeStr}</div>
+                        </div>
+                    `;
+                } else if (msg.sender === currentUser.id) {
+                    return `
+                        <div class="message developer">
+                            <div class="message-sender">Вы</div>
+                            <div>${msg.text}</div>
+                            <div class="message-time">${timeStr}</div>
+                        </div>
+                    `;
+                } else {
+                    const client = currentDatabase.users.clients?.find(c => c.id === order?.clientId) || order;
+                    return `
+                        <div class="message client">
+                            <div class="message-sender">${client?.name || 'Клиент'}</div>
+                            <div>${msg.text}</div>
+                            <div class="message-time">${timeStr}</div>
+                        </div>
+                    `;
+                }
+            }).join('');
+            
+            document.getElementById('message-count').textContent = `${messages.length} сообщений`;
+            
+            // Прокрутка вниз
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Отправить сообщение
+        function sendMessage() {
+            if (!currentOrderId) return;
+            
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const newMessage = {
+                id: 'msg_' + Date.now(),
+                orderId: currentOrderId,
+                text: message,
+                sender: currentUser.id,
+                timestamp: new Date().toISOString()
+            };
+            
+            currentDatabase.messages.push(newMessage);
+            saveDatabase();
+            
+            // Очистка поля ввода
+            input.value = '';
+            
+            // Обновление сообщений
+            loadOrderMessages(currentOrderId);
+            
+            // Прокрутка вниз
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Взять заказ в работу
+        function takeOrder(orderId) {
+            if (!orderId) orderId = currentOrderId;
+            if (!orderId) return;
+            
+            const order = currentDatabase.orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            if (order.assignedTo) {
+                showNotification('Этот заказ уже взят в работу другим разработчиком', 'warning');
+                return;
+            }
+            
+            order.assignedTo = currentUser.id;
+            order.status = 'in-progress';
+            order.updatedAt = new Date().toISOString();
+            
+            // Добавление системного сообщения
+            currentDatabase.messages.push({
+                id: 'msg_' + Date.now(),
+                orderId: orderId,
+                text: `${currentUser.name} взял заказ в работу`,
+                sender: 'system',
+                timestamp: new Date().toISOString()
+            });
+            
+            saveDatabase();
+            
+            showNotification('Заказ успешно взят в работу!', 'success');
+            
+            // Закрытие модального окна и обновление списка
+            closeOrderModal();
+            loadOrders(currentOrderTab);
+            loadDashboard();
+        }
+
+        // Обновить статус заказа
+        function updateOrderStatus(status) {
+            if (!currentOrderId) return;
+            
+            const order = currentDatabase.orders.find(o => o.id === currentOrderId);
+            if (!order) return;
+            
+            const oldStatus = order.status;
+            order.status = status;
+            order.updatedAt = new Date().toISOString();
+            
+            // Добавление системного сообщения
+            currentDatabase.messages.push({
+                id: 'msg_' + Date.now(),
+                orderId: currentOrderId,
+                text: `Статус заказа изменён с "${getStatusText(oldStatus)}" на "${getStatusText(status)}"`,
+                sender: 'system',
+                timestamp: new Date().toISOString()
+            });
+            
+            saveDatabase();
+            
+            // Обновление интерфейса
+            openOrderModal(currentOrderId);
+            loadOrders(currentOrderTab);
+            loadDashboard();
+            
+            showNotification('Статус заказа обновлён', 'success');
+        }
+
+        // Завершить заказ
+        function completeOrder() {
+            if (!currentOrderId) return;
+            updateOrderStatus('completed');
+        }
+
+        // Отклонить заказ
+        function rejectOrder() {
+            if (!currentOrderId) return;
+            
+            if (!confirm('Вы уверены, что хотите отклонить этот заказ?')) {
+                return;
+            }
+            
+            updateOrderStatus('cancelled');
+        }
+
+        // Копировать информацию о заказе
+        function copyOrderInfo() {
+            if (!currentOrderId) return;
+            
+            const order = currentDatabase.orders.find(o => o.id === currentOrderId);
+            if (!order) return;
+            
+            const text = `
+Заказ: ${order.projectName}
+Клиент: ${order.clientName}
+Бюджет: ${formatCurrency(order.budget)}
+Срок: ${order.deadline} дней
+Статус: ${getStatusText(order.status)}
+Промт: ${order.prompt?.substring(0, 200)}...
+            `.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Информация скопирована в буфер обмена', 'success');
+            });
+        }
+
+        // Обновить заказы
+        function refreshOrders() {
+            loadOrders(currentOrderTab);
+            showNotification('Список заказов обновлён', 'success');
+        }
+
+        // Загрузка клиентов
+        function loadClients() {
+            const container = document.getElementById('clients-grid');
+            if (!container) return;
+            
+            const clients = currentDatabase.users.clients || [];
+            
+            if (clients.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 60px; color: var(--gray); grid-column: 1/-1;">
+                        <i class="fas fa-users" style="font-size: 64px; margin-bottom: 20px; opacity: 0.5;"></i>
+                        <h3 style="margin-bottom: 15px;">Клиентов пока нет</h3>
+                        <p>Клиенты появятся после регистрации на платформе</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = clients.map(client => {
+                // Получение статистики по заказам клиента
+                const clientOrders = currentDatabase.orders.filter(o => o.clientId === client.id);
+                const totalOrders = clientOrders.length;
+                const activeOrders = clientOrders.filter(o => o.status === 'in-progress' || o.status === 'review').length;
+                const completedOrders = clientOrders.filter(o => o.status === 'completed').length;
+                const totalBudget = clientOrders.reduce((sum, o) => sum + (o.budget || 0), 0);
+                
+                return `
+                    <div class="client-card">
+                        <div class="client-header">
+                            <div class="client-avatar">${client.avatar}</div>
+                            <div class="client-info">
+                                <h4>${client.name}</h4>
+                                <p>${client.email}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="client-contact">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>${client.email}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>${client.phone || 'Не указан'}</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fab fa-telegram"></i>
+                                <span>${client.telegram ? '@' + client.telegram : 'Не указан'}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="client-stats">
+                            <div class="client-stat">
+                                <div class="client-stat-value">${totalOrders}</div>
+                                <div class="client-stat-label">Заказов</div>
+                            </div>
+                            <div class="client-stat">
+                                <div class="client-stat-value">${activeOrders}</div>
+                                <div class="client-stat-label">Активных</div>
+                            </div>
+                            <div class="client-stat">
+                                <div class="client-stat-value">${formatCurrency(totalBudget)}</div>
+                                <div class="client-stat-label">Бюджет</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Обновить клиентов
+        function refreshClients() {
+            loadClients();
+            showNotification('Список клиентов обновлён', 'success');
+        }
+
+        // Экспорт клиентов
+        function exportClients() {
+            const clients = currentDatabase.users.clients || [];
+            
+            if (clients.length === 0) {
+                showNotification('Нет клиентов для экспорта', 'warning');
+                return;
+            }
+            
+            const csv = clients.map(client => {
+                const clientOrders = currentDatabase.orders.filter(o => o.clientId === client.id);
+                const totalOrders = clientOrders.length;
+                const totalBudget = clientOrders.reduce((sum, o) => sum + (o.budget || 0), 0);
+                
+                return [
+                    client.name,
+                    client.email,
+                    client.phone || '',
+                    client.telegram || '',
+                    totalOrders,
+                    totalBudget
+                ].join(';');
+            }).join('\n');
+            
+            const headers = 'Имя;Email;Телефон;Telegram;Заказов;Общий бюджет\n';
+            const blob = new Blob([headers + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `sitecore_clients_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            
+            showNotification('Клиенты экспортированы в CSV', 'success');
+        }
+
+        // Загрузка статистики
+        function loadStatistics() {
+            const period = document.getElementById('stats-period').value;
+            const now = new Date();
+            let startDate;
+            
+            switch(period) {
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                    break;
+                case 'quarter':
+                    startDate = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+                    break;
+                case 'year':
+                    startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+                    break;
+                case 'all':
+                    startDate = new Date(0);
+                    break;
+            }
+            
+            const orders = currentDatabase.orders.filter(o => new Date(o.createdAt) >= startDate);
+            const news = currentDatabase.news.filter(n => new Date(n.publishedAt) >= startDate);
+            
+            // Общая статистика
+            const totalIncome = orders
+                .filter(o => o.status === 'completed')
+                .reduce((sum, o) => sum + (o.budget || 0), 0);
+            
+            const totalOrders = orders.length;
+            const completedOrders = orders.filter(o => o.status === 'completed').length;
+            const totalNews = news.length;
+            
+            document.getElementById('total-income').textContent = formatCurrency(totalIncome);
+            document.getElementById('total-orders').textContent = totalOrders;
+            document.getElementById('total-news').textContent = totalNews;
+            
+            // Графики
+            updateChart('income-chart', 'Доходы', [100000, 150000, 200000, 250000, 300000], ['Янв', 'Фев', 'Мар', 'Апр', 'Май']);
+            updateChart('orders-chart', 'Заказы', [5, 8, 12, 10, 15], ['Янв', 'Фев', 'Мар', 'Апр', 'Май']);
+            updateChart('news-chart', 'Новости', [2, 3, 1, 4, 2], ['Янв', 'Фев', 'Мар', 'Апр', 'Май']);
+            
+            // Последняя активность
+            const recentOrders = [...orders]
+                .sort((a, b) => new Date(b.updatedAt || b.createdAt) - new Date(a.updatedAt || a.createdAt))
+                .slice(0, 5);
+            
+            const container = document.getElementById('recent-activity');
+            if (container) {
+                container.innerHTML = recentOrders.map(order => {
+                    const time = new Date(order.updatedAt || order.createdAt);
+                    const timeStr = time.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                    const dateStr = time.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+                    
+                    return `
+                        <div class="recent-order">
+                            <div class="recent-order-info">
+                                <h5>${order.projectName}</h5>
+                                <p>${getStatusText(order.status)} • ${order.clientName} • ${dateStr} ${timeStr}</p>
+                            </div>
+                            <div style="font-weight: 600; color: var(--primary);">
+                                ${formatCurrency(order.budget)}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Обновление графика
+        function updateChart(chartId, title, data, labels) {
+            const container = document.getElementById(chartId);
+            if (!container) return;
+            
+            const maxValue = Math.max(...data);
+            const bars = data.map((value, index) => {
+                const height = maxValue > 0 ? (value / maxValue * 100) : 0;
+                return `
+                    <div class="chart-bar" style="height: ${height}%;">
+                        <div class="chart-value">${value}</div>
+                        <div class="chart-label">${labels[index]}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = bars;
+        }
+
+        // Экспорт статистики
+        function exportStatistics() {
+            const period = document.getElementById('stats-period').value;
+            const text = `
+Статистика SiteCore
+Период: ${document.getElementById('stats-period').options[document.getElementById('stats-period').selectedIndex].text}
+Дата экспорта: ${new Date().toLocaleDateString('ru-RU')}
+
+Общий доход: ${document.getElementById('total-income').textContent}
+Всего заказов: ${document.getElementById('total-orders').textContent}
+Опубликовано новостей: ${document.getElementById('total-news').textContent}
+
+Платформа работает стабильно.
+            `.trim();
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `sitecore_stats_${new Date().toISOString().split('T')[0]}.txt`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            
+            showNotification('Статистика экспортирована', 'success');
+        }
+
+        // Очистка кэша
+        function clearCache() {
+            if (!confirm('Вы уверены, что хотите очистить кэш? Это не удалит данные, но перезагрузит страницу.')) {
+                return;
+            }
+            
+            sessionStorage.clear();
+            localStorage.removeItem('sitecore_cached_data');
+            window.location.reload();
+        }
+
+        // Обновление данных
+        function refreshData() {
+            loadDatabase();
+            loadDashboard();
+            
+            // Обновляем только активный раздел
+            const activeSection = document.querySelector('.content-section.active').id.replace('-section', '');
+            switch(activeSection) {
+                case 'news':
+                    loadNewsList();
+                    break;
+                case 'orders':
+                    loadOrders(currentOrderTab);
+                    break;
+                case 'clients':
+                    loadClients();
+                    break;
+                case 'statistics':
+                    loadStatistics();
+                    break;
+            }
+        }
+
+        // Показать уведомление
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Выход
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+
         // Инициализация при загрузке
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем, есть ли в sessionStorage данные пользователя
+            const userData = sessionStorage.getItem('currentUser');
+            if (!userData) {
+                // Редирект на страницу входа
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Загружаем данные пользователя
+            currentUser = JSON.parse(userData);
+            
+            // Если пользователь не разработчик, редирект на клиентскую панель
+            if (currentUser.type !== 'developer') {
+                window.location.href = 'client.html';
+                return;
+            }
+            
+            // Инициализация
+            init();
+            
+            // Автоматическое обновление каждые 30 секунд
+            setInterval(() => {
+                if (!document.hidden) {
+                    refreshData();
+                }
+            }, 30000);
+        });
     </script>
 </body>
 </html>
