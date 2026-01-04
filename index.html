@@ -215,11 +215,28 @@
             font-size: 14px;
             display: none;
             margin-top: 20px;
+            text-align: left;
+            animation: slideDown 0.3s ease;
         }
 
         .error-message.show {
             display: block;
-            animation: slideDown 0.3s ease;
+        }
+
+        .sync-info {
+            background: var(--gray-lighter);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+            font-size: 13px;
+            color: var(--gray);
+            text-align: left;
+        }
+
+        .sync-info h4 {
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-size: 14px;
         }
 
         @keyframes slideDown {
@@ -233,29 +250,6 @@
             }
         }
 
-        /* Синхронизация */
-        .sync-section {
-            background: var(--gray-lighter);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        .sync-section h3 {
-            font-size: 16px;
-            color: var(--dark);
-            margin-bottom: 12px;
-        }
-
-        .sync-section p {
-            font-size: 14px;
-            color: var(--gray);
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        /* Адаптивность */
         @media (max-width: 480px) {
             .login-card {
                 padding: 30px 20px;
@@ -284,7 +278,7 @@
             </div>
             
             <div class="welcome-text">
-                <h1>Добро пожаловать!</h1>
+                <h1>Добро пожаловать в SiteCore!</h1>
                 <p>Платформа для заказа сайтов с полной прозрачностью и удобным общением</p>
             </div>
             
@@ -302,7 +296,7 @@
                 
                 <div class="form-group">
                     <label for="client-password">Пароль</label>
-                    <input type="password" id="client-password" placeholder="••••••••" required>
+                    <input type="password" id="client-password" placeholder="Введите пароль" required>
                 </div>
                 
                 <div class="links">
@@ -338,7 +332,7 @@
                 
                 <div class="form-group">
                     <label for="register-password">Пароль</label>
-                    <input type="password" id="register-password" placeholder="••••••••" required minlength="6">
+                    <input type="password" id="register-password" placeholder="Придумайте пароль" required minlength="6">
                 </div>
                 
                 <div class="links">
@@ -367,16 +361,13 @@
             
             <div id="error-message" class="error-message"></div>
             
-            <div class="sync-section">
-                <h3>Синхронизация данных</h3>
-                <p>Для синхронизации между устройствами укажите GitHub токен (опционально)</p>
-                <input type="text" id="github-token" placeholder="ghp_..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid var(--gray-light); border-radius: 8px;">
-                <button onclick="saveToken()" class="btn-secondary" style="width: 100%; padding: 12px;">Сохранить токен</button>
+            <div class="sync-info">
+                <h4>📡 Автоматическая синхронизация</h4>
+                <p>Ваши данные автоматически синхронизируются между устройствами. При первом входе создается уникальный ключ синхронизации.</p>
             </div>
         </div>
     </div>
 
-    <script src="database.js"></script>
     <script>
         // Переключение между формами
         document.querySelectorAll('.role-tab').forEach(tab => {
@@ -410,36 +401,28 @@
             document.getElementById('client-form').style.display = 'flex';
         });
 
-        // Сохранение токена
-        function saveToken() {
-            const token = document.getElementById('github-token').value.trim();
-            if (token) {
-                localStorage.setItem('github_token', token);
-                alert('Токен сохранен!');
-                SiteCoreDB.syncToGist();
-            }
-        }
-
         // Вход клиента
         document.getElementById('client-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('client-email').value;
+            const email = document.getElementById('client-email').value.trim();
             const password = document.getElementById('client-password').value;
             
+            if (!email || !password) {
+                showError('Пожалуйста, заполните все поля');
+                return;
+            }
+            
             try {
-                const client = await SiteCoreDB.authClient(email, password);
+                const client = await window.SiteCoreDB.authUser(email, password);
                 if (client) {
-                    localStorage.setItem('current_user', JSON.stringify({
-                        ...client,
-                        type: 'client'
-                    }));
+                    localStorage.setItem('current_user', JSON.stringify(client));
                     window.location.href = 'client.html';
                 } else {
                     showError('Неверный email или пароль');
                 }
             } catch (error) {
-                showError(error.message);
+                showError('Ошибка авторизации: ' + error.message);
             }
         });
 
@@ -447,18 +430,26 @@
         document.getElementById('register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const phone = document.getElementById('register-phone').value;
-            const telegram = document.getElementById('register-telegram').value;
+            const name = document.getElementById('register-name').value.trim();
+            const email = document.getElementById('register-email').value.trim();
+            const phone = document.getElementById('register-phone').value.trim();
+            const telegram = document.getElementById('register-telegram').value.trim();
             const password = document.getElementById('register-password').value;
             
+            // Простая валидация
+            if (!name || !email || !phone || !telegram || !password) {
+                showError('Пожалуйста, заполните все поля');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Пароль должен содержать минимум 6 символов');
+                return;
+            }
+            
             try {
-                const client = await SiteCoreDB.registerClient(email, password, name, phone, telegram);
-                localStorage.setItem('current_user', JSON.stringify({
-                    ...client,
-                    type: 'client'
-                }));
+                const client = await window.SiteCoreDB.registerClient(email, password, name, phone, telegram);
+                localStorage.setItem('current_user', JSON.stringify(client));
                 window.location.href = 'client.html';
             } catch (error) {
                 showError(error.message);
@@ -471,19 +462,22 @@
             
             const password = document.getElementById('executor-password').value;
             
+            if (!password) {
+                showError('Пожалуйста, введите пароль');
+                return;
+            }
+            
             try {
-                const executor = await SiteCoreDB.authExecutor(password);
+                // Для разработчика identifier не нужен, только пароль
+                const executor = await window.SiteCoreDB.authUser(null, password);
                 if (executor) {
-                    localStorage.setItem('current_user', JSON.stringify({
-                        ...executor,
-                        type: 'executor'
-                    }));
+                    localStorage.setItem('current_user', JSON.stringify(executor));
                     window.location.href = 'executor.html';
                 } else {
-                    showError('Неверный пароль');
+                    showError('Неверный пароль разработчика');
                 }
             } catch (error) {
-                showError(error.message);
+                showError('Ошибка авторизации: ' + error.message);
             }
         });
 
@@ -497,11 +491,11 @@
             }, 5000);
         }
 
-        // Загружаем токен при загрузке
+        // Загружаем базу данных
         document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('github_token');
-            if (token) {
-                document.getElementById('github-token').value = token;
+            // Убедимся, что база данных загружена
+            if (!window.SiteCoreDB) {
+                showError('Ошибка загрузки системы. Пожалуйста, обновите страницу.');
             }
         });
     </script>
