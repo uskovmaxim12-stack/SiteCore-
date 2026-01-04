@@ -890,7 +890,7 @@
             </div>
             
             <div class="welcome-info">
-                <h2 id="client-name">Клиент</h2>
+                <h2 id="client-name">Загрузка...</h2>
                 <p>Создавайте заказы на разработку сайтов, отслеживайте статус и общайтесь с разработчиками.</p>
                 <div class="quick-stats" id="quick-stats">
                     <!-- Заполняется JavaScript -->
@@ -968,10 +968,10 @@
         <div id="profile-tab" class="tab-content">
             <div class="profile-section">
                 <div class="profile-header">
-                    <div class="profile-avatar" id="profile-avatar">К</div>
+                    <div class="profile-avatar" id="profile-avatar">З</div>
                     <div class="profile-info">
-                        <h2 id="profile-name">Иван Иванов</h2>
-                        <p id="profile-email">ivan@example.com</p>
+                        <h2 id="profile-name">Загрузка...</h2>
+                        <p id="profile-email">Загрузка...</p>
                     </div>
                 </div>
                 
@@ -980,15 +980,15 @@
                         <h3 class="profile-section-title">Контактная информация</h3>
                         <div class="detail-item">
                             <div class="detail-label">Email</div>
-                            <div class="detail-value" id="detail-email"></div>
+                            <div class="detail-value" id="detail-email">Загрузка...</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Телефон</div>
-                            <div class="detail-value" id="detail-phone"></div>
+                            <div class="detail-value" id="detail-phone">Загрузка...</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">Telegram</div>
-                            <div class="detail-value" id="detail-telegram"></div>
+                            <div class="detail-value" id="detail-telegram">Загрузка...</div>
                         </div>
                     </div>
                     
@@ -1067,6 +1067,8 @@
                 return;
             }
 
+            console.log('Текущий пользователь:', currentUser); // Для отладки
+            
             await loadDatabase();
             updateUserInfo();
             loadClientOrders();
@@ -1141,8 +1143,10 @@
 
         // Обновление информации пользователя
         function updateUserInfo() {
+            if (!currentUser) return;
+            
             document.getElementById('current-user-info').innerHTML = `
-                <div class="user-avatar">${currentUser.avatar}</div>
+                <div class="user-avatar">${currentUser.avatar || currentUser.name.charAt(0)}</div>
                 <div class="user-name">${currentUser.name}</div>
             `;
 
@@ -1179,6 +1183,8 @@
 
         // Загрузка заказов клиента
         function loadClientOrders() {
+            if (!database || !database.orders) return;
+            
             const clientOrders = database.orders.filter(order => order.clientId === currentUser.id);
             
             // Обновляем статистику
@@ -1244,7 +1250,7 @@
                 };
                 
                 // Получаем последнее сообщение
-                const orderMessages = database.messages.filter(m => m.orderId === order.id);
+                const orderMessages = database.messages ? database.messages.filter(m => m.orderId === order.id) : [];
                 const lastMessage = orderMessages[orderMessages.length - 1];
                 let lastMessageText = 'Нет сообщений';
                 
@@ -1286,7 +1292,7 @@
                             </div>
                             
                             <div class="order-prompt-preview">
-                                ${order.prompt.substring(0, 100)}...
+                                ${order.prompt ? order.prompt.substring(0, 100) + '...' : 'Нет описания'}
                             </div>
                             
                             <div style="font-size: 12px; color: var(--gray); margin-top: 10px;">
@@ -1311,16 +1317,23 @@
 
         // Обновление профиля
         function updateProfile() {
-            const clientOrders = database.orders.filter(order => order.clientId === currentUser.id);
+            if (!currentUser) return;
             
-            document.getElementById('profile-avatar').textContent = currentUser.avatar;
-            document.getElementById('profile-name').textContent = currentUser.name;
-            document.getElementById('profile-email').textContent = currentUser.email;
+            console.log('Обновление профиля для:', currentUser); // Для отладки
             
-            document.getElementById('detail-email').textContent = currentUser.email;
-            document.getElementById('detail-phone').textContent = currentUser.phone;
-            document.getElementById('detail-telegram').textContent = currentUser.telegram;
+            const clientOrders = database.orders ? database.orders.filter(order => order.clientId === currentUser.id) : [];
             
+            // Обновляем аватар, имя и email
+            document.getElementById('profile-avatar').textContent = currentUser.avatar || currentUser.name.charAt(0);
+            document.getElementById('profile-name').textContent = currentUser.name || 'Не указано';
+            document.getElementById('profile-email').textContent = currentUser.email || 'Не указано';
+            
+            // Обновляем контактную информацию
+            document.getElementById('detail-email').textContent = currentUser.email || 'Не указано';
+            document.getElementById('detail-phone').textContent = currentUser.phone || 'Не указан';
+            document.getElementById('detail-telegram').textContent = currentUser.telegram || 'Не указан';
+            
+            // Обновляем статистику
             document.getElementById('detail-total-orders').textContent = clientOrders.length;
             document.getElementById('detail-active-orders').textContent = clientOrders.filter(o => o.status !== 'completed' && o.status !== 'cancelled').length;
             document.getElementById('detail-completed-orders').textContent = clientOrders.filter(o => o.status === 'completed').length;
@@ -1353,8 +1366,8 @@
                 clientId: currentUser.id,
                 clientName: currentUser.name,
                 clientEmail: currentUser.email,
-                clientPhone: currentUser.phone,
-                clientTelegram: currentUser.telegram,
+                clientPhone: currentUser.phone || 'Не указан',
+                clientTelegram: currentUser.telegram || 'Не указан',
                 projectName: projectName,
                 projectType: projectType,
                 budget: budget,
@@ -1366,8 +1379,18 @@
                 updatedAt: new Date().toISOString()
             };
             
+            // Инициализируем базу если она пустая
+            if (!database.orders) {
+                database.orders = [];
+            }
+            
             // Добавляем заказ в базу
             database.orders.push(newOrder);
+            
+            // Инициализируем messages если их нет
+            if (!database.messages) {
+                database.messages = [];
+            }
             
             // Добавляем системное сообщение
             const systemMessage = {
@@ -1421,6 +1444,11 @@
                 database.orders[orderIndex].status = 'cancelled';
                 database.orders[orderIndex].updatedAt = new Date().toISOString();
                 
+                // Инициализируем messages если их нет
+                if (!database.messages) {
+                    database.messages = [];
+                }
+                
                 // Добавляем системное сообщение
                 const systemMessage = {
                     id: 'msg_' + Date.now(),
@@ -1464,9 +1492,9 @@
 
         // Загрузить сообщения чата
         function loadChatMessages(orderId) {
-            const orderMessages = database.messages
-                .filter(m => m.orderId === orderId)
-                .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+            const orderMessages = database.messages ? 
+                database.messages.filter(m => m.orderId === orderId)
+                    .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)) : [];
             
             const container = document.getElementById('chat-messages');
             
@@ -1511,6 +1539,11 @@
             
             if (!message || !currentChatOrderId) return;
             
+            // Инициализируем messages если их нет
+            if (!database.messages) {
+                database.messages = [];
+            }
+            
             // Создаем сообщение
             const newMessage = {
                 id: 'msg_' + Date.now(),
@@ -1544,6 +1577,7 @@
             const promptInput = document.getElementById('project-prompt');
             if (promptInput) {
                 promptInput.addEventListener('input', updatePromptCounter);
+                promptInput.addEventListener('keyup', updatePromptCounter);
             }
         }
 
