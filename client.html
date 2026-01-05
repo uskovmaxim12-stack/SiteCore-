@@ -625,6 +625,49 @@
     </style>
 </head>
 <body>
+    <!-- Кнопка синхронизации -->
+<div class="sync-button" onclick="syncData()">
+    <i class="fas fa-sync-alt" id="syncIcon"></i>
+    <span id="syncLabel">Синхронизировать</span>
+</div>
+
+<style>
+.sync-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.sync-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.sync-button.syncing {
+    background: var(--warning);
+}
+
+.sync-button.syncing i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
     <!-- Мобильное меню -->
     <div class="mobile-header">
         <button class="menu-toggle" onclick="toggleSidebar()">
