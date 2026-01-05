@@ -5,7 +5,7 @@ addEventListener('fetch', event => {
 
 // Разрешенные источники (CORS)
 const allowedOrigins = [
-  'https://вашсайт.github.io',
+  'https://uskovmaxim12-stack.github.io/SiteCore-/',
   'http://localhost:3000',
   'http://127.0.0.1:5500'
 ]
