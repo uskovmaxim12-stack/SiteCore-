@@ -1,119 +1,80 @@
-// Конфигурация приложения
-const AppConfig = {
-    // Используем PocketBase как бесплатную облачную базу
-    API_URL: 'https://sitecore.pockethost.io',
-    // Для разработки можно использовать localStorage как fallback
-    USE_LOCAL_STORAGE: true,
+// Конфигурация проекта SiteCore
+const SiteCoreConfig = {
+    // URL вашего Gist с базой данных
+    DB_URL: 'https://gist.githubusercontent.com/uskovmaxim12-stack/30dbe17ad2208d9eb8809574ee8ef012/raw/37a0fab472c6512b31fc1ee901e1e0dac2964250/gistfile1.txt',
     
-    // Разработчики
-    DEVELOPERS: {
-        "789563": {
-            id: "dev_1",
-            name: "Александр",
-            avatar: "А",
-            role: "Full-Stack Developer"
-        },
-        "140612": {
-            id: "dev_2", 
-            name: "Максим",
-            avatar: "М",
-            role: "Frontend Developer"
-        }
+    // Версия базы данных
+    VERSION: '2.0',
+    
+    // Ключи для статусов заказов
+    ORDER_STATUSES: {
+        NEW: 'new',
+        IN_PROGRESS: 'in-progress',
+        REVIEW: 'review',
+        COMPLETED: 'completed',
+        CANCELLED: 'cancelled'
     },
     
-    // Настройки компании
-    COMPANY: {
-        name: "SiteCore",
-        email: "sitecoreof@list.ru",
-        phone: "+7 (999) 123-45-67",
-        telegram: "@sitecore_support",
-        address: "г. Москва, ул. Примерная, д. 1"
+    // Валидация
+    VALIDATION: {
+        MIN_BUDGET: 300,
+        MAX_BUDGET: 1000000,
+        MIN_DAYS: 3,
+        MAX_DAYS: 30,
+        MIN_PROMPT: 300,
+        MAX_PROMPT: 2500
+    },
+    
+    // Цвета бренда
+    COLORS: {
+        PRIMARY: '#667eea',
+        SECONDARY: '#764ba2',
+        SUCCESS: '#10b981',
+        WARNING: '#f59e0b',
+        DANGER: '#ef4444'
     }
 };
 
-// Функция для работы с базой данных
-class Database {
-    constructor() {
-        this.isOnline = navigator.onLine;
-        this.initEventListeners();
+// Утилиты для работы с данными
+class SiteCoreUtils {
+    static formatCurrency(amount) {
+        return new Intl.NumberFormat('ru-RU', {
+            style: 'currency',
+            currency: 'RUB',
+            minimumFractionDigits: 0
+        }).format(amount);
     }
     
-    initEventListeners() {
-        window.addEventListener('online', () => {
-            this.isOnline = true;
-            console.log('Сеть восстановлена');
-            this.syncLocalData();
-        });
-        
-        window.addEventListener('offline', () => {
-            this.isOnline = false;
-            console.log('Работаем офлайн');
-        });
+    static getStatusText(status) {
+        const statuses = {
+            'new': 'Новый',
+            'in-progress': 'В работе',
+            'review': 'На проверке',
+            'completed': 'Завершён',
+            'cancelled': 'Отменён'
+        };
+        return statuses[status] || status;
     }
     
-    // Получить все данные пользователя
-    async getUserData(userId) {
-        if (this.isOnline && AppConfig.API_URL) {
-            try {
-                const response = await fetch(`${AppConfig.API_URL}/api/collections/users/records?filter=user_id="${userId}"`);
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.items[0] || null;
-                }
-            } catch (error) {
-                console.log('Используем локальные данные');
-            }
-        }
-        
-        // Fallback на localStorage
-        const localData = localStorage.getItem(`sitecore_user_${userId}`);
-        return localData ? JSON.parse(localData) : null;
+    static getStatusColor(status) {
+        const colors = {
+            'new': '#dbeafe',
+            'in-progress': '#fef3c7',
+            'review': '#fce7f3',
+            'completed': '#dcfce7',
+            'cancelled': '#fee2e2'
+        };
+        return colors[status] || '#e5e7eb';
     }
     
-    // Сохранить данные пользователя
-    async saveUserData(userId, data) {
-        const userKey = `sitecore_user_${userId}`;
-        
-        // Сохраняем локально
-        localStorage.setItem(userKey, JSON.stringify(data));
-        
-        if (this.isOnline && AppConfig.API_URL) {
-            try {
-                const existing = await this.getUserData(userId);
-                
-                if (existing) {
-                    // Обновляем существующую запись
-                    await fetch(`${AppConfig.API_URL}/api/collections/users/records/${existing.id}`, {
-                        method: 'PATCH',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
-                    });
-                } else {
-                    // Создаем новую запись
-                    await fetch(`${AppConfig.API_URL}/api/collections/users/records`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ user_id: userId, ...data })
-                    });
-                }
-                
-                console.log('Данные синхронизированы с облаком');
-            } catch (error) {
-                console.log('Ошибка синхронизации, данные сохранены локально');
-            }
-        }
-        
-        return true;
-    }
-    
-    // Синхронизировать локальные данные
-    async syncLocalData() {
-        if (!this.isOnline) return;
-        
-        // Здесь можно добавить синхронизацию всех локальных данных
-        console.log('Начата синхронизация данных');
+    static getStatusTextColor(status) {
+        const colors = {
+            'new': '#1d4ed8',
+            'in-progress': '#d97706',
+            'review': '#be185d',
+            'completed': '#16a34a',
+            'cancelled': '#dc2626'
+        };
+        return colors[status] || '#6b7280';
     }
 }
-
-// Создаем глобальный экземпляр базы данных
-const DatabaseService = new Database();
