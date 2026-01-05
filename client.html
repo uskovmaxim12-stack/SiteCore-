@@ -954,10 +954,59 @@
     </div>
 
     <script>
+        // Функция синхронизации
+async function syncData() {
+    const syncBtn = document.querySelector('.sync-button');
+    const syncIcon = document.getElementById('syncIcon');
+    const syncLabel = document.getElementById('syncLabel');
+    
+    syncBtn.classList.add('syncing');
+    syncLabel.textContent = 'Синхронизация...';
+    
+    try {
+        // Пробуем загрузить свежие данные
+        await loadFromGist();
+        
+        // Обновляем интерфейс
+        updateUI();
+        
+        showNotification('Данные синхронизированы', 'success');
+    } catch (error) {
+        showNotification('Ошибка синхронизации. Используем локальные данные', 'error');
+    } finally {
+        syncBtn.classList.remove('syncing');
+        syncLabel.textContent = 'Синхронизировать';
+    }
+}
+
+// Загрузка из Gist (та же функция что в index.html)
+async function loadFromGist() {
+    const response = await fetch(GIST_URL + '?t=' + Date.now());
+    
+    if (!response.ok) {
+        throw new Error('Ошибка загрузки');
+    }
+    
+    const data = await response.json();
+    
+    if (data && data.users && data.orders !== undefined) {
+        database = data;
+        saveLocalDatabase();
+        return true;
+    } else {
+        throw new Error('Некорректная структура базы');
+    }
+}
+
+// Сохранение локально
+function saveLocalDatabase() {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(database));
+    sessionStorage.setItem('sitecoreDatabase', JSON.stringify(database));
+}
         // === КОНФИГУРАЦИЯ ===
         const GITHUB_CONFIG = {
-            GIST_ID: 'ВАШ_GIST_ID',
-            TOKEN: 'ВАШ_GITHUB_TOKEN'
+            GIST_ID: 'https://gist.github.com/uskovmaxim12-stack/30dbe17ad2208d9eb8809574ee8ef012.js',
+            TOKEN: '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'
         };
         
         // Текущий пользователь и база
